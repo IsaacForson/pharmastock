@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/*
+ * PharmaStock "Dispensary" design system: light-first, flat, ruled like a dispensing ledger.
+ * Paper surfaces, ink text, one pharmacy green, amber kept for expiry. No glass, gradients, glows or blur.
+ * Screens use SEMANTIC tokens only (bg-canvas, bg-surface, text-fg, text-muted, border-line, text-accent, bg-ok/10 …),
+ * so the night theme swaps by changing the variables below. Never hardcode palette/hex colours in screens.
+ */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+:root, [data-theme="light"] {
+  color-scheme: light;
+  --canvas: #f1f3ef;           /* page */
+  --canvas-2: #e7ebe5;         /* page band (sub-navigation) */
+  --surface: #ffffff;          /* sheets */
+  --surface-2: #f6f7f4;        /* table heads, hovers, inputs at rest */
+  --surface-3: #e9ede6;        /* selected / pressed */
+  --solid: #ffffff;            /* menus, dialogs */
+  --line: #dde2da;
+  --line-strong: #bcc5bb;
+  --fg: #142019;
+  --muted: #4d5a52;
+  --subtle: #7b877f;
+  --accent: #0b6b4a;           /* pharmacy green: the one brand colour */
+  --accent-strong: #08543a;
+  --accent-2: #a85d05;         /* amber: expiry, highlights */
+  --on-accent: #ffffff;
+  --header: #0d2a1f;           /* top bar */
+  --on-header: #e6efe9;
+  --on-header-muted: #9db5a7;
+  --ok: #157a3d;
+  --warn: #a85d05;
+  --bad: #b42318;
+  --info: #1d55c4;
+  --lift: 0 10px 28px -12px rgb(20 32 25 / 0.28), 0 1px 0 rgb(20 32 25 / 0.04);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #0e1411;
+  --canvas-2: #121a16;
+  --surface: #151d19;
+  --surface-2: #1a241f;
+  --surface-3: #223029;
+  --solid: #18211c;
+  --line: #27342d;
+  --line-strong: #3a4a41;
+  --fg: #e4ece6;
+  --muted: #a2b1a7;
+  --subtle: #718077;
+  --accent: #3dbb86;
+  --accent-strong: #5fd09f;
+  --accent-2: #f0a43a;
+  --on-accent: #06140d;
+  --header: #08100c;
+  --on-header: #e4ece6;
+  --on-header-muted: #8a9c91;
+  --ok: #4cc27e;
+  --warn: #f0a43a;
+  --bad: #f2706a;
+  --info: #79a6ff;
+  --lift: 0 12px 32px -12px rgb(0 0 0 / 0.7);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-2: var(--canvas-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-solid: var(--solid);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-2: var(--accent-2);
+  --color-on-accent: var(--on-accent);
+  --color-header: var(--header);
+  --color-on-header: var(--on-header);
+  --color-on-header-muted: var(--on-header-muted);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --color-info: var(--info);
+  --shadow-lift: var(--lift);
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+@theme {
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  @keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+}
+
+/* Sheet: the base surface for every card, table and form block. Flat, ruled, square-ish. */
+@utility sheet {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+/* Solid brand fill and brand text (primary buttons, the active thing, the brand mark). */
+@utility bg-brand { background-color: var(--accent); color: var(--on-accent); }
+@utility text-brand { color: var(--accent); }
+
+/* Marks the active / highlighted element with a brand rule on its leading edge. */
+@utility mark-brand { box-shadow: inset 3px 0 0 var(--accent); }
+
+/* Page background: plain paper. */
+@utility page-bg { background-color: var(--canvas); }
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--surface-2), var(--surface-3), var(--surface-2));
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  border-radius: 4px;
+}
+
+html, body { background: var(--canvas); color: var(--fg); }
+body { font-family: var(--font-sans); font-size: 14px; -webkit-font-smoothing: antialiased; }
+::selection { background: color-mix(in oklab, var(--accent) 22%, transparent); }
+* { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+input[type="date"], input[type="time"] { color-scheme: inherit; }
+select option { background: var(--solid); color: var(--fg); }
+/* Figures read like a ledger: monospaced digits everywhere they line up. */
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* Paper output is always light. */
+@media print {
+  :root, [data-theme] {
+    --canvas: #fff; --canvas-2: #fff; --surface: #fff; --surface-2: #fff; --surface-3: #f2f2f2; --solid: #fff;
+    --line: #d9d9d9; --line-strong: #bdbdbd; --fg: #000; --muted: #3f3f3f; --subtle: #666;
+    --accent: #0b6b4a; --accent-2: #8a4b00; --ok: #0d6431; --warn: #8a4b00; --bad: #9b1b12; --lift: none;
+  }
+  .page-bg { background: #fff !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

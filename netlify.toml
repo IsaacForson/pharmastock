@@ -1,0 +1,14 @@
+[build]
+  command = "pnpm build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "10.20.0"
+
+[functions."cron-tick"]
+  schedule = "* * * * *"
+
+[[edge_functions]]
+  function = "strip-netlify-comment"
+  path = "/*"
