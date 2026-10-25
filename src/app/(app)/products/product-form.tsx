@@ -89,7 +89,7 @@ export function ProductForm({ d, categories, suppliers, scheduleLabels, canPrice
         </div>
         <div className="space-y-3">
           {units.map((u) => (
-            <div key={u.key} className={cx("rounded-2xl border p-4", scanInto === u.key ? "border-accent/40 bg-accent/5" : "border-line bg-surface")}>
+            <div key={u.key} className={cx("rounded-md border p-4", scanInto === u.key ? "border-accent/40 bg-accent/5" : "border-line bg-surface")}>
               <div className="grid items-end gap-3 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]">
                 <Field label="Pack name"><Input value={u.name} onChange={(e) => patch(u.key, { name: e.target.value })} placeholder="box, strip, tablet" required /></Field>
                 <Field label={`${baseUnit || "units"} per pack`}><Input type="number" min={1} value={u.factor} onChange={(e) => patch(u.key, { factor: Math.max(1, Number(e.target.value) || 1) })} /></Field>
@@ -114,7 +114,7 @@ export function ProductForm({ d, categories, suppliers, scheduleLabels, canPrice
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <Barcode className="h-4 w-4 text-subtle" aria-hidden />
                 {u.barcodes.map((c) => (
-                  <span key={c} className="inline-flex items-center gap-1 rounded-lg border border-line bg-surface-2 py-1 pl-2 pr-1 font-mono text-xs text-fg">
+                  <span key={c} className="inline-flex items-center gap-1 rounded border border-line bg-surface-2 py-1 pl-2 pr-1 font-mono text-xs text-fg">
                     {c}
                     <button type="button" aria-label={`Remove barcode ${c}`} onClick={() => patch(u.key, { barcodes: u.barcodes.filter((x) => x !== c) })} className="grid h-5 w-5 place-items-center rounded text-muted hover:bg-surface-3 hover:text-fg"><X className="h-3 w-3" /></button>
                   </span>
@@ -122,7 +122,7 @@ export function ProductForm({ d, categories, suppliers, scheduleLabels, canPrice
                 <Input value={codeDraft[u.key] ?? ""} onChange={(e) => setCodeDraft((c) => ({ ...c, [u.key]: e.target.value }))} data-scan-passthrough=""
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCode(u.key, codeDraft[u.key] ?? ""); } }}
                   onFocus={() => setScanInto(u.key)} placeholder="Type or scan, then Enter" className="h-9 w-56 font-mono text-xs" aria-label={`Barcode for ${u.name || "pack"}`} />
-                <CameraScanner onCode={(c) => addCode(u.key, c)} label="Camera" className="inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-surface-2 px-3 text-xs font-medium text-fg hover:bg-surface-3" />
+                <CameraScanner onCode={(c) => addCode(u.key, c)} label="Camera" className="inline-flex h-9 items-center gap-2 rounded border border-line bg-surface-2 px-3 text-xs font-medium text-fg hover:bg-surface-3" />
               </div>
             </div>
           ))}

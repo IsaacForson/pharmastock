@@ -51,7 +51,7 @@ export default async function SupplierPage({ params }: PageProps<"/suppliers/[id
           <div className="flex items-center gap-4">
             <Avatar name={s.name} size="lg" />
             <div className="min-w-0">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-subtle">Supplier</div>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-subtle">Supplier</div>
               <h1 className="truncate text-2xl font-semibold tracking-tight text-fg">{s.name}</h1>
               <div className="mt-1 flex flex-wrap gap-1.5">
                 {!s.active && <Badge>Inactive</Badge>}
@@ -87,8 +87,8 @@ export default async function SupplierPage({ params }: PageProps<"/suppliers/[id
           <Panel title="Aging" eyebrow="What you owe, by how late it is">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
               {BUCKETS.map((b) => (
-                <div key={b} className="rounded-xl border border-line bg-surface-2 p-3">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-subtle">{BUCKET_LABELS[b]}</div>
+                <div key={b} className="rounded border border-line bg-surface-2 p-3">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-subtle">{BUCKET_LABELS[b]}</div>
                   <div className={`mt-1 text-lg font-semibold tabular-nums ${b !== "current" && (bal?.buckets[b] ?? 0) > 0 ? "text-bad" : "text-fg"}`}>{money(bal?.buckets[b] ?? 0, cur)}</div>
                 </div>
               ))}

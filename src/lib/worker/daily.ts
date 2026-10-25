@@ -16,7 +16,7 @@ export async function dailyTenant(tenantId: string, today?: string) {
 /** End-of-day owner summary for `day` (deduped per day inside sendOwnerSummary). */
 export async function ownerSummary(tenantId: string, day?: string) {
   const [tenant] = await adminDb().select().from(tenants).where(eq(tenants.id, tenantId));
-  if (!tenant || !hasFeature(tenant, "owner_summary")) return null;
+  if (!tenant || !tenant.ownerSummaryEnabled || !hasFeature(tenant, "owner_summary")) return null; // switched off after the job was queued
   return withTenant(tenantId, (t) => sendOwnerSummary(t, tenant, day ?? localDay(tenant.timezone)));
 }
 
@@ -37,7 +37,7 @@ export async function billingSweep(now = new Date()) {
 export const NIGHTLY_AT = "02:00";
 
 /**
- * Enqueues daily.tenant at 02:00 pharmacy time, owner.summary at the tenant's summary time (when the plan includes it),
+ * Enqueues daily.tenant at 02:00 pharmacy time, owner.summary at the tenant's summary time (when switched on and the plan includes it),
  * billing.sweep hourly and fx.refresh daily. Safe to call often (dedupe keys).
  */
 export async function scheduleRecurring(now = new Date()) {
@@ -47,12 +47,12 @@ export async function scheduleRecurring(now = new Date()) {
     { tenantId: null, type: "billing.sweep", payload: {}, runAt: now, dedupeKey: `billing:${hour}` },
     { tenantId: null, type: "fx.refresh", payload: {}, runAt: now, dedupeKey: `fx:${now.toISOString().slice(0, 10)}` },
   ];
-  const list = await db.select({ id: tenants.id, tz: tenants.timezone, plan: tenants.plan, planStatus: tenants.planStatus, at: tenants.ownerSummaryTime })
+  const list = await db.select({ id: tenants.id, tz: tenants.timezone, plan: tenants.plan, planStatus: tenants.planStatus, at: tenants.ownerSummaryTime, summary: tenants.ownerSummaryEnabled })
     .from(tenants).where(ne(tenants.planStatus, "cancelled"));
   for (const t of list) {
     const day = localDay(t.tz, now);
     rows.push({ tenantId: t.id, type: "daily.tenant", payload: { day }, runAt: zonedToUtc(day, NIGHTLY_AT, t.tz), dedupeKey: `daily:${t.id}:${day}` });
-    if (hasFeature(t, "owner_summary") && /^\d{2}:\d{2}$/.test(t.at)) {
+    if (t.summary && hasFeature(t, "owner_summary") && /^\d{2}:\d{2}$/.test(t.at)) {
       rows.push({ tenantId: t.id, type: "owner.summary", payload: { day }, runAt: zonedToUtc(day, t.at, t.tz), dedupeKey: `owner:${t.id}:${day}` });
     }
   }

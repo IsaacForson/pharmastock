@@ -82,8 +82,8 @@ export default async function PrescriptionPage({ params, searchParams }: PagePro
             ) : <p className="mb-4 text-sm text-muted">No photo or scan attached.</p>}
             {write && (
               <form action={`/prescriptions/${rx.id}/file`} method="post" encType="multipart/form-data" className="flex flex-wrap items-center gap-2">
-                <input type="file" name="file" accept="image/*,application/pdf" capture="environment" required className="text-sm text-muted file:mr-3 file:h-9 file:rounded-lg file:border file:border-line file:bg-surface-2 file:px-3 file:text-sm file:text-fg" />
-                <button className="h-9 rounded-lg border border-line bg-surface-2 px-3 text-sm font-medium text-fg hover:bg-surface-3">Upload</button>
+                <input type="file" name="file" accept="image/*,application/pdf" capture="environment" required className="text-sm text-muted file:mr-3 file:h-9 file:rounded file:border file:border-line file:bg-surface-2 file:px-3 file:text-sm file:text-fg" />
+                <button className="h-9 rounded border border-line bg-surface-2 px-3 text-sm font-medium text-fg hover:bg-surface-3">Upload</button>
               </form>
             )}
           </Panel>

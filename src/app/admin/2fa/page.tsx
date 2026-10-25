@@ -24,8 +24,8 @@ async function Step() {
       {qr && (
         <div className="mb-6 flex flex-col items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- inline data URL QR */}
-          <img src={qr} alt="Authenticator QR code" className="h-44 w-44 rounded-2xl p-2 shadow-glow" style={{ background: "#fff" }} />
-          <code className="rounded-lg border border-line bg-surface-2 px-2 py-1 font-mono text-[11px] tracking-wider text-muted">{secret}</code>
+          <img src={qr} alt="Authenticator QR code" className="h-44 w-44 rounded-md p-2" style={{ background: "#fff" }} />
+          <code className="rounded border border-line bg-surface-2 px-2 py-1 font-mono text-[11px] tracking-wider text-muted">{secret}</code>
         </div>
       )}
       <ActionForm action={adminVerify2faAction} className="space-y-4">

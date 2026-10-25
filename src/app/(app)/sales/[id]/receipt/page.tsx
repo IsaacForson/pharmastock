@@ -29,7 +29,7 @@ export default async function ReceiptPage({ params, searchParams }: PageProps<"/
           <ThermalPrintButton data={data} />
         </div>
       </div>
-      <div className={a4 ? "glass print:border-0" : "rounded-2xl border border-line print:border-0"}><ReceiptView d={data} format={a4 ? "a4" : "thermal"} /></div>
+      <div className={a4 ? "sheet print:border-0" : "rounded-md border border-line print:border-0"}><ReceiptView d={data} format={a4 ? "a4" : "thermal"} /></div>
     </div>
   );
 }

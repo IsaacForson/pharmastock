@@ -68,7 +68,7 @@ export default async function SalesPage({ searchParams }: PageProps<"/sales">) {
           <Select name="method" defaultValue={method} className="w-40" aria-label="Payment method"><option value="">Any payment</option>{METHODS.map((m) => <option key={m} value={m}>{METHOD_LABEL[m]}</option>)}</Select>
           <Select name="status" defaultValue={status} className="w-44" aria-label="Status"><option value="">Any status</option>{STATUSES.map((s) => <option key={s} value={s}>{s.replace("_", " ")}</option>)}</Select>
           <label className="flex items-center gap-2 text-sm text-muted"><input type="checkbox" name="offline" value="1" defaultChecked={offline} /> Offline only</label>
-          <button className="h-10 rounded-xl border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3">Filter</button>
+          <button className="h-10 rounded border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3">Filter</button>
         </Toolbar>
       </form>
       <Panel bodyClassName="p-0">

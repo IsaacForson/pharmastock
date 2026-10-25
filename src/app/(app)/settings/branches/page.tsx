@@ -24,7 +24,7 @@ function WeekHours({ hours }: { hours: OpeningHours }) {
           <div key={i} className="grid grid-cols-[2.25rem_minmax(0,1fr)_5.5rem] items-center gap-3 text-xs">
             <span className="font-medium text-muted">{WEEKDAYS[i].slice(0, 3)}</span>
             <span className="relative h-2 rounded-full bg-surface-3">
-              {h && <span className="absolute inset-y-0 rounded-full bg-aurora" style={{ left: pos(toMinutes(h[0])), right: `calc(100% - ${pos(toMinutes(h[1]))})` }} />}
+              {h && <span className="absolute inset-y-0 rounded-full bg-brand" style={{ left: pos(toMinutes(h[0])), right: `calc(100% - ${pos(toMinutes(h[1]))})` }} />}
             </span>
             <span className={h ? "text-right tabular-nums text-fg" : "text-right text-subtle"}>{h ? `${h[0]}–${h[1]}` : "Closed"}</span>
           </div>
@@ -44,12 +44,12 @@ export default async function BranchesPage() {
   const plan = ctx.tenant.plan;
   const activeCount = rows.filter((b) => b.active).length;
   const canAdd = hasFeature(ctx.tenant, "multi_branch") && activeCount < limit;
-  const summary = "flex cursor-pointer list-none items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-fg transition hover:bg-surface-2 [&::-webkit-details-marker]:hidden";
+  const summary = "flex cursor-pointer list-none items-center gap-2 rounded px-3 py-2.5 text-sm font-medium text-fg transition hover:bg-surface-2 [&::-webkit-details-marker]:hidden";
   return (
     <>
-      <div className="glass flex flex-wrap items-center gap-4 p-5 animate-rise">
+      <div className="sheet flex flex-wrap items-center gap-4 p-5">
         <div className="min-w-0 flex-1">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-subtle">Active branches</div>
+          <div className="text-[11px] font-mono uppercase tracking-wider text-subtle">Active branches</div>
           <div className="mt-1 text-2xl font-semibold tabular-nums text-fg">{activeCount} <span className="text-base font-normal text-muted">of {limit} on {ctx.tenant.planStatus === "trialing" ? "your trial" : PLANS[plan].name}</span></div>
           {plan === "chain" && <p className="mt-1 text-xs text-subtle">Chain is billed per branch, at least {CHAIN_MIN_BRANCHES}: you are billed for {billableBranches(plan, activeCount)} branches.</p>}
         </div>
@@ -72,7 +72,7 @@ export default async function BranchesPage() {
             <WeekHours hours={b.openingHours} />
 
             <div className="mt-5 space-y-1 border-t border-line pt-3">
-              <details className="group/d rounded-xl">
+              <details className="group/d rounded">
                 <summary className={summary}><Pencil className="h-4 w-4 text-accent" aria-hidden /> Edit details</summary>
                 <ActionForm action={saveBranchAction} className="grid items-end gap-4 px-3 pb-3 pt-2 [&>*]:mb-0! sm:grid-cols-2">
                   <input type="hidden" name="id" value={b.id} />
@@ -84,7 +84,7 @@ export default async function BranchesPage() {
                   <div className="flex justify-end"><Submit variant="secondary">Save details</Submit></div>
                 </ActionForm>
               </details>
-              <details className="rounded-xl">
+              <details className="rounded">
                 <summary className={summary}><Clock className="h-4 w-4 text-accent" aria-hidden /> Edit opening hours</summary>
                 <ActionForm action={saveOpeningHoursAction} className="space-y-2 px-3 pb-3 pt-2">
                   <input type="hidden" name="id" value={b.id} />

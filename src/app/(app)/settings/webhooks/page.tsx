@@ -17,7 +17,7 @@ function EventBoxes({ selected }: { selected?: string[] }) {
       <legend className="mb-2 text-xs font-medium tracking-wide text-muted">Events</legend>
       <div className="flex flex-wrap gap-2">
         {WEBHOOK_EVENTS.map((e) => (
-          <label key={e} className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-line bg-surface px-2.5 py-1.5 transition hover:border-line-strong has-[:checked]:border-accent/40 has-[:checked]:bg-accent/10">
+          <label key={e} className="inline-flex cursor-pointer items-center gap-2 rounded border border-line bg-surface px-2.5 py-1.5 transition hover:border-line-strong has-[:checked]:border-accent/40 has-[:checked]:bg-accent/10">
             <input type="checkbox" name="events" value={e} defaultChecked={selected?.includes(e)} className="h-3.5 w-3.5 accent-[var(--accent)]" />
             <code className="font-mono text-xs text-fg">{e}</code>
           </label>
@@ -36,8 +36,8 @@ export default async function WebhooksPage() {
   ] as const);
   return (
     <>
-      <div className="glass flex flex-wrap items-center gap-4 p-5 animate-rise">
-        <span className="grid h-11 w-11 place-items-center rounded-2xl border border-accent/25 bg-accent/15 text-accent" aria-hidden><ShieldCheck className="h-5 w-5" /></span>
+      <div className="sheet flex flex-wrap items-center gap-4 p-5">
+        <span className="grid h-11 w-11 place-items-center rounded-md border border-accent/25 bg-accent/15 text-accent" aria-hidden><ShieldCheck className="h-5 w-5" /></span>
         <p className="min-w-0 flex-1 text-sm leading-relaxed text-muted">PharmaStock POSTs JSON to your URL when these events happen. Verify the <code className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs text-accent-2">X-PharmaStock-Signature</code> header (HMAC-SHA256 of the body with your signing secret).</p>
       </div>
 

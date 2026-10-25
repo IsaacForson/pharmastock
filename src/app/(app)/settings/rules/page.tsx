@@ -24,7 +24,7 @@ export default async function RulesPage() {
             <Input name="defaultTax" inputMode="decimal" defaultValue={bpToPercent(t.defaultTaxBp)} className="tabular-nums" />
           </Field>
           <div className="flex items-end">
-            <div className="w-full rounded-xl border border-line bg-surface px-4 py-3">
+            <div className="w-full rounded border border-line bg-surface px-4 py-3">
               <Check name="pricesIncludeTax" defaultChecked={t.pricesIncludeTax} label={<span>Shelf prices already include tax <span className="text-muted">(normal for retail)</span></span>} />
             </div>
           </div>
@@ -45,6 +45,9 @@ export default async function RulesPage() {
       <Panel title="Owner summary on WhatsApp" eyebrow="Daily" icon={<MessageCircle />}
         actions={!hasFeature(t, "owner_summary") && <Badge tone="purple">Pro plan</Badge>}>
         <p className="mb-4 text-sm text-muted">Every evening: today&apos;s sales and margin, cash vs mobile money, near-expiry value and what to reorder.</p>
+        <div className="mb-4 rounded border border-line bg-surface px-4 py-3">
+          <Check name="ownerSummaryEnabled" defaultChecked={t.ownerSummaryEnabled} label="Send the daily summary" />
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Send at"><Input name="ownerSummaryTime" type="time" defaultValue={t.ownerSummaryTime} required /></Field>
           <Field label="WhatsApp number" hint="Leave empty to use the owner's phone"><Input name="ownerSummaryTo" type="tel" defaultValue={t.ownerSummaryTo ?? ""} placeholder={owner ?? ""} /></Field>
@@ -55,7 +58,7 @@ export default async function RulesPage() {
       <div className="grid gap-6 xl:grid-cols-2">
         <Panel title="Loyalty" eyebrow="Points on every sale" icon={<Gift />}>
           <div className="space-y-4">
-            <div className="rounded-xl border border-line bg-surface px-4 py-3">
+            <div className="rounded border border-line bg-surface px-4 py-3">
               <Check name="loyaltyEnabled" defaultChecked={t.loyaltyEnabled} label="Customers earn points" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">

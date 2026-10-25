@@ -33,24 +33,24 @@ export function OutboxSync() {
   const rejected = ops.filter((o) => o.status === "rejected");
   if (!ops.length) return null;
   return (
-    <div role="status" className={`fixed inset-x-3 bottom-3 z-50 border bg-solid/85 px-4 py-2.5 text-sm text-fg shadow-panel backdrop-blur-xl animate-rise sm:inset-x-auto sm:bottom-5 sm:right-5 sm:max-w-md print:hidden ${rejected.length ? "rounded-2xl border-bad/30" : "rounded-full border-warn/30"}`}>
+    <div role="status" className={`fixed inset-x-3 bottom-3 z-50 border bg-solid px-4 py-2.5 text-sm text-fg shadow-lift sm:inset-x-auto sm:bottom-5 sm:right-5 sm:max-w-md print:hidden ${rejected.length ? "rounded-md border-bad/30" : "rounded-full border-warn/30"}`}>
       <div className="flex flex-wrap items-center gap-3">
         {pending.length > 0 && (
           <span className="flex min-w-0 flex-1 items-center gap-2">
-            <span className={`h-2 w-2 shrink-0 rounded-full bg-warn ${syncing ? "animate-pulse-ring text-warn" : ""}`} aria-hidden />
+            <span className={`h-2 w-2 shrink-0 rounded-full bg-warn ${syncing ? " text-warn" : ""}`} aria-hidden />
             {pending.length === 1 ? label(pending[0]) : `${pending.length} sales and payments`} saved on this device, waiting to sync.
           </span>
         )}
-        {pending.length > 0 && <button type="button" onClick={sync} disabled={syncing} className="h-8 shrink-0 rounded-full bg-aurora px-3.5 text-xs font-medium text-on-accent shadow-glow transition hover:brightness-110 disabled:opacity-60">{syncing ? "Syncing…" : "Sync now"}</button>}
+        {pending.length > 0 && <button type="button" onClick={sync} disabled={syncing} className="h-8 shrink-0 rounded bg-brand px-3.5 text-xs font-medium text-on-accent transition hover:bg-accent-strong disabled:opacity-60">{syncing ? "Syncing…" : "Sync now"}</button>}
         {rejected.length > 0 && (
           <details className="w-full">
             <summary className="flex cursor-pointer items-center gap-2 font-medium text-bad"><span className="h-2 w-2 shrink-0 rounded-full bg-bad" aria-hidden />{rejected.length} sale{rejected.length === 1 ? "" : "s"} or payment{rejected.length === 1 ? "" : "s"} could not be saved — review</summary>
             <ul className="mt-3 max-h-[50vh] space-y-2 overflow-auto">
               {rejected.map((o) => (
-                <li key={o.id} className="rounded-xl border border-bad/25 bg-bad/10 p-3">
+                <li key={o.id} className="rounded border border-bad/25 bg-bad/10 p-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span><strong>{label(o)}</strong> <span className="text-muted">· {new Date(o.queuedAt).toLocaleString()}</span> — <span className="text-bad">{o.error}</span></span>
-                    <button type="button" className="rounded-lg px-2 py-1 text-xs text-muted underline-offset-4 hover:bg-surface-2 hover:text-fg hover:underline" onClick={() => { if (window.confirm("Discard this change from this device? Copy anything you need first.")) discardOp(o.id); }}>Discard</button>
+                    <button type="button" className="rounded px-2 py-1 text-xs text-muted underline-offset-4 hover:bg-surface-2 hover:text-fg hover:underline" onClick={() => { if (window.confirm("Discard this change from this device? Copy anything you need first.")) discardOp(o.id); }}>Discard</button>
                   </div>
                   {o.type === "sale" && (
                     <p className="mt-1 text-xs text-muted">{o.input.lines.length} item{o.input.lines.length === 1 ? "" : "s"} sold {o.input.soldAt ? new Date(o.input.soldAt).toLocaleString() : ""}. Fix the cause (for example the customer or prescription) with a manager, then discard.</p>

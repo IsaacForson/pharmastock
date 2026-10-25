@@ -13,7 +13,7 @@ export default async function TransferNotePage({ params }: PageProps<"/transfers
   return (
     <div className="mx-auto max-w-3xl space-y-4">
       <div className="flex justify-end print:hidden"><PrintButton /></div>
-      <article className="glass space-y-6 p-8 print:border-0 print:bg-transparent print:p-0 print:shadow-none">
+      <article className="sheet space-y-6 p-8 print:border-0 print:bg-transparent print:p-0 print:shadow-none">
         <header className="flex items-start justify-between gap-6 border-b border-line pb-4">
           <div>
             <h1 className="text-xl font-semibold text-fg">{t.name}</h1>
@@ -21,17 +21,17 @@ export default async function TransferNotePage({ params }: PageProps<"/transfers
             <p className="text-xs text-muted">{[t.address, t.phone, t.licenceNo && `Licence ${t.licenceNo}`].filter(Boolean).join(" · ")}</p>
           </div>
           <div className="text-right">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-subtle">Stock transfer note</div>
+            <div className="text-[11px] font-mono uppercase tracking-wider text-subtle">Stock transfer note</div>
             <div className="font-mono text-sm text-fg">{tr.transferNo}</div>
             <div className="text-xs text-muted">{dateTime(tr.sentAt, t.timezone)}</div>
           </div>
         </header>
         <div className="grid grid-cols-2 gap-6 text-sm">
-          <div><div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">From</div><div className="font-medium text-fg">{d.fromName}</div><div className="text-muted">{d.fromAddress}</div></div>
-          <div><div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">To</div><div className="font-medium text-fg">{d.toName}</div><div className="text-muted">{d.toAddress}</div></div>
+          <div><div className="text-[10px] font-mono uppercase tracking-wider text-subtle">From</div><div className="font-medium text-fg">{d.fromName}</div><div className="text-muted">{d.fromAddress}</div></div>
+          <div><div className="text-[10px] font-mono uppercase tracking-wider text-subtle">To</div><div className="font-medium text-fg">{d.toName}</div><div className="text-muted">{d.toAddress}</div></div>
         </div>
         <table className="w-full text-sm">
-          <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-[0.14em] text-subtle">
+          <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-wider text-subtle">
             <th className="py-2">Product</th><th>Batch</th><th>Expiry</th><th className="text-right">Qty sent</th><th className="text-right">Received</th><th className="text-right">Value</th>
           </tr></thead>
           <tbody className="divide-y divide-line">

@@ -20,7 +20,7 @@ export function ReceiptView({ d, format = "thermal" }: { d: ReceiptData; format?
         {d.pharmacy.letterhead && <div className="whitespace-pre-line text-muted">{d.pharmacy.letterhead}</div>}
         <div className="text-muted">{[d.pharmacy.address, d.pharmacy.phone].filter(Boolean).join(" · ")}</div>
         <div className="text-muted">{[d.pharmacy.licenceNo && `Licence ${d.pharmacy.licenceNo}`, d.pharmacy.taxId && `TIN ${d.pharmacy.taxId}`].filter(Boolean).join(" · ")}</div>
-        {!thermal && <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">Invoice / receipt</div>}
+        {!thermal && <div className="mt-2 text-[11px] font-mono uppercase tracking-wider text-accent">Invoice / receipt</div>}
       </header>
       <section className={cx("border-y border-dashed border-line-strong py-1.5", !thermal && "grid grid-cols-2 gap-1 border-0 py-0")}>
         {row("Sale", d.saleNo)}

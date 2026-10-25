@@ -58,7 +58,7 @@ const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Use a time like 21:3
 const rulesSchema = z.object({
   pricesIncludeTax: zBool, defaultTax: z.string().optional(),
   expiryAlertDays: z.string().optional(), reorderCoverDays: z.coerce.number().int().min(3, "At least 3 days").max(180, "At most 180 days"),
-  ownerSummaryTime: time, ownerSummaryTo: z.string().optional(),
+  ownerSummaryEnabled: zBool, ownerSummaryTime: time, ownerSummaryTo: z.string().optional(),
   loyaltyEnabled: zBool, loyaltyEarnPerMajor: z.coerce.number().int().min(0).max(1000), loyaltyPointValue: zMoney.optional(),
   deliveryFee: zMoney.optional(),
 });
@@ -74,7 +74,7 @@ export async function saveRulesAction(_: ActionState, fd: FormData): Promise<Act
     if (o.ownerSummaryTo && !ownerSummaryTo) throw new UserError("Enter the WhatsApp number for the owner summary, e.g. 024 123 4567");
     const row = {
       pricesIncludeTax: o.pricesIncludeTax, defaultTaxBp, expiryAlertDays, reorderCoverDays: o.reorderCoverDays,
-      ownerSummaryTime: o.ownerSummaryTime, ownerSummaryTo,
+      ownerSummaryEnabled: o.ownerSummaryEnabled, ownerSummaryTime: o.ownerSummaryTime, ownerSummaryTo,
       loyaltyEnabled: o.loyaltyEnabled, loyaltyEarnPerMajor: o.loyaltyEarnPerMajor, loyaltyPointValueMinor: o.loyaltyPointValue ?? 0,
       deliveryFeeMinor: o.deliveryFee ?? 0,
     };

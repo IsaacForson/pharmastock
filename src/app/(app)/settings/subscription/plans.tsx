@@ -16,10 +16,10 @@ export function PlanGrid({ plans, action, initialCycle }: { plans: PlanCard[]; a
   return (
     <div className="space-y-6">
       <div className="flex justify-center">
-        <div role="radiogroup" aria-label="Billing cycle" className="inline-flex gap-1 rounded-2xl border border-line bg-surface p-1">
+        <div role="radiogroup" aria-label="Billing cycle" className="inline-flex gap-1 rounded-md border border-line bg-surface p-1">
           {(["monthly", "annual"] as const).map((c) => (
             <button key={c} type="button" role="radio" aria-checked={cycle === c} onClick={() => setCycle(c)}
-              className={cx("inline-flex h-10 items-center gap-2 rounded-xl px-5 text-sm font-medium capitalize transition", cycle === c ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
+              className={cx("inline-flex h-10 items-center gap-2 rounded px-5 text-sm font-medium capitalize transition", cycle === c ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
               {c}{c === "annual" && <span className="rounded-md bg-ok/12 px-1.5 py-0.5 text-[10px] font-semibold text-ok">2 months free</span>}
             </button>
           ))}
@@ -28,10 +28,9 @@ export function PlanGrid({ plans, action, initialCycle }: { plans: PlanCard[]; a
 
       <div className="grid gap-5 lg:grid-cols-3">
         {plans.map((p) => (
-          <div key={p.key} className={cx("glass relative flex flex-col overflow-hidden p-6 animate-rise transition hover:-translate-y-0.5", p.recommended && "ring-aurora shadow-glow lg:-my-2 lg:py-8")}>
-            {p.recommended && <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-aurora opacity-25 blur-3xl" aria-hidden />}
+          <div key={p.key} className={cx("sheet relative flex flex-col overflow-hidden p-6 transition ", p.recommended && "mark-brand lg:-my-2 lg:py-8")}>
             <div className="relative flex items-center justify-between gap-2">
-              <h3 className={cx("text-lg font-semibold tracking-tight", p.recommended ? "text-aurora" : "text-fg")}>{p.name}</h3>
+              <h3 className={cx("text-lg font-semibold tracking-tight", p.recommended ? "text-brand" : "text-fg")}>{p.name}</h3>
               <div className="flex gap-1.5">
                 {p.recommended && <Badge tone="purple">Most popular</Badge>}
                 {p.current && <Badge tone="teal">Current</Badge>}
@@ -45,7 +44,7 @@ export function PlanGrid({ plans, action, initialCycle }: { plans: PlanCard[]; a
             {p.unitNote && <p className="relative mt-1 text-xs text-muted">{p.unitNote}</p>}
 
             <p className="relative mt-5 text-sm font-medium text-fg">{p.limits}</p>
-            {p.lead && <p className="relative mt-3 text-xs font-semibold uppercase tracking-[0.14em] text-subtle">{p.lead}</p>}
+            {p.lead && <p className="relative mt-3 text-xs font-mono uppercase tracking-wider text-subtle">{p.lead}</p>}
             <ul className="relative mb-6 mt-3 space-y-2.5 text-sm text-muted">
               {p.features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5">

@@ -13,7 +13,7 @@ export function ChannelIcon({ channel, withLabel }: { channel: string; withLabel
   const Icon = c.icon;
   return (
     <span className="inline-flex items-center gap-2" title={c.label}>
-      <span className={cx("grid h-7 w-7 shrink-0 place-items-center rounded-lg border", c.cls)}><Icon className="h-3.5 w-3.5" aria-label={withLabel ? undefined : c.label} /></span>
+      <span className={cx("grid h-7 w-7 shrink-0 place-items-center rounded border", c.cls)}><Icon className="h-3.5 w-3.5" aria-label={withLabel ? undefined : c.label} /></span>
       {withLabel && <span className="text-sm text-fg">{c.label}</span>}
     </span>
   );

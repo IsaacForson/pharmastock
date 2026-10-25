@@ -5,7 +5,7 @@ import { REPORTS, type Report } from "@/app/(app)/reports/queries";
 import { resolveRange } from "@/app/(app)/reports/range";
 import { adminDb, withTenant } from "@/db";
 import { branches, customers, expenses, goodsReceipts, priceChanges, productUnits, products, saleLines, suppliers } from "@/db/schema";
-import { ask, runTool, TOOLS, type AskEvent } from "@/lib/ai-ask";
+import { ask, runTool, TOOLS, type AskEvent, type Chat, type ChatResponse } from "@/lib/ai-ask";
 import { buildJournal } from "@/lib/analytics";
 import type { Ctx } from "@/lib/auth";
 import { addDays, localDay } from "@/lib/format";
@@ -94,7 +94,7 @@ describe("ask tools", () => {
       reorder_list: {}, expiring_batches: { within_days: 60, include_expired: true }, sales_by_product: { product: "para", from: addDays(today, -7), to: today },
       sales_by_day: { from: addDays(today, -7), to: today }, stock_on_hand: { product: "vitamin" }, dead_stock: { days_without_sales: 30 }, price_changes: { product: "paracetamol" },
     };
-    expect(TOOLS.map((t) => t.name).sort()).toEqual(Object.keys(inputs).sort());
+    expect(TOOLS.map((t) => t.function.name).sort()).toEqual(Object.keys(inputs).sort());
     for (const [name, input] of Object.entries(inputs)) {
       const out = await withTenant(ctx.tenant.id, (t) => runTool(t, scope(), name, input));
       expect(JSON.stringify(out), name).not.toMatch(/"error"/);
@@ -107,16 +107,28 @@ describe("ask tools", () => {
   });
 
   it("runs the tool loop, reports progress and stops at the answer", async () => {
-    const replies = [
-      { stop_reason: "tool_use", content: [{ type: "tool_use", id: "tu_1", name: "stock_on_hand", input: { product: "vitamin" } }] },
-      { stop_reason: "end_turn", content: [{ type: "text", text: "You have **9** Vitamin C." }] },
+    const replies: ChatResponse[] = [
+      { choices: [{ finish_reason: "tool_calls", message: { content: null, tool_calls: [{ id: "call_1", type: "function", function: { name: "stock_on_hand", arguments: JSON.stringify({ product: "vitamin" }) } }] } }] },
+      { choices: [{ finish_reason: "stop", message: { content: "You have **9** Vitamin C." } }] },
     ];
     const seen: unknown[] = [];
-    const fake = { beta: { messages: { create: async (p: { messages: unknown[] }) => { seen.push(p.messages.at(-1)); return replies.shift(); } } } };
+    const fake: Chat = async (req) => { seen.push(req.messages.at(-1)); return replies.shift()!; };
     const events: AskEvent[] = [];
-    const used = await ask("How much vitamin C?", scope(), (fn) => withTenant(ctx.tenant.id, fn), (e) => events.push(e), fake as never);
+    const used = await ask("How much vitamin C?", scope(), (fn) => withTenant(ctx.tenant.id, fn), (e) => events.push(e), fake);
     expect(used).toEqual(["stock_on_hand"]);
     expect(events.map((e) => e.type)).toEqual(["tool", "answer"]);
     expect(JSON.stringify(seen[1])).toMatch(/Vitamin C/); // tool result fed back
+    expect(seen[1]).toMatchObject({ role: "tool", tool_call_id: "call_1" });
+  });
+
+  it("feeds bad tool arguments back to the model instead of failing", async () => {
+    const replies: ChatResponse[] = [
+      { choices: [{ finish_reason: "tool_calls", message: { content: null, tool_calls: [{ id: "c1", type: "function", function: { name: "expiring_batches", arguments: "{not json" } }] } }] },
+      { choices: [{ finish_reason: "stop", message: { content: "Sorry, try again." } }] },
+    ];
+    const seen: { content?: unknown }[] = [];
+    const used = await ask("x?", scope(), (fn) => withTenant(ctx.tenant.id, fn), () => {}, async (req) => { seen.push(req.messages.at(-1) as never); return replies.shift()!; });
+    expect(used).toEqual(["expiring_batches"]);
+    expect(seen[1].content).toMatch(/not valid JSON/);
   });
 });

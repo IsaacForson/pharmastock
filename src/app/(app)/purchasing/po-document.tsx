@@ -9,13 +9,13 @@ export function PoDocument({ supplier, lines, totalMinor, notes, fmt }: {
   return (
     <>
       <section className="text-sm">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">To</div>
+        <div className="text-[10px] font-mono uppercase tracking-wider text-subtle">To</div>
         <div className="mt-1 font-semibold text-fg">{supplier.name}</div>
         {supplier.contactName && <div className="text-muted">Attn: {supplier.contactName}</div>}
         <div className="text-muted">{[supplier.address, supplier.phone, supplier.email].filter(Boolean).join(" · ")}</div>
       </section>
       <table className="w-full text-sm">
-        <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-[0.14em] text-subtle"><th className="py-2">#</th><th className="py-2">Product</th><th className="py-2">Pack</th><th className="py-2 text-right">Qty</th><th className="py-2 text-right">Unit cost</th><th className="py-2 text-right">Total</th></tr></thead>
+        <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-wider text-subtle"><th className="py-2">#</th><th className="py-2">Product</th><th className="py-2">Pack</th><th className="py-2 text-right">Qty</th><th className="py-2 text-right">Unit cost</th><th className="py-2 text-right">Total</th></tr></thead>
         <tbody className="divide-y divide-line">
           {lines.map((l, i) => (
             <tr key={i}><td className="py-2 text-muted">{i + 1}</td><td className="py-2 font-medium text-fg">{l.name} {l.strength}</td><td className="py-2 text-muted">{l.unit}</td>

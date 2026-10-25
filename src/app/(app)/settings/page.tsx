@@ -65,11 +65,11 @@ export default async function PharmacyProfilePage() {
         <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
           <Panel title="Letterhead preview" eyebrow="Saved version" icon={<Printer />}>
             {/* A paper-like sheet so the pharmacy sees roughly what prints. */}
-            <div className="rounded-xl border border-line bg-surface-2 p-4 shadow-panel">
+            <div className="rounded border border-line bg-surface-2 p-4 shadow-lift">
               <div className="flex items-start gap-3 border-b border-line pb-3">
                 {t.logoUrl
-                  ? <img src={t.logoUrl} alt="" className="h-11 w-11 rounded-lg object-contain" />
-                  : <span className="grid h-11 w-11 place-items-center rounded-lg bg-aurora text-lg font-semibold text-on-accent">{t.name[0]}</span>}
+                  ? <img src={t.logoUrl} alt="" className="h-11 w-11 rounded object-contain" />
+                  : <span className="grid h-11 w-11 place-items-center rounded bg-brand text-lg font-semibold text-on-accent">{t.name[0]}</span>}
                 <div className="min-w-0">
                   <div className="truncate font-semibold tracking-tight text-fg">{t.name}</div>
                   {t.letterhead && <div className="whitespace-pre-line text-[11px] leading-snug text-muted">{t.letterhead}</div>}

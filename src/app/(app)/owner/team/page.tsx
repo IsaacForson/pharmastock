@@ -54,7 +54,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/owner/team"
                   <ol className="space-y-3">
                     {ranked.map((s, i) => (
                       <li key={s.id}>
-                        <a href={withQuery("/owner/activity", { user: s.id, type: l.type })} className="flex items-center gap-3 rounded-xl transition hover:bg-surface-2">
+                        <a href={withQuery("/owner/activity", { user: s.id, type: l.type })} className="flex items-center gap-3 rounded transition hover:bg-surface-2">
                           <span className="w-4 text-xs font-semibold tabular-nums text-subtle">{i + 1}</span>
                           <Avatar name={s.name} size="sm" />
                           <div className="min-w-0 flex-1">

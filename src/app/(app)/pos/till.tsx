@@ -336,16 +336,16 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
 
   // ---------- Render ----------
   if (loadState === "missing") {
-    return <div className="glass mx-auto max-w-lg p-8 text-center"><CloudOff className="mx-auto mb-3 h-8 w-8 text-warn" aria-hidden /><h1 className="text-lg font-semibold text-fg">Connect once to set up the till</h1><p className="mt-2 text-sm text-muted">This device doesn&apos;t have the product list yet. Open the till while online once; after that it works without a connection.</p></div>;
+    return <div className="sheet mx-auto max-w-lg p-8 text-center"><CloudOff className="mx-auto mb-3 h-8 w-8 text-warn" aria-hidden /><h1 className="text-lg font-semibold text-fg">Connect once to set up the till</h1><p className="mt-2 text-sm text-muted">This device doesn&apos;t have the product list yet. Open the till while online once; after that it works without a connection.</p></div>;
   }
-  if (!cat || !view) return <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]" aria-busy="true"><div className="skeleton h-[60vh] rounded-[1.25rem]" /><div className="skeleton h-[60vh] rounded-[1.25rem]" /></div>;
+  if (!cat || !view) return <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]" aria-busy="true"><div className="skeleton h-[60vh] rounded-md" /><div className="skeleton h-[60vh] rounded-md" /></div>;
 
   return (
     <>
       <div className="grid gap-4 print:hidden lg:grid-cols-[minmax(0,1fr)_380px]">
         {/* Left: search + cart */}
         <section className="min-w-0 space-y-4">
-          <div className="glass relative p-3">
+          <div className="sheet relative p-3">
             <div className="flex flex-wrap items-center gap-2">
               <div className="relative min-w-0 flex-1">
                 <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-subtle" aria-hidden />
@@ -353,12 +353,12 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
                   onChange={(e) => setQuery(e.target.value)} placeholder="Scan, or search brand, generic or barcode (F2)" className="h-12 pl-10 text-base"
                   onKeyDown={(e) => { if (e.key === "Enter" && results[0]) { e.preventDefault(); add(results[0]); } }} />
               </div>
-              <CameraScanner onCode={onCode} label="Camera" className="inline-flex h-12 items-center gap-2 rounded-xl border border-line bg-surface-2 px-3 text-sm font-medium text-fg hover:bg-surface-3" />
+              <CameraScanner onCode={onCode} label="Camera" className="inline-flex h-12 items-center gap-2 rounded border border-line bg-surface-2 px-3 text-sm font-medium text-fg hover:bg-surface-3" />
               <Button variant="secondary" size="lg" onClick={() => setModal("held")} className="h-12"><Play className="h-4 w-4" aria-hidden /> Held</Button>
               <Button variant="secondary" size="lg" onClick={hold} disabled={!lines.length} className="h-12"><Pause className="h-4 w-4" aria-hidden /> Hold <Kbd>F9</Kbd></Button>
             </div>
             {query.trim() && (
-              <ul className="mt-2 max-h-[50vh] divide-y divide-line overflow-auto rounded-xl border border-line bg-solid" role="listbox" aria-label="Products found">
+              <ul className="mt-2 max-h-[50vh] divide-y divide-line overflow-auto rounded border border-line bg-solid" role="listbox" aria-label="Products found">
                 {results.map((p) => <ProductRow key={p.id} p={p} cat={cat} onAdd={add} m={m} />)}
                 {!results.length && <li className="px-4 py-6 text-center text-sm text-muted">No product matches &ldquo;{query}&rdquo;.</li>}
               </ul>
@@ -366,7 +366,7 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
             {!query.trim() && favourites.length > 0 && (
               <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
                 {favourites.map((p) => (
-                  <button key={p.id} type="button" onClick={() => add(p)} className="flex min-h-14 items-center gap-2 rounded-xl border border-line bg-surface-2 px-3 py-2 text-left text-sm text-fg transition hover:border-line-strong hover:bg-surface-3">
+                  <button key={p.id} type="button" onClick={() => add(p)} className="flex min-h-14 items-center gap-2 rounded border border-line bg-surface-2 px-3 py-2 text-left text-sm text-fg transition hover:border-line-strong hover:bg-surface-3">
                     <Star className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />
                     <span className="min-w-0"><span className="block truncate font-medium">{p.name}</span><span className="block text-xs text-muted tabular-nums">{m(defaultUnit(p).priceMinor)}</span></span>
                   </button>
@@ -375,10 +375,10 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
             )}
           </div>
 
-          {error && <p role="alert" className="flex items-start gap-2 rounded-xl border border-bad/30 bg-bad/10 px-4 py-3 text-sm text-bad"><AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />{error}</p>}
-          {!online && <p className="flex items-center gap-2 rounded-xl border border-warn/30 bg-warn/10 px-4 py-2.5 text-sm text-fg"><CloudOff className="h-4 w-4 text-warn" aria-hidden />Offline: sales are saved on this device and sync when the connection returns. Stock is from {new Date(cat.builtAt).toLocaleString()}.</p>}
+          {error && <p role="alert" className="flex items-start gap-2 rounded border border-bad/30 bg-bad/10 px-4 py-3 text-sm text-bad"><AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />{error}</p>}
+          {!online && <p className="flex items-center gap-2 rounded border border-warn/30 bg-warn/10 px-4 py-2.5 text-sm text-fg"><CloudOff className="h-4 w-4 text-warn" aria-hidden />Offline: sales are saved on this device and sync when the connection returns. Stock is from {new Date(cat.builtAt).toLocaleString()}.</p>}
 
-          <div className="glass overflow-hidden">
+          <div className="sheet overflow-hidden">
             {!view.rows.length ? (
               <div className="px-6 py-16 text-center text-sm text-muted">Scan a barcode or search to start a sale. <span className="hidden sm:inline">Keys: <Kbd>F2</Kbd> search · <Kbd>F4</Kbd> customer · <Kbd>F8</Kbd> pay · <Kbd>Esc</Kbd> cancel</span></div>
             ) : (
@@ -402,9 +402,9 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
                           {r.fefo.short > 0 && <div className="mt-1 text-xs font-medium text-warn">Only {r.baseQty - r.fefo.short} {r.p.baseUnit} in stock on the books{online ? " — the sale will be refused" : " — it will be flagged for a count"}</div>}
                         </div>
                         <div className="flex items-center gap-1">
-                          <button type="button" aria-label="One less" onClick={() => r.l.qty > 1 ? patch(r.l.key, { qty: r.l.qty - 1 }) : remove(r.l.key)} className="grid h-10 w-10 place-items-center rounded-xl border border-line bg-surface-2 text-fg hover:bg-surface-3"><Minus className="h-4 w-4" /></button>
-                          <input aria-label="Quantity" inputMode="numeric" value={r.l.qty} onChange={(e) => { const q = parseInt(e.target.value, 10); if (q > 0) patch(r.l.key, { qty: Math.min(q, 100_000) }); }} className="h-10 w-14 rounded-xl border border-line bg-surface-2 text-center text-sm tabular-nums text-fg" />
-                          <button type="button" aria-label="One more" onClick={() => patch(r.l.key, { qty: r.l.qty + 1 })} className="grid h-10 w-10 place-items-center rounded-xl border border-line bg-surface-2 text-fg hover:bg-surface-3"><Plus className="h-4 w-4" /></button>
+                          <button type="button" aria-label="One less" onClick={() => r.l.qty > 1 ? patch(r.l.key, { qty: r.l.qty - 1 }) : remove(r.l.key)} className="grid h-10 w-10 place-items-center rounded border border-line bg-surface-2 text-fg hover:bg-surface-3"><Minus className="h-4 w-4" /></button>
+                          <input aria-label="Quantity" inputMode="numeric" value={r.l.qty} onChange={(e) => { const q = parseInt(e.target.value, 10); if (q > 0) patch(r.l.key, { qty: Math.min(q, 100_000) }); }} className="h-10 w-14 rounded border border-line bg-surface-2 text-center text-sm tabular-nums text-fg" />
+                          <button type="button" aria-label="One more" onClick={() => patch(r.l.key, { qty: r.l.qty + 1 })} className="grid h-10 w-10 place-items-center rounded border border-line bg-surface-2 text-fg hover:bg-surface-3"><Plus className="h-4 w-4" /></button>
                         </div>
                         <Select aria-label="Pack" value={r.u.id} onChange={(e) => patch(r.l.key, { unitId: e.target.value, priceMinor: undefined })} className="w-36">
                           {r.p.units.map((u) => <option key={u.id} value={u.id}>{u.name}{u.factor > 1 ? ` (${u.factor})` : ""}</option>)}
@@ -413,12 +413,12 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
                           <div className="font-semibold tabular-nums text-fg">{m(lt.totalMinor)}</div>
                           <div className="text-xs tabular-nums text-muted">{m(r.price)} each</div>
                         </div>
-                        <button type="button" aria-label={`Remove ${r.p.name}`} onClick={() => remove(r.l.key)} className="grid h-10 w-10 place-items-center rounded-xl text-muted hover:bg-bad/10 hover:text-bad"><Trash2 className="h-4 w-4" /></button>
+                        <button type="button" aria-label={`Remove ${r.p.name}`} onClick={() => remove(r.l.key)} className="grid h-10 w-10 place-items-center rounded text-muted hover:bg-bad/10 hover:text-bad"><Trash2 className="h-4 w-4" /></button>
                       </div>
                       {selected === r.l.key && (cat.user.canDiscount || cat.user.canOverride) && (
                         <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                          {cat.user.canDiscount && <label className="flex items-center gap-2 text-muted">Line discount <input inputMode="decimal" defaultValue={r.l.discountMinor ? major(r.l.discountMinor) : ""} onBlur={(e) => patch(r.l.key, { discountMinor: toMinor(e.target.value) })} className="h-8 w-24 rounded-lg border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
-                          {cat.user.canOverride && <label className="flex items-center gap-2 text-muted">Price <input inputMode="decimal" defaultValue={major(r.price)} onBlur={(e) => { const v = Math.round(Number(e.target.value) * 100); patch(r.l.key, { priceMinor: Number.isFinite(v) && v >= 0 && v !== r.u.priceMinor ? v : undefined }); }} className="h-8 w-24 rounded-lg border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
+                          {cat.user.canDiscount && <label className="flex items-center gap-2 text-muted">Line discount <input inputMode="decimal" defaultValue={r.l.discountMinor ? major(r.l.discountMinor) : ""} onBlur={(e) => patch(r.l.key, { discountMinor: toMinor(e.target.value) })} className="h-8 w-24 rounded border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
+                          {cat.user.canOverride && <label className="flex items-center gap-2 text-muted">Price <input inputMode="decimal" defaultValue={major(r.price)} onBlur={(e) => { const v = Math.round(Number(e.target.value) * 100); patch(r.l.key, { priceMinor: Number.isFinite(v) && v >= 0 && v !== r.u.priceMinor ? v : undefined }); }} className="h-8 w-24 rounded border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
                         </div>
                       )}
                     </li>
@@ -431,31 +431,31 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
 
         {/* Right: customer, totals, payment */}
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="glass p-4">
+          <div className="sheet p-4">
             {customer ? (
               <div className="space-y-2">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0"><div className="truncate font-semibold text-fg">{customer.name}</div><div className="font-mono text-xs text-muted">{customer.customerNo}{customer.phone ? ` · ${customer.phone}` : ""}</div></div>
-                  <button type="button" onClick={() => { if (!rx) pickCustomer(null); }} disabled={!!rx} aria-label="Remove customer" className="grid h-8 w-8 place-items-center rounded-lg text-muted hover:bg-surface-2 disabled:opacity-40"><X className="h-4 w-4" /></button>
+                  <button type="button" onClick={() => { if (!rx) pickCustomer(null); }} disabled={!!rx} aria-label="Remove customer" className="grid h-8 w-8 place-items-center rounded text-muted hover:bg-surface-2 disabled:opacity-40"><X className="h-4 w-4" /></button>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs">
                   <Badge tone={customer.balanceMinor > 0 ? "yellow" : "gray"}>Owes {m(customer.balanceMinor)}</Badge>
                   {customer.creditLimitMinor > 0 && <Badge tone="blue">Limit {m(customer.creditLimitMinor)}</Badge>}
                   {cat.tenant.loyaltyEnabled && <Badge tone="purple">{customer.points} points</Badge>}
                 </div>
-                {allergies && <p className="rounded-lg border border-bad/30 bg-bad/10 px-3 py-2 text-xs text-bad"><strong>Allergies:</strong> {allergies}</p>}
+                {allergies && <p className="rounded border border-bad/30 bg-bad/10 px-3 py-2 text-xs text-bad"><strong>Allergies:</strong> {allergies}</p>}
                 {customer.balanceMinor > 0 && <Button variant="ghost" size="sm" onClick={() => setModal("repay")}>Take an account payment</Button>}
               </div>
             ) : (
               <Button variant="secondary" className="w-full" onClick={() => setModal("customer")}><User className="h-4 w-4" aria-hidden /> Add customer <Kbd>F4</Kbd></Button>
             )}
-            {rx && <p className="mt-3 flex items-center gap-2 rounded-lg bg-info/10 px-3 py-2 text-xs text-fg"><FileText className="h-4 w-4 text-info" aria-hidden />Dispensing prescription <span className="font-mono">{rx.rxNo}</span> · {rx.prescriber}</p>}
+            {rx && <p className="mt-3 flex items-center gap-2 rounded bg-info/10 px-3 py-2 text-xs text-fg"><FileText className="h-4 w-4 text-info" aria-hidden />Dispensing prescription <span className="font-mono">{rx.rxNo}</span> · {rx.prescriber}</p>}
             {rx && rx.items.some((it) => !it.productId || !prod.has(it.productId)) && (
               <p className="mt-2 text-xs text-warn">Not matched to a product: {rx.items.filter((it) => !it.productId || !prod.has(it.productId)).map((it) => it.drugName).join(", ")}. Search and add them.</p>
             )}
           </div>
 
-          <div className="glass space-y-3 p-4">
+          <div className="sheet space-y-3 p-4">
             <Row k="Subtotal" v={m(view.totals.subtotalMinor)} />
             {view.totals.discountMinor > 0 && <Row k="Discount" v={`-${m(view.totals.discountMinor)}`} />}
             <Row k={`${cat.tenant.taxName}${cat.tenant.inclusive ? " (included)" : ""}`} v={m(view.totals.taxMinor)} />
@@ -464,32 +464,32 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
             {view.redeemMinor > 0 && <Row k={`${view.redeemPts} points`} v={`-${m(view.redeemMinor)}`} />}
             {(payer || view.redeemMinor > 0) && <Row k="Customer pays" v={m(view.due)} strong />}
 
-            <details className="group rounded-xl border border-line bg-surface-2/50 px-3 py-2 text-sm">
+            <details className="group rounded border border-line bg-surface-2/50 px-3 py-2 text-sm">
               <summary className="flex cursor-pointer items-center gap-2 text-muted"><Tags className="h-4 w-4" aria-hidden />Discount, insurer, points</summary>
               <div className="mt-3 grid gap-2">
-                {cat.user.canDiscount && <label className="flex items-center justify-between gap-2 text-xs text-muted">Sale discount <input inputMode="decimal" value={saleDiscount} onChange={(e) => setSaleDiscount(e.target.value)} placeholder="0.00" className="h-9 w-28 rounded-lg border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
+                {cat.user.canDiscount && <label className="flex items-center justify-between gap-2 text-xs text-muted">Sale discount <input inputMode="decimal" value={saleDiscount} onChange={(e) => setSaleDiscount(e.target.value)} placeholder="0.00" className="h-9 w-28 rounded border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
                 {cat.payers.length > 0 && (
                   <label className="flex items-center justify-between gap-2 text-xs text-muted">Insurer / HMO
-                    <select value={payerId} onChange={(e) => setPayerId(e.target.value)} className="h-9 w-44 rounded-lg border border-line bg-surface-2 px-2 text-fg">
+                    <select value={payerId} onChange={(e) => setPayerId(e.target.value)} className="h-9 w-44 rounded border border-line bg-surface-2 px-2 text-fg">
                       <option value="">None</option>{cat.payers.map((p) => <option key={p.id} value={p.id}>{p.name} ({p.coverageBp / 100}%)</option>)}
                     </select>
                   </label>
                 )}
-                {payer && <label className="flex items-center justify-between gap-2 text-xs text-muted">Member no. <input value={memberNo} onChange={(e) => setMemberNo(e.target.value)} className="h-9 w-44 rounded-lg border border-line bg-surface-2 px-2 text-fg" /></label>}
-                {customer && cat.tenant.loyaltyEnabled && customer.points > 0 && <label className="flex items-center justify-between gap-2 text-xs text-muted">Use points (of {customer.points}) <input inputMode="numeric" value={redeem} onChange={(e) => setRedeem(e.target.value)} className="h-9 w-28 rounded-lg border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
+                {payer && <label className="flex items-center justify-between gap-2 text-xs text-muted">Member no. <input value={memberNo} onChange={(e) => setMemberNo(e.target.value)} className="h-9 w-44 rounded border border-line bg-surface-2 px-2 text-fg" /></label>}
+                {customer && cat.tenant.loyaltyEnabled && customer.points > 0 && <label className="flex items-center justify-between gap-2 text-xs text-muted">Use points (of {customer.points}) <input inputMode="numeric" value={redeem} onChange={(e) => setRedeem(e.target.value)} className="h-9 w-28 rounded border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
               </div>
             </details>
 
             {!paying ? (
               <Button size="lg" className="w-full" onClick={startPay} disabled={!view.rows.length}>Take payment <Kbd>F8</Kbd></Button>
             ) : (
-              <div className="space-y-3 rounded-2xl border border-line-strong p-3">
+              <div className="space-y-3 rounded-md border border-line-strong p-3">
                 {pays.map((p, i) => (
                   <div key={i} className="space-y-2">
                     <div className="grid grid-cols-4 gap-1">
                       {METHODS.map((x) => (
                         <button key={x.m} type="button" onClick={() => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, method: x.m, provider: x.m === "mobile_money" ? cat.tenant.mobileMoney[0] : undefined } : q)))}
-                          className={cx("flex h-14 flex-col items-center justify-center gap-1 rounded-xl border text-[11px] font-medium transition [&>svg]:h-4 [&>svg]:w-4", p.method === x.m ? "border-accent bg-accent/15 text-fg" : "border-line bg-surface-2 text-muted hover:text-fg")}>
+                          className={cx("flex h-14 flex-col items-center justify-center gap-1 rounded border text-[11px] font-medium transition [&>svg]:h-4 [&>svg]:w-4", p.method === x.m ? "border-accent bg-accent/15 text-fg" : "border-line bg-surface-2 text-muted hover:text-fg")}>
                           {x.icon}{x.label}
                         </button>
                       ))}
@@ -497,22 +497,22 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
                     <div className="flex gap-2">
                       <input ref={i === 0 ? cashRef : undefined} inputMode="decimal" aria-label="Amount received" value={p.amount} onChange={(e) => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, amount: e.target.value } : q)))}
                         onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); complete(); } }}
-                        className="h-12 min-w-0 flex-1 rounded-xl border border-line bg-surface-2 px-3 text-right text-xl font-semibold tabular-nums text-fg" />
-                      {pays.length > 1 && <button type="button" aria-label="Remove payment" onClick={() => setPays((ps) => ps.filter((_, j) => j !== i))} className="grid h-12 w-10 place-items-center rounded-xl text-muted hover:bg-surface-2"><X className="h-4 w-4" /></button>}
+                        className="h-12 min-w-0 flex-1 rounded border border-line bg-surface-2 px-3 text-right text-xl font-semibold tabular-nums text-fg" />
+                      {pays.length > 1 && <button type="button" aria-label="Remove payment" onClick={() => setPays((ps) => ps.filter((_, j) => j !== i))} className="grid h-12 w-10 place-items-center rounded text-muted hover:bg-surface-2"><X className="h-4 w-4" /></button>}
                     </div>
                     {p.method === "mobile_money" && (
                       <div className="flex gap-2">
-                        <select aria-label="Provider" value={p.provider ?? ""} onChange={(e) => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, provider: e.target.value } : q)))} className="h-9 rounded-lg border border-line bg-surface-2 px-2 text-xs text-fg">
+                        <select aria-label="Provider" value={p.provider ?? ""} onChange={(e) => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, provider: e.target.value } : q)))} className="h-9 rounded border border-line bg-surface-2 px-2 text-xs text-fg">
                           {cat.tenant.mobileMoney.map((n) => <option key={n}>{n}</option>)}
                         </select>
-                        <input aria-label="Transaction reference" placeholder="Transaction ID" value={p.ref ?? ""} onChange={(e) => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, ref: e.target.value } : q)))} className="h-9 min-w-0 flex-1 rounded-lg border border-line bg-surface-2 px-2 text-xs text-fg" />
+                        <input aria-label="Transaction reference" placeholder="Transaction ID" value={p.ref ?? ""} onChange={(e) => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, ref: e.target.value } : q)))} className="h-9 min-w-0 flex-1 rounded border border-line bg-surface-2 px-2 text-xs text-fg" />
                       </div>
                     )}
-                    {(p.method === "card" || p.method === "bank") && <input aria-label="Reference" placeholder="Slip or reference no." value={p.ref ?? ""} onChange={(e) => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, ref: e.target.value } : q)))} className="h-9 w-full rounded-lg border border-line bg-surface-2 px-2 text-xs text-fg" />}
+                    {(p.method === "card" || p.method === "bank") && <input aria-label="Reference" placeholder="Slip or reference no." value={p.ref ?? ""} onChange={(e) => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, ref: e.target.value } : q)))} className="h-9 w-full rounded border border-line bg-surface-2 px-2 text-xs text-fg" />}
                     {p.method === "cash" && i === 0 && (
                       <div className="flex flex-wrap gap-1">
                         {[view.due, ...[500, 1000, 2000, 5000, 10000, 20000].filter((v) => v > view.due).slice(0, 3)].map((v) => (
-                          <button key={v} type="button" onClick={() => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, amount: major(v) } : q)))} className="h-8 rounded-lg border border-line bg-surface-2 px-2.5 text-xs tabular-nums text-fg hover:bg-surface-3">{v === view.due ? "Exact" : m(v)}</button>
+                          <button key={v} type="button" onClick={() => setPays((ps) => ps.map((q, j) => (j === i ? { ...q, amount: major(v) } : q)))} className="h-8 rounded border border-line bg-surface-2 px-2.5 text-xs tabular-nums text-fg hover:bg-surface-3">{v === view.due ? "Exact" : m(v)}</button>
                         ))}
                       </div>
                     )}
@@ -520,7 +520,7 @@ export function Till({ branchId, userId, rx: rxProp }: { branchId: string; userI
                 ))}
                 <div className="flex flex-wrap gap-2">
                   {pays.length < 4 && <Button variant="ghost" size="sm" onClick={() => setPays((ps) => [...ps, { method: "mobile_money", provider: cat.tenant.mobileMoney[0], amount: major(Math.max(0, view.due - view.tendered)) }])}><Plus className="h-3.5 w-3.5" aria-hidden /> Split payment</Button>}
-                  {customer && cat.user.canCredit && customer.creditLimitMinor > 0 && <label className="flex items-center gap-2 text-xs text-muted">On account <input inputMode="decimal" value={credit} onChange={(e) => setCredit(e.target.value)} placeholder="0.00" className="h-8 w-24 rounded-lg border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
+                  {customer && cat.user.canCredit && customer.creditLimitMinor > 0 && <label className="flex items-center gap-2 text-xs text-muted">On account <input inputMode="decimal" value={credit} onChange={(e) => setCredit(e.target.value)} placeholder="0.00" className="h-8 w-24 rounded border border-line bg-surface-2 px-2 text-right tabular-nums text-fg" /></label>}
                 </div>
                 {customer && cat.user.canCredit && customer.creditLimitMinor > 0 && <p className="text-[11px] text-subtle">Credit available {m(Math.max(0, customer.creditLimitMinor - customer.balanceMinor))}</p>}
                 <Row k="Received" v={m(view.tendered + view.creditMinor)} />
@@ -569,7 +569,7 @@ function ProductRow({ p, cat, onAdd, m }: { p: CatProduct; cat: PosCatalog; onAd
       </button>
       <span className={cx("text-xs tabular-nums", stock ? "text-muted" : "text-bad")}>{stock ? `${stock} ${p.baseUnit}${next ? ` · exp ${next}` : ""}` : "Out of stock"}</span>
       <span className="flex gap-1">
-        {p.units.map((u) => <button key={u.id} type="button" onClick={() => onAdd(p, u.id)} className="h-9 rounded-lg border border-line bg-surface-2 px-2.5 text-xs text-fg hover:bg-surface-3">{u.name} <span className="tabular-nums text-muted">{m(u.priceMinor)}</span></button>)}
+        {p.units.map((u) => <button key={u.id} type="button" onClick={() => onAdd(p, u.id)} className="h-9 rounded border border-line bg-surface-2 px-2.5 text-xs text-fg hover:bg-surface-3">{u.name} <span className="tabular-nums text-muted">{m(u.priceMinor)}</span></button>)}
       </span>
     </li>
   );
@@ -577,9 +577,9 @@ function ProductRow({ p, cat, onAdd, m }: { p: CatProduct; cat: PosCatalog; onAd
 
 function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
-    <div className="fixed inset-0 z-[60] grid place-items-center bg-canvas/80 p-4 backdrop-blur print:hidden" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="w-full max-w-lg overflow-hidden rounded-3xl border border-line bg-solid shadow-panel animate-rise">
-        <div className="flex items-center justify-between border-b border-line px-5 py-3"><h2 className="font-semibold text-fg">{title}</h2><button type="button" onClick={onClose} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-xl text-muted hover:bg-surface-2"><X className="h-4 w-4" /></button></div>
+    <div className="fixed inset-0 z-[60] grid place-items-center bg-canvas/80 p-4 print:hidden" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="w-full max-w-lg overflow-hidden rounded-md border border-line bg-solid shadow-lift">
+        <div className="flex items-center justify-between border-b border-line px-5 py-3"><h2 className="font-semibold text-fg">{title}</h2><button type="button" onClick={onClose} aria-label="Close" className="grid h-9 w-9 place-items-center rounded text-muted hover:bg-surface-2"><X className="h-4 w-4" /></button></div>
         <div className="max-h-[75vh] overflow-auto p-5">{children}</div>
       </div>
     </div>
@@ -598,7 +598,7 @@ function CustomerModal({ cat, online, onClose, onPick, m }: { cat: PosCatalog; o
       <Input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Name, phone or customer no." aria-label="Find customer" onKeyDown={(e) => { if (e.key === "Enter" && found[0]) onPick(found[0], false); }} />
       <ul className="mt-3 divide-y divide-line">
         {found.map((c) => (
-          <li key={c.id}><button type="button" onClick={() => onPick(c, false)} className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2.5 text-left hover:bg-surface-2">
+          <li key={c.id}><button type="button" onClick={() => onPick(c, false)} className="flex w-full items-center justify-between gap-3 rounded px-2 py-2.5 text-left hover:bg-surface-2">
             <span><span className="block font-medium text-fg">{c.name}</span><span className="block font-mono text-xs text-muted">{c.customerNo}{c.phone ? ` · ${c.phone}` : ""}</span></span>
             {c.balanceMinor > 0 && <Badge tone="yellow">Owes {m(c.balanceMinor)}</Badge>}
           </button></li>
@@ -728,13 +728,13 @@ function PrinterSetup() {
     } catch (e) { setErr((e as Error).message); }
   };
   return (
-    <details className="glass px-4 py-3 text-sm">
+    <details className="sheet px-4 py-3 text-sm">
       <summary className="flex cursor-pointer items-center gap-2 text-muted"><Printer className="h-4 w-4" aria-hidden />Receipt printer: <span className="text-fg">{name ?? (p.kind === "browser" ? "browser print" : "not connected")}</span></summary>
       <div className="mt-3 flex flex-wrap gap-2">
         {support.usb && <Button size="sm" variant="secondary" onClick={() => choose("usb")}>Connect USB printer</Button>}
         {support.serial && <Button size="sm" variant="secondary" onClick={() => choose("serial")}>Connect serial / Bluetooth</Button>}
         <Button size="sm" variant="ghost" onClick={() => choose("browser")}>Use browser print</Button>
-        <select aria-label="Paper width" value={p.width} onChange={(e) => { const next = { ...p, width: Number(e.target.value) }; savePrinter(next); setP(next); }} className="h-8 rounded-lg border border-line bg-surface-2 px-2 text-xs text-fg">
+        <select aria-label="Paper width" value={p.width} onChange={(e) => { const next = { ...p, width: Number(e.target.value) }; savePrinter(next); setP(next); }} className="h-8 rounded border border-line bg-surface-2 px-2 text-xs text-fg">
           <option value={42}>80mm paper</option><option value={32}>58mm paper</option>
         </select>
       </div>
@@ -769,9 +769,9 @@ function DoneScreen({ done, onNew, m }: { done: Done; onNew: () => void; m: (v: 
   return (
     <>
       <style>{"@media print { @page { size: 80mm auto; margin: 0 } }"}</style>
-      <div className="fixed inset-0 z-[55] grid place-items-center overflow-auto bg-canvas/85 p-4 backdrop-blur print:hidden" role="dialog" aria-modal="true" aria-label="Sale complete">
+      <div className="fixed inset-0 z-[55] grid place-items-center overflow-auto bg-canvas/85 p-4 print:hidden" role="dialog" aria-modal="true" aria-label="Sale complete">
         <div className="grid w-full max-w-3xl gap-4 md:grid-cols-[1fr_auto]">
-          <div className="glass ring-aurora p-6 animate-rise">
+          <div className="sheet mark-brand p-6">
             <CircleCheck className="h-10 w-10 text-ok" aria-hidden />
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-fg">{done.offline ? "Sale saved on this device" : "Sale complete"}</h2>
             <p className="mt-1 font-mono text-xs text-muted">{r.saleNo}</p>
@@ -781,12 +781,12 @@ function DoneScreen({ done, onNew, m }: { done: Done; onNew: () => void; m: (v: 
             <div className="mt-6 flex flex-wrap gap-2">
               <Button onClick={print}><Printer className="h-4 w-4" aria-hidden /> Print receipt</Button>
               <Button variant="secondary" onClick={wa}><MessageCircle className="h-4 w-4" aria-hidden /> WhatsApp receipt</Button>
-              {done.saleId && r.lines.some((l) => l.medicine) && <a href={`/sales/${done.saleId}/labels`} target="_blank" rel="noopener" className="inline-flex h-10 items-center gap-2 rounded-xl border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3"><FileText className="h-4 w-4" aria-hidden /> Labels</a>}
+              {done.saleId && r.lines.some((l) => l.medicine) && <a href={`/sales/${done.saleId}/labels`} target="_blank" rel="noopener" className="inline-flex h-10 items-center gap-2 rounded border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3"><FileText className="h-4 w-4" aria-hidden /> Labels</a>}
             </div>
             {msg && <p role="status" className="mt-3 text-sm text-muted">{msg}</p>}
             <Button size="lg" variant="secondary" className="mt-6 w-full" onClick={onNew} autoFocus>New sale <Kbd>Enter</Kbd></Button>
           </div>
-          <div className="max-h-[80vh] overflow-auto rounded-2xl border border-line"><ReceiptView d={r} /></div>
+          <div className="max-h-[80vh] overflow-auto rounded-md border border-line"><ReceiptView d={r} /></div>
         </div>
       </div>
       <div className="hidden print:block"><ReceiptView d={r} /></div>

@@ -29,7 +29,7 @@ export default async function PricingPage() {
           {CURRENCIES.map((cur) => {
             const list = m.lists.get(cur)!;
             return (
-              <details key={cur} className="group rounded-2xl border border-line bg-surface">
+              <details key={cur} className="group rounded-md border border-line bg-surface">
                 <summary className="flex cursor-pointer flex-wrap items-center gap-3 px-4 py-3">
                   <span className="w-12 font-mono text-sm font-semibold">{cur}</span>
                   <span className="text-sm text-muted">{CURRENCY_NAMES[cur]}</span>
@@ -49,7 +49,7 @@ export default async function PricingPage() {
                   <Field label="Setup: full"><Input name="setupFull" inputMode="decimal" defaultValue={major(list.setup.full)} /></Field>
                   <div className="flex items-end gap-2 sm:col-span-3 sm:justify-end">
                     <Submit size="md" className="flex-1">Save {cur} prices</Submit>
-                    {list.custom && <button name="reset" value="1" className="h-10 rounded-xl border border-line px-3 text-xs text-muted hover:text-fg">Reset</button>}
+                    {list.custom && <button name="reset" value="1" className="h-10 rounded border border-line px-3 text-xs text-muted hover:text-fg">Reset</button>}
                   </div>
                 </ActionForm>
               </details>

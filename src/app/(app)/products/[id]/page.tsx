@@ -120,7 +120,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
           <Panel title="Pack sizes" icon={<Tag />}>
             <ul className="space-y-3">
               {units.map((u) => (
-                <li key={u.id} className="rounded-xl border border-line bg-surface p-3">
+                <li key={u.id} className="rounded border border-line bg-surface p-3">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-medium text-fg">{u.name} <span className="text-xs text-muted">× {u.factor} {p.baseUnit}</span></span>
                     <span className="tabular-nums text-fg">{money(u.sellPriceMinor, cur)}</span>

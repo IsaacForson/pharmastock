@@ -32,7 +32,7 @@ export default async function TakeReportPage({ params }: PageProps<"/stock/take/
         <LinkButton variant="ghost" href={`/stock/take/${take.id}`}>Back</LinkButton>
         <PrintButton />
       </div>
-      <article className="glass p-8 print:border-0 print:p-0 print:shadow-none">
+      <article className="sheet p-8 print:border-0 print:p-0 print:shadow-none">
         <header className="mb-6 border-b border-line pb-4">
           <h1 className="text-xl font-semibold text-fg">{ctx.tenant.name}</h1>
           {ctx.tenant.letterhead && <p className="whitespace-pre-line text-xs text-muted">{ctx.tenant.letterhead}</p>}

@@ -46,11 +46,11 @@ export function ProductSearch({ catalog, onPick, inputRef, autoFocus, placeholde
             else if (e.key === "Escape") setQ("");
           }} />
         {hits.length > 0 && (
-          <ul id="product-hits" role="listbox" className="absolute inset-x-0 top-full z-30 mt-1.5 max-h-80 overflow-auto rounded-2xl border border-line bg-solid p-1.5 shadow-panel">
+          <ul id="product-hits" role="listbox" className="absolute inset-x-0 top-full z-30 mt-1.5 max-h-80 overflow-auto rounded-md border border-line bg-solid p-1.5 shadow-lift">
             {hits.map((p, i) => (
               <li key={p.id} role="option" aria-selected={i === hi}>
                 <button type="button" onMouseDown={(e) => { e.preventDefault(); pick(p); }} onMouseEnter={() => setHi(i)}
-                  className={cx("flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-sm", i === hi ? "bg-surface-3 text-fg" : "text-muted")}>
+                  className={cx("flex w-full items-center justify-between gap-3 rounded px-3 py-2.5 text-left text-sm", i === hi ? "bg-surface-3 text-fg" : "text-muted")}>
                   <span className="truncate font-medium text-fg">{itemLabel(p)}</span>
                   <span className="shrink-0 text-xs text-subtle">{p.genericName}</span>
                 </button>

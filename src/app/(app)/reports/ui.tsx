@@ -42,21 +42,21 @@ export function BarChart({ data, format, label, height = 160 }: {
 export function RangePicker({ range, path, extra = {} }: { range: Range; path: string; extra?: Record<string, string> }) {
   return (
     <div className="mb-6 flex flex-wrap items-center gap-3 print:hidden">
-      <nav aria-label="Date range presets" className="inline-flex max-w-full gap-1 overflow-x-auto rounded-2xl border border-line bg-surface p-1">
+      <nav aria-label="Date range presets" className="inline-flex max-w-full gap-1 overflow-x-auto rounded-md border border-line bg-surface p-1">
         {Object.entries(PRESETS).map(([k, label]) => (
           <Link key={k} href={`${path}?${new URLSearchParams({ ...extra, preset: k })}`} aria-current={range.preset === k ? "true" : undefined}
-            className={cx("whitespace-nowrap rounded-xl px-3.5 py-1.5 text-sm font-medium transition", range.preset === k ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
+            className={cx("whitespace-nowrap rounded px-3.5 py-1.5 text-sm font-medium transition", range.preset === k ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
             {label}
           </Link>
         ))}
       </nav>
-      <form className={cx("flex flex-wrap items-center gap-2 rounded-2xl border bg-surface p-1 pl-3", range.preset === "custom" ? "border-accent/40" : "border-line")} action={path}>
+      <form className={cx("flex flex-wrap items-center gap-2 rounded-md border bg-surface p-1 pl-3", range.preset === "custom" ? "border-accent/40" : "border-line")} action={path}>
         {Object.entries(extra).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
         <CalendarRange className="h-4 w-4 text-subtle" aria-hidden />
         <Input type="date" name="from" defaultValue={range.from} aria-label="From" className="h-9 w-auto" />
         <span className="text-xs text-subtle">to</span>
         <Input type="date" name="to" defaultValue={range.to} aria-label="To" className="h-9 w-auto" />
-        <button className="h-9 rounded-xl border border-line bg-surface-2 px-3 text-sm font-medium text-fg transition hover:bg-surface-3">Apply</button>
+        <button className="h-9 rounded border border-line bg-surface-2 px-3 text-sm font-medium text-fg transition hover:bg-surface-3">Apply</button>
       </form>
     </div>
   );
@@ -71,10 +71,10 @@ export function BranchPicker({ branches, scope, path, keep }: { branches: { id: 
   const opts = [...(scope.canAll ? [{ id: "all", name: "All branches" }] : []), ...branches];
   const current = scope.all ? "all" : scope.ids[0];
   return (
-    <nav aria-label="Branch" className="mb-4 inline-flex max-w-full gap-1 overflow-x-auto rounded-2xl border border-line bg-surface p-1 print:hidden">
+    <nav aria-label="Branch" className="mb-4 inline-flex max-w-full gap-1 overflow-x-auto rounded-md border border-line bg-surface p-1 print:hidden">
       {opts.map((b) => (
         <Link key={b.id} href={href(b.id)} aria-current={current === b.id ? "true" : undefined}
-          className={cx("whitespace-nowrap rounded-xl px-3.5 py-1.5 text-sm font-medium transition", current === b.id ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
+          className={cx("whitespace-nowrap rounded px-3.5 py-1.5 text-sm font-medium transition", current === b.id ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
           {b.name}
         </Link>
       ))}

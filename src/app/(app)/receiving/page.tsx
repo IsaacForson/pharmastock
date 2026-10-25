@@ -36,7 +36,7 @@ export default async function ReceivingPage() {
         <Panel title="Expected deliveries" eyebrow="Open orders" className="mb-6">
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
             {d.awaiting.map(({ po, supplier }) => (
-              <a key={po.id} href={`/receiving/new?po=${po.id}`} className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-2 px-3.5 py-3 transition hover:border-line-strong hover:bg-surface-3">
+              <a key={po.id} href={`/receiving/new?po=${po.id}`} className="flex items-center justify-between gap-3 rounded border border-line bg-surface-2 px-3.5 py-3 transition hover:border-line-strong hover:bg-surface-3">
                 <span className="min-w-0">
                   <span className="block truncate text-sm font-medium text-fg">{supplier}</span>
                   <span className="block font-mono text-xs text-muted">{po.poNo}{po.expectedAt ? ` · due ${po.expectedAt}` : ""}</span>

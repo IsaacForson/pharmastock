@@ -31,7 +31,7 @@ export default async function PosPage({ searchParams }: PageProps<"/pos">) {
     <div>
       <div className="print:hidden"><PageHeader title="Till" eyebrow="Point of sale" icon={<ScanLine />} subtitle={rx ? `Dispensing ${rx.rxNo} for ${rx.customerName}` : "Scan or search to sell. Works offline."} /></div>
       {rx && rx.status !== "active" ? (
-        <p className="glass p-6 text-sm text-warn">Prescription {rx.rxNo} is {rx.status} and can&apos;t be dispensed.</p>
+        <p className="sheet p-6 text-sm text-warn">Prescription {rx.rxNo} is {rx.status} and can&apos;t be dispensed.</p>
       ) : (
         <Till branchId={ctx.branchId} userId={ctx.user.id} rx={rx} />
       )}

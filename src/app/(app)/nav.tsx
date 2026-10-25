@@ -1,122 +1,126 @@
 "use client";
 import {
-  ArrowLeftRight, BadgeCheck, BarChart3, BellRing, Bike, Boxes, Building2, ChevronsLeft, FileText, LayoutDashboard, Menu, MessageSquare,
+  ArrowLeftRight, BadgeCheck, BarChart3, BellRing, Bike, Boxes, Building2, FileText, LayoutDashboard, Menu, MessageSquare,
   Moon, PackagePlus, Pill, Receipt, ScanLine, Settings, ShieldCheck, ShoppingCart, Sparkles, Sun, Truck, Undo2, Users, Wallet, X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { cx } from "@/components/ui";
 
 export const ICONS = { LayoutDashboard, ScanLine, Receipt, BellRing, Users, FileText, Bike, Pill, Boxes, ShoppingCart, PackagePlus, Truck, Undo2, ArrowLeftRight, ShieldCheck, Wallet, BadgeCheck, BarChart3, Sparkles, MessageSquare, Building2, Settings };
+/** `group` is the top-bar section the page belongs to. */
 export type NavItem = { href: string; label: string; icon: keyof typeof ICONS; group?: string };
 
+/** Brand mark: a dispensing-label monogram on a green tab. */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <span className={cx("relative grid shrink-0 place-items-center rounded-xl bg-aurora text-on-accent shadow-glow", className ?? "h-9 w-9")} aria-hidden>
-      <svg viewBox="0 0 64 64" className="h-1/2 w-1/2"><path fill="currentColor" d="M22 4a18 18 0 0 1 25.5 0l12.5 12.5a18 18 0 0 1 0 25.5L42 60a18 18 0 0 1-25.5 0L4 47.5a18 18 0 0 1 0-25.5zm-8 18a8 8 0 0 0 0 11.3l5.7 5.7L39 19.7 33.3 14A8 8 0 0 0 22 14z" /></svg>
+    <span className={cx("grid shrink-0 place-items-center rounded-[4px] bg-brand font-mono text-[13px] font-semibold leading-none tracking-tighter", className ?? "h-7 w-7")} aria-hidden>
+      Rx
     </span>
   );
 }
 
-// Sidebar collapsed state persists per device.
-const COLLAPSE_KEY = "ps-rail";
-const subscribeStorage = (cb: () => void) => { window.addEventListener("ps-rail", cb); return () => window.removeEventListener("ps-rail", cb); };
-const readCollapsed = () => { try { return localStorage.getItem(COLLAPSE_KEY) === "1"; } catch { return false; } };
+const isOn = (path: string, href: string) => path === href || path.startsWith(href + "/");
 
-export function useRailCollapsed() {
-  return useSyncExternalStore(subscribeStorage, readCollapsed, () => false);
-}
-function setCollapsed(v: boolean) {
-  try { localStorage.setItem(COLLAPSE_KEY, v ? "1" : "0"); } catch {}
-  document.documentElement.dataset.rail = v ? "collapsed" : "open";
-  window.dispatchEvent(new Event("ps-rail"));
-}
-
-/** Floating glass sidebar. Collapses to an icon rail on desktop; slides in on mobile. */
-export function Nav({ items, footer, clinic }: { items: NavItem[]; footer: React.ReactNode; clinic: string }) {
+/**
+ * Two-tier top navigation: sections across the dark header bar, the active section's pages as tabs underneath.
+ * On small screens both collapse into one drawer.
+ */
+export function TopNav({ items, pharmacy, right }: { items: NavItem[]; pharmacy: string; right: ReactNode }) {
   const path = usePathname();
   const [open, setOpen] = useState(false);
-  const collapsed = useRailCollapsed();
-  useEffect(() => { document.documentElement.dataset.rail = collapsed ? "collapsed" : "open"; }, [collapsed]);
+  const sections = [...new Set(items.map((i) => i.group ?? "Pages"))];
+  const current = items.find((i) => isOn(path, i.href))?.group ?? sections[0];
+  const tabs = items.filter((i) => (i.group ?? "Pages") === current);
 
   return (
-    <>
-      <button onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"}
-        className="fixed left-3 top-3 z-50 grid h-11 w-11 place-items-center rounded-2xl border border-line bg-solid text-fg shadow-panel lg:hidden print:hidden">
-        {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
-      <aside className={cx(
-        "fixed inset-y-3 left-3 z-40 flex flex-col overflow-hidden rounded-3xl border border-line bg-solid/80 shadow-panel backdrop-blur-2xl transition-[width,transform] duration-300 print:hidden",
-        collapsed ? "lg:w-[76px]" : "lg:w-[248px]", "w-[248px]", open ? "translate-x-0" : "-translate-x-[110%] lg:translate-x-0",
-      )}>
-        <div className="pointer-events-none absolute -left-16 -top-20 h-56 w-56 rounded-full bg-accent/25 blur-3xl" aria-hidden />
-        <div className="pointer-events-none absolute -bottom-20 -right-10 h-48 w-48 rounded-full bg-accent-2/15 blur-3xl" aria-hidden />
-
-        <div className={cx("relative flex items-center gap-3 px-4 pb-3 pt-4", collapsed && "lg:justify-center lg:px-0")}>
-          <Link href="/dashboard" className="flex min-w-0 items-center gap-3" aria-label="PharmaStock home">
+    <header className="sticky top-0 z-30 print:hidden">
+      <div className="bg-header text-on-header">
+        <div className="mx-auto flex h-12 max-w-[1440px] items-center gap-3 px-3 lg:gap-6 lg:px-6">
+          <button onClick={() => setOpen(true)} aria-label="Open menu" className="grid h-8 w-8 place-items-center rounded text-on-header-muted hover:text-on-header lg:hidden">
+            <Menu className="h-5 w-5" />
+          </button>
+          <Link href="/dashboard" className="flex min-w-0 items-center gap-2.5" aria-label="PharmaStock home">
             <LogoMark />
-            <span className={cx("min-w-0", collapsed && "lg:hidden")}>
-              <span className="block text-[15px] font-semibold tracking-tight text-fg">PharmaStock</span>
-              <span className="block truncate text-[11px] text-subtle">{clinic}</span>
-            </span>
+            <span className="text-[14px] font-semibold tracking-tight">PharmaStock</span>
+            <span className="hidden max-w-[16ch] truncate border-l border-on-header/20 pl-2.5 text-[12px] text-on-header-muted xl:inline">{pharmacy}</span>
           </Link>
-        </div>
-
-        <nav className="relative flex-1 space-y-0.5 overflow-y-auto overflow-x-hidden px-3 pb-3" aria-label="Main">
-          {items.map((i, idx) => {
-            const Icon = ICONS[i.icon];
-            const active = path === i.href || path.startsWith(i.href + "/");
-            const label = i.group && i.group !== items[idx - 1]?.group ? i.group : null;
-            return (
-              <div key={i.href}>
-                {label && (collapsed
-                  ? <div className="mx-auto my-3 hidden h-px w-6 bg-line lg:block" aria-hidden />
-                  : null)}
-                {label && <div className={cx("px-3 pb-1.5 pt-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-subtle", collapsed && "lg:hidden")}>{label}</div>}
-                <Link href={i.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} title={collapsed ? i.label : undefined}
-                  className={cx("group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-[13.5px] font-medium transition",
-                    collapsed && "lg:justify-center lg:px-0",
-                    active ? "bg-surface-3 text-fg" : "text-muted hover:bg-surface-2 hover:text-fg")}>
-                  {active && <span className="absolute inset-0 rounded-2xl ring-aurora" aria-hidden />}
-                  <Icon className={cx("h-[18px] w-[18px] shrink-0 transition", active ? "text-accent-2" : "text-subtle group-hover:text-fg")} aria-hidden />
-                  <span className={cx("truncate", collapsed && "lg:hidden")}>{i.label}</span>
-                  {active && <span className={cx("ml-auto h-1.5 w-1.5 rounded-full bg-accent-2 shadow-[0_0_12px_var(--accent-2)]", collapsed && "lg:hidden")} aria-hidden />}
+          <nav className="hidden h-full items-stretch lg:flex" aria-label="Sections">
+            {sections.map((s) => {
+              const first = items.find((i) => (i.group ?? "Pages") === s)!;
+              const on = s === current;
+              return (
+                <Link key={s} href={first.href} aria-current={on ? "true" : undefined}
+                  className={cx("flex items-center border-b-2 px-3 text-[13px] font-medium transition-colors", on ? "border-accent-2 text-on-header" : "border-transparent text-on-header-muted hover:text-on-header")}>
+                  {s}
                 </Link>
-              </div>
+              );
+            })}
+          </nav>
+          <div className="ml-auto flex items-center gap-2">{right}</div>
+        </div>
+      </div>
+      <div className="hidden border-b border-line bg-surface lg:block">
+        <nav className="mx-auto flex h-10 max-w-[1440px] items-stretch gap-1 overflow-x-auto px-6" aria-label={`${current} pages`}>
+          {tabs.map((i) => {
+            const Icon = ICONS[i.icon];
+            const on = isOn(path, i.href);
+            return (
+              <Link key={i.href} href={i.href} aria-current={on ? "page" : undefined}
+                className={cx("-mb-px flex items-center gap-1.5 whitespace-nowrap border-b-2 px-2.5 text-[13px] transition-colors", on ? "border-accent font-semibold text-fg" : "border-transparent text-muted hover:text-fg")}>
+                <Icon className={cx("h-[15px] w-[15px]", on ? "text-accent" : "text-subtle")} aria-hidden />
+                {i.label}
+              </Link>
             );
           })}
         </nav>
+      </div>
 
-        <div className="relative border-t border-line p-3">
-          {footer}
-          <div className={cx("mt-2 flex items-center gap-1", collapsed ? "lg:flex-col" : "")}>
-            <ThemeToggle />
-            <button onClick={() => setCollapsed(!collapsed)} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} title={collapsed ? "Expand" : "Collapse"}
-              className="hidden h-9 w-9 place-items-center rounded-xl text-subtle transition hover:bg-surface-2 hover:text-fg lg:grid">
-              <ChevronsLeft className={cx("h-4 w-4 transition", collapsed && "rotate-180")} />
-            </button>
+      {open && (
+        <div className="fixed inset-0 z-50 flex lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+          <div className="flex w-[300px] max-w-[85vw] flex-col overflow-y-auto border-r border-line bg-surface">
+            <div className="flex h-12 items-center justify-between bg-header px-3 text-on-header">
+              <span className="flex items-center gap-2.5"><LogoMark /><span className="text-[14px] font-semibold">PharmaStock</span></span>
+              <button onClick={() => setOpen(false)} aria-label="Close menu" className="grid h-8 w-8 place-items-center rounded text-on-header-muted hover:text-on-header"><X className="h-5 w-5" /></button>
+            </div>
+            <div className="truncate border-b border-line px-4 py-2 text-[12px] text-muted">{pharmacy}</div>
+            {sections.map((s) => (
+              <div key={s} className="border-b border-line py-2">
+                <div className="px-4 pb-1 pt-1 font-mono text-[11px] uppercase tracking-wider text-subtle">{s}</div>
+                {items.filter((i) => (i.group ?? "Pages") === s).map((i) => {
+                  const Icon = ICONS[i.icon];
+                  const on = isOn(path, i.href);
+                  return (
+                    <Link key={i.href} href={i.href} onClick={() => setOpen(false)} aria-current={on ? "page" : undefined}
+                      className={cx("flex items-center gap-2.5 px-4 py-2 text-sm", on ? "mark-brand bg-surface-2 font-semibold text-fg" : "text-muted hover:bg-surface-2 hover:text-fg")}>
+                      <Icon className={cx("h-4 w-4", on ? "text-accent" : "text-subtle")} aria-hidden />{i.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
           </div>
+          <button className="flex-1 bg-fg/40" aria-label="Close menu" onClick={() => setOpen(false)} />
         </div>
-      </aside>
-      {open && <div className="fixed inset-0 z-30 bg-canvas/60 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
-    </>
+      )}
+    </header>
   );
 }
 
-// Theme: "dark" | "light", stored in localStorage (applied before paint by the root layout script).
+// Theme: "light" (default) | "dark" (night shift), stored in localStorage (applied before paint by the root layout script).
 const subscribeTheme = (cb: () => void) => {
   const mo = new MutationObserver(cb);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   return () => mo.disconnect();
 };
 export function ThemeToggle({ className }: { className?: string }) {
-  const theme = useSyncExternalStore(subscribeTheme, () => document.documentElement.dataset.theme ?? "dark", () => "dark");
+  const theme = useSyncExternalStore(subscribeTheme, () => document.documentElement.dataset.theme ?? "light", () => "light");
   const next = theme === "dark" ? "light" : "dark";
   return (
-    <button type="button" aria-label={`Switch to ${next} theme`} title={`Switch to ${next} theme`}
+    <button type="button" aria-label={next === "dark" ? "Switch to night mode" : "Switch to day mode"} title={next === "dark" ? "Night mode" : "Day mode"}
       onClick={() => { document.documentElement.dataset.theme = next; try { localStorage.setItem("ps-theme", next); } catch {} }}
-      className={cx("grid h-9 w-9 place-items-center rounded-xl text-subtle transition hover:bg-surface-2 hover:text-fg", className)}>
+      className={cx("grid h-8 w-8 place-items-center rounded transition-colors", className ?? "text-muted hover:bg-surface-2 hover:text-fg")}>
       {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </button>
   );

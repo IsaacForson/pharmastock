@@ -51,7 +51,7 @@ export default async function RegisterProductPage({ params, searchParams }: Page
   const today = localDay(tz);
   const stocked = batches.filter((b) => b.qtyOnHand > 0);
   const batchLabel = (b: (typeof batches)[number]) => `${b.batchNo || "No batch no."}${b.expiry ? ` · exp ${b.expiry}` : ""} · ${b.qtyOnHand} ${product.baseUnit}`;
-  const summary = "flex cursor-pointer list-none items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-fg transition hover:bg-surface-2 [&::-webkit-details-marker]:hidden";
+  const summary = "flex cursor-pointer list-none items-center gap-2 rounded px-3 py-2.5 text-sm font-medium text-fg transition hover:bg-surface-2 [&::-webkit-details-marker]:hidden";
 
   return (
     <div className="space-y-6">
@@ -68,14 +68,14 @@ export default async function RegisterProductPage({ params, searchParams }: Page
         </div>
       )}
 
-      <form className="glass flex flex-wrap items-end gap-3 p-4 print:hidden">
+      <form className="sheet flex flex-wrap items-end gap-3 p-4 print:hidden">
         <Field label="From"><Input type="date" name="from" defaultValue={from ?? ""} max={today} /></Field>
         <Field label="To"><Input type="date" name="to" defaultValue={to ?? ""} max={today} /></Field>
         <Button variant="secondary">Show</Button>
         {(from || to) && <LinkButton href={`/register/${productId}`} variant="ghost">Clear dates</LinkButton>}
       </form>
 
-      <article className="glass p-6 print:border-0 print:p-0 print:shadow-none">
+      <article className="sheet p-6 print:border-0 print:p-0 print:shadow-none">
         <header className="mb-5 flex flex-wrap items-start justify-between gap-4 border-b border-line pb-4">
           <div>
             <div className="text-lg font-semibold text-fg">{ctx.tenant.name}</div>
@@ -92,7 +92,7 @@ export default async function RegisterProductPage({ params, searchParams }: Page
         <div className="-mx-6 overflow-x-auto print:mx-0">
           <table className="min-w-full text-xs">
             <thead>
-              <tr className="border-b border-line text-left text-[10px] uppercase tracking-[0.12em] text-subtle">
+              <tr className="border-b border-line text-left text-[10px] uppercase tracking-wider text-subtle">
                 {["Date", "Entry", "Received from / supplied to", "Address", "Prescriber (reg. no.)", "Rx no.", "In", "Out", "Balance", "Entered by", "Witness", "Details"].map((h) => (
                   <th key={h} className="whitespace-nowrap px-3 pb-2 font-semibold">{h}</th>
                 ))}
@@ -135,7 +135,7 @@ export default async function RegisterProductPage({ params, searchParams }: Page
         <p className="mb-3 text-sm text-muted">Sales, receipts and transfers are entered automatically. Use these only for destruction, returns from customers and corrections. Entries can&apos;t be edited; a mistake is fixed with a new correction.</p>
         <div className="space-y-1">
           {can(ctx.user.role, "controlled.destroy") && (
-            <details className="rounded-xl">
+            <details className="rounded">
               <summary className={summary}><Flame className="h-4 w-4 text-bad" aria-hidden /> Destroy stock (witness needed)</summary>
               <ActionForm action={destroyAction} resetOnSuccess className="grid gap-4 px-3 pb-3 pt-2 sm:grid-cols-2">
                 <Field label="Batch"><Select name="batchId" required>{stocked.map((b) => <option key={b.id} value={b.id}>{batchLabel(b)}</option>)}</Select></Field>
@@ -147,7 +147,7 @@ export default async function RegisterProductPage({ params, searchParams }: Page
               </ActionForm>
             </details>
           )}
-          <details className="rounded-xl">
+          <details className="rounded">
             <summary className={summary}><RotateCcw className="h-4 w-4 text-accent" aria-hidden /> Customer returned stock</summary>
             <ActionForm action={patientReturnAction} resetOnSuccess className="grid gap-4 px-3 pb-3 pt-2 sm:grid-cols-2">
               <Field label="Into batch"><Select name="batchId" required>{batches.map((b) => <option key={b.id} value={b.id}>{batchLabel(b)}</option>)}</Select></Field>
@@ -159,7 +159,7 @@ export default async function RegisterProductPage({ params, searchParams }: Page
               <div className="flex justify-end sm:col-span-2"><Submit variant="secondary">Record return</Submit></div>
             </ActionForm>
           </details>
-          <details className="rounded-xl">
+          <details className="rounded">
             <summary className={summary}><Scale className="h-4 w-4 text-warn" aria-hidden /> Correct the balance</summary>
             <ActionForm action={correctionAction} resetOnSuccess className="grid gap-4 px-3 pb-3 pt-2 sm:grid-cols-2">
               <Field label="Batch"><Select name="batchId" required>{batches.map((b) => <option key={b.id} value={b.id}>{batchLabel(b)}</option>)}</Select></Field>

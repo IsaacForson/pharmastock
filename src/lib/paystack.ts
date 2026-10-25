@@ -26,7 +26,7 @@ async function call<T>(key: string, path: string, body?: unknown): Promise<T> {
 
 /**
  * Hosted checkout (card + mobile money). metadata.kind routes the webhook:
- *  "subscription" {tenantId, plan, cycle, branches} | "setup" {tenantId, tier}
+ *"subscription" {tenantId, plan, cycle, branches} | "setup" {tenantId, tier}
  */
 export async function initializePayment(o: {
   tenantId: string | null; email: string; amountMinor: number; currency: string; metadata: Record<string, unknown>;

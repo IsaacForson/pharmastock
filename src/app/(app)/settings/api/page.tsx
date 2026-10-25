@@ -21,8 +21,8 @@ export default async function ApiKeysPage() {
   const code = "rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs text-accent-2";
   return (
     <>
-      <div className="glass flex flex-wrap items-center gap-4 p-5 animate-rise">
-        <span className="grid h-11 w-11 place-items-center rounded-2xl border border-accent/25 bg-accent/15 text-accent" aria-hidden><BookOpen className="h-5 w-5" /></span>
+      <div className="sheet flex flex-wrap items-center gap-4 p-5">
+        <span className="grid h-11 w-11 place-items-center rounded-md border border-accent/25 bg-accent/15 text-accent" aria-hidden><BookOpen className="h-5 w-5" /></span>
         <p className="min-w-0 flex-1 text-sm leading-relaxed text-muted">
           Connect other software with the REST API at <code className={code}>/api/v1</code> (<A href="/api/v1/openapi.json">OpenAPI spec</A>).
           Send <code className={code}>Authorization: Bearer ps_live_…</code> · limit <span className="font-medium text-fg tabular-nums">{RATE_LIMIT}</span> requests per minute per key.
@@ -63,7 +63,7 @@ export default async function ApiKeysPage() {
               <legend className="mb-2 text-xs font-medium tracking-wide text-muted">Permissions</legend>
               <div className="grid gap-2 sm:grid-cols-2">
                 {API_RESOURCES.map((r) => (
-                  <div key={r} className="flex items-center justify-between gap-4 rounded-xl border border-line bg-surface px-3.5 py-2.5">
+                  <div key={r} className="flex items-center justify-between gap-4 rounded border border-line bg-surface px-3.5 py-2.5">
                     <span className="text-sm font-medium capitalize text-fg">{r}</span>
                     <span className="flex gap-4">
                       <Check name="scopes" value={`${r}:read`} defaultChecked label={<span className="text-xs text-muted">Read</span>} />

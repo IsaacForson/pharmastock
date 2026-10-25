@@ -21,8 +21,8 @@ export default async function PublicReceipt({ params }: PageProps<"/r/[token]">)
   });
   if (!data) notFound();
   return (
-    <main className="backdrop-os min-h-screen px-4 py-10">
-      <div className="mx-auto max-w-md overflow-hidden rounded-2xl border border-line shadow-panel">
+    <main className="page-bg min-h-screen px-4 py-10">
+      <div className="mx-auto max-w-md overflow-hidden rounded-md border border-line shadow-lift">
         <ReceiptView d={{ ...data, link: null, customer: data.customer ? { ...data.customer, balanceMinor: 0, points: 0 } : null }} />
       </div>
     </main>

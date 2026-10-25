@@ -39,7 +39,7 @@ export default async function LabelsPage({ params }: PageProps<"/sales/[id]/labe
             const directions = item?.directions || [item?.dose, item?.frequency, item?.duration].filter(Boolean).join(", ");
             const b = line.allocations.map((a) => d.batches.find((x) => x.id === a.batchId)).filter(Boolean);
             return (
-              <section key={line.id} className="break-inside-avoid rounded-xl border-2 border-line-strong p-3 text-[12px] leading-snug text-fg">
+              <section key={line.id} className="break-inside-avoid rounded border-2 border-line-strong p-3 text-[12px] leading-snug text-fg">
                 <div className="flex justify-between gap-2 border-b border-line pb-1 text-[10px] text-muted"><span className="font-semibold text-fg">{t.name}</span><span>{t.phone}</span></div>
                 <div className="mt-1.5 text-sm font-bold">{product.name} {product.strength}</div>
                 {product.genericName && <div className="text-muted">{product.genericName}</div>}

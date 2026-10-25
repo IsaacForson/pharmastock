@@ -44,7 +44,7 @@ export default async function ActivityPage({ searchParams }: PageProps<"/owner/a
     <>
       <ConsoleHeader ctx={ctx} current="activity" subtitle="Voids, returns, price and stock changes, sign-ins and settings across the pharmacy, newest first" />
 
-      <form className="glass mb-6 grid items-end gap-3 p-4 animate-rise sm:grid-cols-[1fr_1fr_auto]">
+      <form className="sheet mb-6 grid items-end gap-3 p-4 sm:grid-cols-[1fr_1fr_auto]">
         <Field label="Staff">
           <Select name="user" defaultValue={userId ?? ""}><option value="">Everyone</option>{staff.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}</Select>
         </Field>

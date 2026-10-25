@@ -42,18 +42,18 @@ export function TransferForm({ branches, items, preselect }: { branches: { id: s
             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }} />
           <datalist id="transfer-products">{items.map((i) => <option key={i.id} value={i.label}>{i.onHandText} in stock</option>)}</datalist>
         </Field>
-        <button type="button" onClick={add} className="inline-flex h-10 items-center gap-2 rounded-xl border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3"><Plus className="h-4 w-4" aria-hidden /> Add</button>
+        <button type="button" onClick={add} className="inline-flex h-10 items-center gap-2 rounded border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3"><Plus className="h-4 w-4" aria-hidden /> Add</button>
       </div>
 
       <div className="space-y-2">
-        {!lines.length && <p className="rounded-xl border border-dashed border-line-strong px-4 py-6 text-center text-sm text-muted">No items yet. Add the products you&apos;re sending.</p>}
+        {!lines.length && <p className="rounded border border-dashed border-line-strong px-4 py-6 text-center text-sm text-muted">No items yet. Add the products you&apos;re sending.</p>}
         {lines.map((l) => {
           const it = byId.get(l.productId);
           if (!it) return null;
           const avail = l.batchId ? it.batches.find((b) => b.id === l.batchId)?.qty ?? 0 : it.onHand;
           const over = Number(l.qty) * l.factor > avail;
           return (
-            <div key={l.key} className="grid items-end gap-3 rounded-2xl border border-line bg-surface p-3 sm:grid-cols-[minmax(0,2fr)_minmax(0,2fr)_7rem_9rem_auto]">
+            <div key={l.key} className="grid items-end gap-3 rounded-md border border-line bg-surface p-3 sm:grid-cols-[minmax(0,2fr)_minmax(0,2fr)_7rem_9rem_auto]">
               <div className="min-w-0">
                 <div className="truncate text-sm font-medium text-fg">{it.label}</div>
                 <div className="text-xs text-muted">{it.onHandText} sellable here</div>

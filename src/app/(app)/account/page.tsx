@@ -23,7 +23,7 @@ export default async function AccountPage() {
   const qr = pendingSecret ? `data:image/svg+xml;base64,${Buffer.from(await QRCode.toString(totpUri(pendingSecret, u.email ?? u.phone ?? u.name), { type: "svg", margin: 1 })).toString("base64")}` : null;
   const step = (n: number, title: string, body: React.ReactNode, done?: boolean) => (
     <li className="flex gap-3">
-      <span className={done ? "grid h-7 w-7 shrink-0 place-items-center rounded-full bg-aurora text-xs font-semibold text-on-accent shadow-glow" : "grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line-strong bg-surface-2 text-xs font-semibold text-muted"}>{n}</span>
+      <span className={done ? "grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand text-xs font-semibold text-on-accent" : "grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line-strong bg-surface-2 text-xs font-semibold text-muted"}>{n}</span>
       <div className="min-w-0 flex-1 pt-0.5"><div className="text-sm font-medium text-fg">{title}</div><div className="mt-1 text-sm text-muted">{body}</div></div>
     </li>
   );
@@ -31,8 +31,7 @@ export default async function AccountPage() {
     <>
       <PageHeader icon={<CircleUserRound />} eyebrow="Personal" title="My account" subtitle={`${ROLE_LABELS[u.role]} · ${ctx.tenant.name}`} />
 
-      <section className="glass relative mb-6 overflow-hidden p-6 animate-rise">
-        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-aurora opacity-20 blur-3xl" aria-hidden />
+      <section className="sheet relative mb-6 overflow-hidden p-6">
         <div className="relative flex flex-wrap items-center gap-4">
           <Avatar name={u.name} size="lg" />
           <div className="min-w-0 flex-1">
@@ -87,7 +86,7 @@ export default async function AccountPage() {
           actions={u.totpEnabled ? <Badge tone="green" pulse>On</Badge> : <Badge>Off</Badge>}>
           {u.totpEnabled ? (
             <ActionForm action={disableTotpAction} className="space-y-4">
-              <div className="flex items-center gap-3 rounded-xl border border-ok/25 bg-ok/10 px-4 py-3 text-sm text-fg">
+              <div className="flex items-center gap-3 rounded border border-ok/25 bg-ok/10 px-4 py-3 text-sm text-fg">
                 <ShieldCheck className="h-5 w-5 shrink-0 text-ok" aria-hidden />You enter a code from your authenticator app when signing in.
               </div>
               <Field label="Current 6-digit code to turn off"><Input name="code" inputMode="numeric" autoComplete="one-time-code" maxLength={6} required className="max-w-xs font-mono tracking-[0.4em]" /></Field>
@@ -97,9 +96,8 @@ export default async function AccountPage() {
             <ol className="space-y-5">
               {step(1, "Scan the code", "Use Google Authenticator, Microsoft Authenticator or Authy.", true)}
               <li className="flex justify-center">
-                <div className="ring-aurora relative rounded-3xl bg-surface-2 p-3 shadow-glow">
-                  <div className="pointer-events-none absolute -inset-6 rounded-full bg-aurora opacity-25 blur-2xl" aria-hidden />
-                  {qr && <img src={qr} alt="QR code for your authenticator app" className="relative h-44 w-44 rounded-2xl bg-solid p-2" />}
+                <div className="mark-brand relative rounded-md bg-surface-2 p-3">
+                  {qr && <img src={qr} alt="QR code for your authenticator app" className="relative h-44 w-44 rounded-md bg-solid p-2" />}
                 </div>
               </li>
               {step(2, "Can't scan?", <>Enter this key: <code className="select-all break-all rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs text-accent-2">{pendingSecret}</code></>)}
@@ -113,7 +111,7 @@ export default async function AccountPage() {
             </ol>
           ) : (
             <ActionForm action={startTotpAction} className="space-y-4">
-              <div className="flex items-start gap-3 rounded-xl border border-line bg-surface px-4 py-3">
+              <div className="flex items-start gap-3 rounded border border-line bg-surface px-4 py-3">
                 <QrCode className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
                 <p className="text-sm text-muted">Protect your pharmacy&apos;s records with a code from your phone in addition to your password. Takes about a minute.</p>
               </div>

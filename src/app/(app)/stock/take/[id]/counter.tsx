@@ -66,13 +66,13 @@ export function Counter({ takeId, initial, today }: { takeId: string; initial: C
           <Input ref={scanRef} autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Scan or type, then Enter" aria-label="Barcode or product name" className="h-12 pl-9 text-base" />
         </div>
         <Button type="submit" variant="secondary" size="lg" disabled={pending}>{pending ? "Looking…" : "Find"}</Button>
-        <CameraScanner onCode={lookup} label="Camera" className="inline-flex h-12 items-center gap-2 rounded-2xl border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3" />
+        <CameraScanner onCode={lookup} label="Camera" className="inline-flex h-12 items-center gap-2 rounded-md border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3" />
       </form>
-      {error && <p role="alert" className="mt-3 rounded-xl border border-bad/30 bg-bad/10 px-3.5 py-2.5 text-sm text-bad">{error}</p>}
+      {error && <p role="alert" className="mt-3 rounded border border-bad/30 bg-bad/10 px-3.5 py-2.5 text-sm text-bad">{error}</p>}
       {choices.length > 0 && (
         <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
           {choices.map((c) => (
-            <li key={c.id}><button type="button" onClick={() => start(async () => show(await openProductAction(takeId, c.id)))} className="flex h-11 w-full items-center gap-2 rounded-xl border border-line bg-surface-2 px-3 text-left text-sm text-fg hover:bg-surface-3">
+            <li key={c.id}><button type="button" onClick={() => start(async () => show(await openProductAction(takeId, c.id)))} className="flex h-11 w-full items-center gap-2 rounded border border-line bg-surface-2 px-3 text-left text-sm text-fg hover:bg-surface-3">
               <PackageSearch className="h-4 w-4 text-accent" aria-hidden />{c.label}</button></li>
           ))}
         </ul>
@@ -87,7 +87,7 @@ export function Counter({ takeId, initial, today }: { takeId: string; initial: C
               const on = !!pick && "batchId" in pick && pick.batchId === b.id;
               return (
                 <button key={b.id} type="button" onClick={() => setPick({ batchId: b.id })} aria-pressed={on}
-                  className={cx("rounded-xl border px-3 py-2.5 text-left text-sm transition", on ? "border-accent bg-accent/15" : "border-line bg-surface-2 hover:bg-surface-3")}>
+                  className={cx("rounded border px-3 py-2.5 text-left text-sm transition", on ? "border-accent bg-accent/15" : "border-line bg-surface-2 hover:bg-surface-3")}>
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-mono text-xs text-fg">{b.batchNo || "No batch no."}</span>
                     <span className="flex gap-1">{expired && <Badge tone="red">Expired</Badge>}{b.quarantined && <Badge tone="yellow">Quarantined</Badge>}{b.counted !== null && <Badge tone="green">Counted {b.counted}</Badge>}</span>
@@ -97,7 +97,7 @@ export function Counter({ takeId, initial, today }: { takeId: string; initial: C
               );
             })}
             <button type="button" onClick={() => setPick({ found: true })} aria-pressed={!!pick && "found" in pick}
-              className={cx("rounded-xl border border-dashed px-3 py-2.5 text-left text-sm transition", pick && "found" in pick ? "border-accent bg-accent/15" : "border-line-strong hover:bg-surface-2")}>
+              className={cx("rounded border border-dashed px-3 py-2.5 text-left text-sm transition", pick && "found" in pick ? "border-accent bg-accent/15" : "border-line-strong hover:bg-surface-2")}>
               <div className="font-medium text-fg">Found stock</div>
               <div className="mt-1 text-xs text-muted">A batch that isn&apos;t on the system</div>
             </button>
@@ -143,7 +143,7 @@ export function Counter({ takeId, initial, today }: { takeId: string; initial: C
                 <Button type="submit" size="lg">Save count</Button>
               </div>
               <p className="text-xs text-subtle">Press <Kbd>Enter</Kbd> to save and scan the next item. Counting a batch again replaces the earlier count.</p>
-              {state?.error && <p role="alert" className="rounded-xl border border-bad/30 bg-bad/10 px-3.5 py-2.5 text-sm text-bad">{state.error}</p>}
+              {state?.error && <p role="alert" className="rounded border border-bad/30 bg-bad/10 px-3.5 py-2.5 text-sm text-bad">{state.error}</p>}
             </form>
           )}
         </div>

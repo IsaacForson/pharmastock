@@ -17,7 +17,7 @@ export function OfflineBanner() {
   const online = useOnline();
   if (online) return null;
   return (
-    <div role="status" className="flex items-center justify-center gap-2 border-b border-warn/30 bg-warn/12 px-4 py-2 text-center text-sm text-fg backdrop-blur print:hidden">
+    <div role="status" className="flex items-center justify-center gap-2 border-b border-warn/30 bg-warn/12 px-4 py-2 text-center text-sm text-fg print:hidden">
       <CloudOff className="h-4 w-4 shrink-0 text-warn" aria-hidden />
       <span><strong className="font-semibold text-warn">You are offline.</strong> The till keeps selling: sales and account payments are saved on this device and sync when you reconnect.</span>
     </div>

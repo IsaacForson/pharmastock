@@ -106,7 +106,7 @@ export default async function AlertsPage({ searchParams }: PageProps<"/alerts">)
                         <summary className="cursor-pointer list-none text-xs font-medium text-accent hover:underline [&::-webkit-details-marker]:hidden">More: close or write off</summary>
                         <div className="mt-3 grid gap-4 sm:grid-cols-2">
                           {canResolve && (
-                            <ActionForm action={resolveAlertAction} className="rounded-2xl border border-line bg-surface p-4">
+                            <ActionForm action={resolveAlertAction} className="rounded-md border border-line bg-surface p-4">
                               <input type="hidden" name="id" value={a.id} />
                               <Field label="What did you do?">
                                 <Select name="resolution" defaultValue="">
@@ -118,7 +118,7 @@ export default async function AlertsPage({ searchParams }: PageProps<"/alerts">)
                             </ActionForm>
                           )}
                           {EXPIRY.has(a.kind) && a.batchId && canAdjust && (!controlled || can(role, "controlled.destroy")) && (
-                            <ActionForm action={writeOffAlertAction} className="rounded-2xl border border-bad/30 bg-bad/5 p-4">
+                            <ActionForm action={writeOffAlertAction} className="rounded-md border border-bad/30 bg-bad/5 p-4">
                               <input type="hidden" name="id" value={a.id} />
                               <p className="text-sm text-muted">Remove all {r.qty ?? 0} {r.baseUnit} of this batch from stock as expired.</p>
                               {controlled && <Field label="Witness name" hint="Controlled drug: the witness is recorded in the register."><Input name="witnessName" required /></Field>}

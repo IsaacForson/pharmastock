@@ -47,7 +47,7 @@ export default async function NewReturnPage({ searchParams }: PageProps<"/return
           </form>
         </Toolbar>
         <form action="/returns/new" method="get">
-          <Panel actions={<button className="inline-flex h-10 items-center gap-2 rounded-xl bg-aurora px-4 text-sm font-medium text-on-accent shadow-glow">Continue</button>}>
+          <Panel actions={<button className="inline-flex h-10 items-center gap-2 rounded bg-brand px-4 text-sm font-medium text-on-accent">Continue</button>}>
             <Table head={["", "Product", "Batch", "Expiry", "Supplier", "On hand", "Value"]} empty="No stock found">
               {d.all.map(({ b, name, strength, supplier }) => (
                 <tr key={b.id}>

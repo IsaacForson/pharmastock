@@ -17,8 +17,8 @@ export default async function IntegrationsPage() {
   const connected = rows.filter((r) => r.active).length;
   return (
     <>
-      <div className="glass flex flex-wrap items-center gap-4 p-5 animate-rise">
-        <span className="grid h-11 w-11 place-items-center rounded-2xl border border-accent/25 bg-accent/15 text-accent" aria-hidden><Lock className="h-5 w-5" /></span>
+      <div className="sheet flex flex-wrap items-center gap-4 p-5">
+        <span className="grid h-11 w-11 place-items-center rounded-md border border-accent/25 bg-accent/15 text-accent" aria-hidden><Lock className="h-5 w-5" /></span>
         <p className="min-w-0 flex-1 text-sm text-muted">
           <span className="font-medium text-fg">{connected} of {Object.keys(PROVIDERS).length} connected.</span> Connect your own accounts — credentials are encrypted at rest and never shown in full again. Without your own, PharmaStock&apos;s shared senders are used.
         </p>
@@ -39,7 +39,7 @@ export default async function IntegrationsPage() {
               {secrets.length > 0 && (
                 <div className="mb-4 flex flex-wrap gap-2">
                   {secrets.map((f) => (
-                    <span key={f.key} className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface-2 px-2.5 py-1 text-xs text-muted">
+                    <span key={f.key} className="inline-flex items-center gap-2 rounded border border-line bg-surface-2 px-2.5 py-1 text-xs text-muted">
                       <Lock className="h-3 w-3 text-subtle" aria-hidden />{f.label}
                       <code className="font-mono text-fg">{mask(cur!.config[f.key])}</code>
                     </span>

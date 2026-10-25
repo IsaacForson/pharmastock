@@ -48,12 +48,12 @@ export function SettingsTabs() {
     <>
       {/* Mobile: horizontally scrolling segmented strip */}
       <nav aria-label="Settings sections" className="-mx-4 overflow-x-auto px-4 lg:hidden">
-        <div className="inline-flex gap-1 rounded-2xl border border-line bg-surface p-1">
+        <div className="inline-flex gap-1 rounded-md border border-line bg-surface p-1">
           {ALL.map((i) => {
             const Icon = i.icon, on = i.key === cur.key;
             return (
               <Link key={i.key} href={href(i)} aria-current={on ? "page" : undefined}
-                className={cx("inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3.5 text-sm font-medium transition", on ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
+                className={cx("inline-flex h-10 items-center gap-2 whitespace-nowrap rounded px-3.5 text-sm font-medium transition", on ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:text-fg")}>
                 <Icon className={cx("h-4 w-4", on && "text-accent")} aria-hidden /> {i.label}
               </Link>
             );
@@ -62,19 +62,19 @@ export function SettingsTabs() {
       </nav>
 
       {/* Desktop: vertical sub-navigation with descriptions */}
-      <nav aria-label="Settings sections" className="glass hidden space-y-4 self-start p-2 lg:sticky lg:top-24 lg:block">
+      <nav aria-label="Settings sections" className="sheet hidden space-y-4 self-start p-2 lg:sticky lg:top-24 lg:block">
         {GROUPS.map((g) => (
           <div key={g.label}>
-            <div className="px-3 pb-1.5 pt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-subtle">{g.label}</div>
+            <div className="px-3 pb-1.5 pt-2 text-[10px] font-mono uppercase tracking-wider text-subtle">{g.label}</div>
             <ul className="space-y-0.5">
               {g.items.map((i) => {
                 const Icon = i.icon, on = i.key === cur.key;
                 return (
                   <li key={i.key}>
                     <Link href={href(i)} aria-current={on ? "page" : undefined}
-                      className={cx("group relative flex items-center gap-3 rounded-xl px-2.5 py-2 transition", on ? "bg-surface-3" : "hover:bg-surface-2")}>
-                      {on && <span className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-aurora" aria-hidden />}
-                      <span className={cx("grid h-8 w-8 shrink-0 place-items-center rounded-lg border transition", on ? "border-accent/30 bg-accent/15 text-accent" : "border-line bg-surface text-muted group-hover:text-fg")} aria-hidden>
+                      className={cx("group relative flex items-center gap-3 rounded px-2.5 py-2 transition", on ? "bg-surface-3" : "hover:bg-surface-2")}>
+                      {on && <span className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-brand" aria-hidden />}
+                      <span className={cx("grid h-8 w-8 shrink-0 place-items-center rounded border transition", on ? "border-accent/30 bg-accent/15 text-accent" : "border-line bg-surface text-muted group-hover:text-fg")} aria-hidden>
                         <Icon className="h-4 w-4" />
                       </span>
                       <span className="min-w-0">

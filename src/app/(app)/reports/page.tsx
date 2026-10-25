@@ -42,8 +42,7 @@ export default async function ReportsPage() {
 
 function ReportCard({ href, icon, tone, title, description, tags }: { href: string; icon: React.ReactNode; tone: "purple" | "teal" | "blue" | "green" | "yellow" | "red"; title: string; description: string; tags: (string | false | undefined)[] }) {
   return (
-    <Link href={href} className="glass group relative flex flex-col overflow-hidden p-5 animate-rise transition hover:-translate-y-0.5 hover:border-line-strong">
-      <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-aurora opacity-0 blur-3xl transition duration-500 group-hover:opacity-20" aria-hidden />
+    <Link href={href} className="sheet group relative flex flex-col overflow-hidden p-5 transitionhover:border-line-strong">
       <div className="flex items-start justify-between gap-3">
         <IconTile tone={tone}>{icon}</IconTile>
         <ArrowUpRight className="h-4 w-4 text-subtle transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden />

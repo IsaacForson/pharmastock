@@ -14,7 +14,7 @@ import { confirmPoAction } from "./actions";
 function Gone({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex min-h-[70vh] items-center">
-      <div className="glass mx-auto w-full max-w-md p-8 text-center animate-rise">
+      <div className="sheet mx-auto w-full max-w-md p-8 text-center">
         <LogoMark className="mx-auto h-12 w-12" />
         <h1 className="mt-5 text-xl font-semibold tracking-tight text-fg">{title}</h1>
         <p className="mt-2 text-sm leading-relaxed text-muted">{children}</p>

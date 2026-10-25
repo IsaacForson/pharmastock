@@ -96,12 +96,12 @@ export function ReorderTable({ rows, details, quotes, units, suppliers, currency
                 {isOpen && (
                   <tr className="bg-surface-2">
                     <td colSpan={10} className="px-5 py-3">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">Compare prices (per {r.baseUnit})</div>
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-subtle">Compare prices (per {r.baseUnit})</div>
                       <ul className="mt-2 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
                         {qs.map((q, i) => (
                           <li key={q.supplierId + q.unitId}>
                             <button type="button" onClick={() => pickSupplier(r, q.supplierId, q.unitId)}
-                              className={cx("flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2 text-left text-sm transition hover:border-line-strong", i === 0 ? "border-ok/40 bg-ok/10" : "border-line bg-surface", s.supplierId === q.supplierId && s.unitId === q.unitId && "ring-aurora")}>
+                              className={cx("flex w-full items-center justify-between gap-3 rounded border px-3 py-2 text-left text-sm transition hover:border-line-strong", i === 0 ? "border-ok/40 bg-ok/10" : "border-line bg-surface", s.supplierId === q.supplierId && s.unitId === q.unitId && "mark-brand")}>
                               <span className="min-w-0">
                                 <span className="block truncate font-medium text-fg">{nameOf(q.supplierId)}</span>
                                 <span className="block text-xs text-muted">{fmt(q.costMinor)} per {q.unitName} · {new Date(q.updatedAt).toLocaleDateString("en-GB")}</span>

@@ -71,6 +71,7 @@ export const tenants = pgTable("tenants", {
   expiryAlertDays: integer("expiry_alert_days").array().notNull().default(sql`'{90,60,30}'::int[]`),
   /** Days of cover the reorder suggestion targets (lead time + safety). */
   reorderCoverDays: integer("reorder_cover_days").notNull().default(21),
+  ownerSummaryEnabled: boolean("owner_summary_enabled").notNull().default(true),
   ownerSummaryTime: text("owner_summary_time").notNull().default("21:30"), // HH:MM local, daily WhatsApp summary
   ownerSummaryTo: text("owner_summary_to"), // E.164; null = owner's phone
   loyaltyEnabled: boolean("loyalty_enabled").notNull().default(false),

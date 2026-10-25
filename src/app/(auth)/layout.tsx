@@ -1,56 +1,49 @@
-import { CalendarClock, PackageCheck, ShieldCheck, WifiOff } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { LogoMark } from "../(app)/nav";
 
-const PULSE = [
-  { icon: CalendarClock, label: "Expiry warning", value: "90 days", tone: "text-ok" },
-  { icon: PackageCheck, label: "Batch picked at the till", value: "FEFO", tone: "text-accent-2" },
-  { icon: WifiOff, label: "Sales lost to bad internet", value: "0", tone: "text-accent" },
+const FACTS = [
+  ["90 d", "Expiry warning before a batch goes off"],
+  ["FEFO", "Earliest-expiring batch picked at the till"],
+  ["0", "Sales lost when the internet drops"],
+  ["21:30", "Owner summary on WhatsApp every evening"],
 ];
 
-/** Split-screen auth: cinematic brand panel + glass form. */
+/** Sign-in and sign-up: the app's own header bar over a single ruled sheet, with a ledger of what the product does. */
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="backdrop-os relative grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
-      <section className="relative hidden overflow-hidden border-r border-line lg:flex lg:flex-col lg:justify-between lg:p-12">
-        <div className="pointer-events-none absolute -left-32 top-10 h-[28rem] w-[28rem] rounded-full bg-accent/25 blur-[120px]" aria-hidden />
-        <div className="pointer-events-none absolute -bottom-40 right-0 h-[30rem] w-[30rem] rounded-full bg-accent-2/20 blur-[120px]" aria-hidden />
-        <Link href="/" className="relative flex items-center gap-3 text-lg font-semibold tracking-tight">
-          <LogoMark className="h-10 w-10" /> PharmaStock
-        </Link>
-
-        <div className="relative max-w-lg">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-accent-2">Pharmacy operating system</p>
-          <h2 className="mt-4 text-5xl font-semibold leading-[1.05] tracking-[-0.03em]">
-            Stop throwing away<br /><span className="text-aurora">expired medicine.</span>
-          </h2>
-          <p className="mt-5 text-base leading-relaxed text-muted">Batches, expiry alerts, FEFO at the counter, reorder lists and a WhatsApp summary every evening — built for independent pharmacies and chains, and the till keeps selling when the internet doesn&apos;t.</p>
-
-          <div className="mt-10 grid grid-cols-3 gap-3">
-            {PULSE.map((p, i) => (
-              <div key={p.label} className="glass p-4 animate-rise" style={{ animationDelay: `${120 + i * 90}ms` }}>
-                <p.icon className={`h-4 w-4 ${p.tone}`} aria-hidden />
-                <div className="mt-3 text-2xl font-semibold tracking-tight tabular-nums">{p.value}</div>
-                <div className="mt-0.5 text-[11px] text-subtle">{p.label}</div>
-              </div>
-            ))}
-          </div>
+    <main className="page-bg flex min-h-screen flex-col">
+      <header className="bg-header text-on-header">
+        <div className="mx-auto flex h-12 max-w-5xl items-center justify-between px-4">
+          <Link href="/" className="flex items-center gap-2.5 text-[14px] font-semibold"><LogoMark /> PharmaStock</Link>
+          <Link href="/pricing" className="text-[12px] text-on-header-muted hover:text-on-header">Pricing</Link>
         </div>
+      </header>
 
-        <div className="relative flex items-center gap-2 text-xs text-subtle">
-          <ShieldCheck className="h-4 w-4 text-ok" aria-hidden /> Encrypted records · Per-pharmacy isolation · Your data is always yours
+      <div className="flex flex-1 items-center justify-center px-4 py-10">
+        <div className="sheet grid w-full max-w-[860px] overflow-hidden lg:grid-cols-[1fr_330px]">
+          <section className="p-6 sm:p-9">{children}</section>
+          <aside className="hidden border-l border-line bg-surface-2 p-6 lg:flex lg:flex-col">
+            <div className="font-mono text-[11px] uppercase tracking-wider text-subtle">Built for the dispensary</div>
+            <p className="mt-2 text-[15px] font-semibold leading-snug text-fg">Stop throwing away expired medicine, and never run out of your top sellers.</p>
+            <dl className="mt-5 divide-y divide-line border-y border-line">
+              {FACTS.map(([v, k]) => (
+                <div key={k} className="flex items-baseline gap-3 py-2.5">
+                  <dt className="w-14 shrink-0 font-mono text-[15px] font-semibold text-accent">{v}</dt>
+                  <dd className="text-[13px] leading-snug text-muted">{k}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-auto flex items-start gap-2 pt-6 text-[12px] text-subtle">
+              <ShieldCheck className="mt-px h-4 w-4 shrink-0 text-ok" aria-hidden /> Encrypted records, each pharmacy kept apart, and your data is always yours to export.
+            </p>
+          </aside>
         </div>
-      </section>
+      </div>
 
-      <section className="relative flex flex-col items-center justify-center px-4 py-12 sm:px-8">
-        <Link href="/" className="mb-8 flex items-center gap-3 text-lg font-semibold tracking-tight lg:hidden">
-          <LogoMark /> PharmaStock
-        </Link>
-        <div className="glass ring-aurora w-full max-w-[440px] p-7 sm:p-9 animate-rise">{children}</div>
-        <p className="mt-6 text-center text-xs text-subtle">
-          <Link href="/privacy" className="hover:text-fg">Privacy</Link> · <Link href="/terms" className="hover:text-fg">Terms</Link> · <Link href="/security" className="hover:text-fg">Security</Link>
-        </p>
-      </section>
+      <footer className="pb-6 text-center text-xs text-subtle">
+        <Link href="/privacy" className="hover:text-fg">Privacy</Link> · <Link href="/terms" className="hover:text-fg">Terms</Link> · <Link href="/security" className="hover:text-fg">Security</Link>
+      </footer>
     </main>
   );
 }

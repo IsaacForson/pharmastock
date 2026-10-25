@@ -129,4 +129,13 @@ describe("scheduling and owner summary", () => {
     expect(msgs[0].body).toMatch(/Alerts Test Pharmacy/);
     expect(msgs[0].body).toMatch(/Near expiry \(90 days\)/);
   });
+  it("sends nothing and schedules nothing when the owner switches the summary off", async () => {
+    await adminDb().update(tenants).set({ ownerSummaryEnabled: false }).where(eq(tenants.id, ctx.tenant.id));
+    await adminDb().delete(jobs).where(and(eq(jobs.tenantId, ctx.tenant.id), eq(jobs.type, "owner.summary")));
+    await scheduleRecurring();
+    const js = await adminDb().select().from(jobs).where(and(eq(jobs.tenantId, ctx.tenant.id), eq(jobs.type, "owner.summary")));
+    expect(js).toHaveLength(0);
+    expect(await ownerSummary(ctx.tenant.id, addDays(today, 1))).toBeNull(); // a job queued before switching off does nothing
+    await adminDb().update(tenants).set({ ownerSummaryEnabled: true }).where(eq(tenants.id, ctx.tenant.id));
+  });
 });

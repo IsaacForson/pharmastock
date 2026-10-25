@@ -36,7 +36,7 @@ export default async function TemplatesPage({ searchParams }: PageProps<"/messag
           <ul className="space-y-0.5">
             {keys.map((k) => (
               <li key={k}><Link href={`/messages/templates?key=${k}`} aria-current={k === key ? "page" : undefined}
-                className={cx("flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-sm capitalize transition", k === key ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:bg-surface-2 hover:text-fg")}>
+                className={cx("flex items-center justify-between gap-2 rounded px-3 py-2.5 text-sm capitalize transition", k === key ? "bg-surface-3 text-fg shadow-[inset_0_0_0_1px_var(--line-strong)]" : "text-muted hover:bg-surface-2 hover:text-fg")}>
                 <span className="truncate">{k.replace(/_/g, " ")}</span>
                 {rows.some((r) => r.key === k && r.waTemplateName) && <Badge tone="green">WA</Badge>}
               </Link></li>
@@ -44,9 +44,9 @@ export default async function TemplatesPage({ searchParams }: PageProps<"/messag
           </ul>
         </Panel>
         <Panel glow eyebrow={current ? "Customised" : "Default text"} title={<span className="capitalize">{key.replace(/_/g, " ")}</span>} icon={<MessageSquareText />}
-          actions={<div className="flex gap-1 rounded-xl border border-line bg-surface p-1">{langs.map((l) => (
+          actions={<div className="flex gap-1 rounded border border-line bg-surface p-1">{langs.map((l) => (
             <Link key={l} href={`/messages/templates?key=${key}&lang=${l}`} aria-current={l === lang ? "page" : undefined}
-              className={cx("rounded-lg px-2.5 py-1 font-mono text-xs uppercase transition", l === lang ? "bg-aurora text-on-accent" : "text-muted hover:text-fg")}>{l}</Link>
+              className={cx("rounded px-2.5 py-1 font-mono text-xs uppercase transition", l === lang ? "bg-brand text-on-accent" : "text-muted hover:text-fg")}>{l}</Link>
           ))}</div>}>
           <ActionForm action={saveTemplateAction} key={`${key}-${lang}`} className="space-y-5">
             <input type="hidden" name="key" value={key} />

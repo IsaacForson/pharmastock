@@ -77,15 +77,15 @@ export function CameraScanner({ onCode, label = "Scan with camera", className }:
 
   return (
     <>
-      <button type="button" onClick={() => { setError(null); setOpen(true); }} className={className ?? "inline-flex h-10 items-center gap-2 rounded-xl border border-line bg-surface-2 px-3 text-sm font-medium text-fg hover:bg-surface-3"}>
+      <button type="button" onClick={() => { setError(null); setOpen(true); }} className={className ?? "inline-flex h-10 items-center gap-2 rounded border border-line bg-surface-2 px-3 text-sm font-medium text-fg hover:bg-surface-3"}>
         <Camera className="h-4 w-4" aria-hidden /> {label}
       </button>
       {open && (
-        <div className="fixed inset-0 z-[60] grid place-items-center bg-canvas/80 p-4 backdrop-blur" role="dialog" aria-modal="true" aria-label="Camera scanner">
-          <div className="w-full max-w-md overflow-hidden rounded-3xl border border-line bg-solid shadow-panel">
+        <div className="fixed inset-0 z-[60] grid place-items-center bg-canvas/80 p-4" role="dialog" aria-modal="true" aria-label="Camera scanner">
+          <div className="w-full max-w-md overflow-hidden rounded-md border border-line bg-solid shadow-lift">
             <div className="flex items-center justify-between px-4 py-3">
               <span className="text-sm font-medium text-fg">Point the camera at the barcode</span>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close scanner" className="grid h-9 w-9 place-items-center rounded-xl text-muted hover:bg-surface-2"><X className="h-4 w-4" /></button>
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close scanner" className="grid h-9 w-9 place-items-center rounded text-muted hover:bg-surface-2"><X className="h-4 w-4" /></button>
             </div>
             {error ? <p className="px-4 pb-6 text-sm text-bad">{error}</p> : <video ref={video} className="aspect-[4/3] w-full bg-canvas object-cover" muted playsInline />}
           </div>

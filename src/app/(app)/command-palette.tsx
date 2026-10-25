@@ -68,9 +68,9 @@ export function CommandPalette({ pages, actions, canSearch }: { pages: NavItem[]
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-[60] flex items-start justify-center bg-canvas/70 px-4 pt-[12vh] backdrop-blur-md print:hidden" onMouseDown={close}>
+    <div className="fixed inset-0 z-[60] flex items-start justify-center bg-canvas/70 px-4 pt-[12vh] print:hidden" onMouseDown={close}>
       <div role="dialog" aria-modal="true" aria-label="Search and commands" onMouseDown={(e) => e.stopPropagation()}
-        className="w-full max-w-xl overflow-hidden rounded-3xl border border-line-strong bg-solid/95 shadow-panel backdrop-blur-2xl animate-rise ring-aurora">
+        className="w-full max-w-xl overflow-hidden rounded-md border border-line-strong bg-solid shadow-lift mark-brand">
         <div className="flex items-center gap-3 border-b border-line px-5">
           <Search className="h-5 w-5 text-accent" aria-hidden />
           <input ref={inputRef} value={q} onChange={(e) => { setQ(e.target.value); setActive(0); }}
@@ -90,10 +90,10 @@ export function CommandPalette({ pages, actions, canSearch }: { pages: NavItem[]
             const first = idx === 0 || entries[idx - 1].kind !== e.kind;
             return (
               <li key={e.key}>
-                {first && <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-subtle">{GROUP[e.kind]}</div>}
+                {first && <div className="px-3 pb-1 pt-2 text-[10px] font-mono uppercase tracking-wider text-subtle">{GROUP[e.kind]}</div>}
                 <button type="button" role="option" aria-selected={idx === sel} onMouseEnter={() => setActive(idx)} onClick={() => go(e)}
-                  className={cx("flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition", idx === sel ? "bg-surface-3 text-fg" : "text-muted")}>
-                  <span className={cx("grid h-8 w-8 shrink-0 place-items-center rounded-lg", e.kind in HIT ? "bg-accent/15 text-accent" : e.kind === "action" ? "bg-warn/15 text-warn" : "bg-surface-3 text-muted")}>
+                  className={cx("flex w-full items-center gap-3 rounded px-3 py-2.5 text-left text-sm transition", idx === sel ? "bg-surface-3 text-fg" : "text-muted")}>
+                  <span className={cx("grid h-8 w-8 shrink-0 place-items-center rounded", e.kind in HIT ? "bg-accent/15 text-accent" : e.kind === "action" ? "bg-warn/15 text-warn" : "bg-surface-3 text-muted")}>
                     <Icon className="h-4 w-4" aria-hidden />
                   </span>
                   <span className="min-w-0 flex-1">
@@ -119,10 +119,11 @@ export function CommandPalette({ pages, actions, canSearch }: { pages: NavItem[]
 export function CommandTrigger({ canSearch }: { canSearch: boolean }) {
   return (
     <button type="button" onClick={() => window.dispatchEvent(new Event("ps:command"))}
-      className="group flex h-11 w-full max-w-lg items-center gap-3 rounded-2xl border border-line bg-surface px-4 text-sm text-subtle backdrop-blur-xl transition hover:border-line-strong hover:bg-surface-2">
-      <Search className="h-4 w-4 text-subtle group-hover:text-accent-2" aria-hidden />
-      <span className="flex-1 truncate text-left">{canSearch ? "Search products, customers, sales…" : "Jump to…"}</span>
-      <kbd className="hidden rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[11px] text-muted sm:inline">⌘K</kbd>
+      aria-label={canSearch ? "Search products, customers, sales" : "Jump to a page"}
+      className="flex h-8 items-center gap-2 rounded border border-on-header/20 bg-on-header/5 px-2.5 text-[12px] text-on-header-muted transition-colors hover:border-on-header/40 hover:text-on-header md:w-64">
+      <Search className="h-3.5 w-3.5" aria-hidden />
+      <span className="hidden flex-1 truncate text-left md:inline">{canSearch ? "Search products, customers, sales" : "Jump to…"}</span>
+      <kbd className="hidden rounded-sm border border-on-header/25 px-1 font-mono text-[10px] md:inline">⌘K</kbd>
     </button>
   );
 }

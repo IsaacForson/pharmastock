@@ -149,7 +149,7 @@ export function Importer({ fields, suppliers, canStock, canPrice, currency }: {
           </>}>
           <div className="mb-4 flex flex-wrap gap-1">
             {([["all", "All"], ["review", "Needs a look"], ["match", "Matched"], ["new", "New products"], ["error", "Problems"]] as const).map(([k, l]) => (
-              <button key={k} type="button" onClick={() => { setFilter(k); setLimit(200); }} className={cx("rounded-xl px-3 py-1.5 text-sm font-medium", filter === k ? "bg-surface-3 text-fg" : "text-muted hover:text-fg")}>
+              <button key={k} type="button" onClick={() => { setFilter(k); setLimit(200); }} className={cx("rounded px-3 py-1.5 text-sm font-medium", filter === k ? "bg-surface-3 text-fg" : "text-muted hover:text-fg")}>
                 {l} <span className="ml-1 text-xs tabular-nums text-subtle">{counts[k]}</span>
               </button>
             ))}

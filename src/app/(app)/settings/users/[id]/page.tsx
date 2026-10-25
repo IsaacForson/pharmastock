@@ -24,8 +24,7 @@ export default async function EditStaffPage({ params }: PageProps<"/settings/use
     <>
       <div className="flex"><LinkButton href="/settings/users" variant="ghost" size="sm"><ArrowLeft className="h-4 w-4" aria-hidden /> All staff</LinkButton></div>
 
-      <section className="glass relative overflow-hidden p-6 animate-rise">
-        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-aurora opacity-20 blur-3xl" aria-hidden />
+      <section className="sheet relative overflow-hidden p-6">
         <div className="relative flex flex-wrap items-center gap-4">
           <Avatar name={u.name} size="lg" />
           <div className="min-w-0 flex-1">
@@ -68,7 +67,7 @@ export default async function EditStaffPage({ params }: PageProps<"/settings/use
               <Input name="pin" type="password" inputMode="numeric" pattern="\d{4,6}" maxLength={6} autoComplete="new-password" placeholder="New PIN" aria-label="New PIN" />
               <div className="flex gap-2">
                 <Submit variant="secondary" className="flex-1">{u.pinHash ? "Reset PIN" : "Set PIN"}</Submit>
-                {u.pinHash && <button name="clear" value="1" className="h-10 rounded-xl border border-line px-3 text-sm text-muted hover:text-fg">Remove</button>}
+                {u.pinHash && <button name="clear" value="1" className="h-10 rounded border border-line px-3 text-sm text-muted hover:text-fg">Remove</button>}
               </div>
             </ActionForm>
           </Panel>

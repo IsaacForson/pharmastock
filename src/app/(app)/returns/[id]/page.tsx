@@ -41,19 +41,19 @@ export default async function ReturnPage({ params }: PageProps<"/returns/[id]">)
         </Letterhead>
         <section className="grid gap-4 text-sm sm:grid-cols-2">
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">Returned to</div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-subtle">Returned to</div>
             <div className="mt-1 font-semibold text-fg">{s.name}</div>
             <div className="text-muted">{[s.address, s.phone, s.email].filter(Boolean).join(" · ")}</div>
             {s.licenceNo && <div className="text-xs text-subtle">Licence {s.licenceNo}</div>}
           </div>
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">Reason</div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-subtle">Reason</div>
             <div className="mt-1 text-fg">{RETURN_REASONS[r.reason as keyof typeof RETURN_REASONS] ?? r.reason}</div>
             {r.notes && <div className="text-muted">{r.notes}</div>}
           </div>
         </section>
         <table className="w-full text-sm">
-          <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-[0.14em] text-subtle"><th className="py-2">Product</th><th className="py-2">Batch</th><th className="py-2">Expiry</th><th className="py-2 text-right">Qty</th><th className="py-2 text-right">Cost each</th><th className="py-2 text-right">Value</th></tr></thead>
+          <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-wider text-subtle"><th className="py-2">Product</th><th className="py-2">Batch</th><th className="py-2">Expiry</th><th className="py-2 text-right">Qty</th><th className="py-2 text-right">Cost each</th><th className="py-2 text-right">Value</th></tr></thead>
           <tbody className="divide-y divide-line">
             {d.lines.map(({ l, name, strength, baseUnit, batchNo, expiry }) => (
               <tr key={l.id}>

@@ -34,7 +34,7 @@ export default async function CashupPage({ searchParams }: PageProps<"/cashup">)
   return (
     <div>
       <PageHeader title="Daily close" eyebrow={branch} icon={<Wallet />} subtitle={`Takings and drawer count for ${day}`}
-        actions={<><form className="print:hidden"><Toolbar className="mb-0"><Input type="date" name="day" defaultValue={day} max={today} className="w-40" aria-label="Day" /><button className="h-10 rounded-xl border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3">Show</button></Toolbar></form>{can(ctx.user.role, "expenses.manage") && <LinkButton variant="secondary" href="/expenses" className="print:hidden">Expenses</LinkButton>}<PrintButton /></>} />
+        actions={<><form className="print:hidden"><Toolbar className="mb-0"><Input type="date" name="day" defaultValue={day} max={today} className="w-40" aria-label="Day" /><button className="h-10 rounded border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3">Show</button></Toolbar></form>{can(ctx.user.role, "expenses.manage") && <LinkButton variant="secondary" href="/expenses" className="print:hidden">Expenses</LinkButton>}<PrintButton /></>} />
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Kpi label="Sales" value={m(s.salesTotal)} sub={`${s.salesCount} sales · ${s.voidedCount} voided${s.offlineCount ? ` · ${s.offlineCount} offline` : ""}`} />
         <Kpi label="Cash expected in drawer" value={m(s.expected.cash)} tone="green" sub={`after ${m(s.expenses.cash)} cash expenses`} />

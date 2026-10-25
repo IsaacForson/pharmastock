@@ -27,15 +27,14 @@ export default async function DataOwnershipPage() {
   ];
   return (
     <>
-      <section className="glass relative overflow-hidden p-6 animate-rise sm:p-8">
-        <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-aurora opacity-20 blur-3xl" aria-hidden />
+      <section className="sheet relative overflow-hidden p-6 sm:p-8">
         <div className="relative">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">Our promise</div>
-          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-fg">Your data is <span className="text-aurora">yours</span></h2>
+          <div className="text-[11px] font-mono uppercase tracking-wider text-accent">Our promise</div>
+          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-fg">Your data is <span className="text-brand">yours</span></h2>
         </div>
         <div className="relative mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {promises.map(([icon, title, body]) => (
-            <div key={title} className="rounded-2xl border border-line bg-surface p-4">
+            <div key={title} className="rounded-md border border-line bg-surface p-4">
               <IconTile>{icon}</IconTile>
               <h3 className="mt-3 text-sm font-semibold text-fg">{title}</h3>
               <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>

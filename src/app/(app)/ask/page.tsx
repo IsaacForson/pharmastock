@@ -22,7 +22,7 @@ export default async function AskPage() {
         <AskBox branches={options.length > 1 ? options : []} defaultBranch={scope.all ? "all" : ctx.branchId} />
       ) : (
         <Callout tone="yellow" icon={<KeyRound />}>
-          Ask PharmaStock isn&apos;t switched on for this server yet. Your PharmaStock administrator needs to add an Anthropic API key (<code className="font-mono text-xs">ANTHROPIC_API_KEY</code>).
+          Ask PharmaStock isn&apos;t switched on for this server yet. Your PharmaStock administrator needs to add a free Groq API key (<code className="font-mono text-xs">GROQ_API_KEY</code>, from console.groq.com).
         </Callout>
       )}
       <p className="mt-6 text-xs text-subtle">For business questions only. It doesn&apos;t give dosing or medical advice; that stays with your pharmacist. Questions are recorded in the audit log.</p>

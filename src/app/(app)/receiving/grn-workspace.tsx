@@ -113,7 +113,7 @@ export function GrnWorkspace({ catalog, suppliers, openPos, po, initialLines, to
           <ProductSearch catalog={catalog} onPick={add} inputRef={search} autoFocus />
           <div ref={table} className="-mx-5 overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead><tr className="border-b border-line text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-subtle">
+              <thead><tr className="border-b border-line text-left text-[10px] font-mono uppercase tracking-wider text-subtle">
                 {["Product / pack", "Qty", "Free", "Batch no.", "Expiry", "Mfg", "Cost per pack", ""].map((h) => <th key={h} className="whitespace-nowrap px-2 pb-3 first:pl-5">{h}</th>)}
               </tr></thead>
               <tbody className="divide-y divide-line">
@@ -174,7 +174,7 @@ export function GrnWorkspace({ catalog, suppliers, openPos, po, initialLines, to
               <Input type="date" name="dueAt" value={due} onChange={(e) => setDueAt(e.target.value)} />
             </Field>
             <Field label="Invoice photo or PDF">
-              <label className="flex h-10 cursor-pointer items-center gap-2 rounded-xl border border-dashed border-line-strong bg-surface-2 px-3 text-sm text-muted hover:text-fg">
+              <label className="flex h-10 cursor-pointer items-center gap-2 rounded border border-dashed border-line-strong bg-surface-2 px-3 text-sm text-muted hover:text-fg">
                 <Paperclip className="h-4 w-4" aria-hidden /><input type="file" name="invoice" accept="image/*,application/pdf" capture="environment" className="min-w-0 flex-1 text-xs file:hidden" />
               </label>
             </Field>

@@ -29,7 +29,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
   const draft = c.status === "draft";
   return (
     <PrintDoc tenant={ctx.tenant} title={`Claim ${c.batchNo}`} back="/claims" actions={<>
-      <a href={`/claims/${c.id}/csv`} className="inline-flex h-10 items-center gap-2 rounded-xl border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3"><Download className="h-4 w-4" aria-hidden /> CSV</a>
+      <a href={`/claims/${c.id}/csv`} className="inline-flex h-10 items-center gap-2 rounded border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3"><Download className="h-4 w-4" aria-hidden /> CSV</a>
       {draft && write && <ActionButton action={submitClaimAction} fields={{ id: c.id }} variant="primary" confirm="Mark this claim as sent to the payer?"><Send className="h-4 w-4" aria-hidden /> Mark submitted</ActionButton>}
     </>}>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
@@ -57,9 +57,9 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
                   <summary className="cursor-pointer text-sm font-medium text-accent">Record</summary>
                   <ActionForm action={settleItemAction} className="mt-2 w-60">
                     <input type="hidden" name="itemId" value={r.i.id} /><input type="hidden" name="claimId" value={c.id} />
-                    <input name="paid" inputMode="decimal" defaultValue={toMajor(r.i.amountPaidMinor || r.i.amountClaimedMinor)} aria-label="Amount paid" className="h-9 w-full rounded-lg border border-line bg-surface-2 px-2 text-right text-sm tabular-nums text-fg" />
+                    <input name="paid" inputMode="decimal" defaultValue={toMajor(r.i.amountPaidMinor || r.i.amountClaimedMinor)} aria-label="Amount paid" className="h-9 w-full rounded border border-line bg-surface-2 px-2 text-right text-sm tabular-nums text-fg" />
                     <label className="flex items-center gap-2 text-xs text-muted"><input type="checkbox" name="rejected" defaultChecked={r.i.status === "rejected"} /> Rejected</label>
-                    <input name="reason" placeholder="Reason given by the payer" defaultValue={r.i.rejectionReason ?? ""} className="h-9 w-full rounded-lg border border-line bg-surface-2 px-2 text-xs text-fg" />
+                    <input name="reason" placeholder="Reason given by the payer" defaultValue={r.i.rejectionReason ?? ""} className="h-9 w-full rounded border border-line bg-surface-2 px-2 text-xs text-fg" />
                     <Submit size="sm">Save</Submit>
                   </ActionForm>
                 </details>

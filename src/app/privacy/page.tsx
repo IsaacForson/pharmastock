@@ -9,7 +9,7 @@ const SUBPROCESSORS: [string, string, string][] = [
   ["SMS gateway provider", "SMS messages and sign-in codes where WhatsApp is unavailable", "Phone number, message text"],
   ["Email provider", "Emailed receipts and purchase orders (only if used)", "Email address, message text"],
   ["Paystack", "Subscription billing and, if the pharmacy connects it, customer card and mobile money payments", "Payer name, phone or email, amount"],
-  ["Anthropic", "Plain-language answers in Ask PharmaStock (only if a user asks a question)", "The question and the sales, stock and purchasing figures needed to answer it; not used for model training"],
+  ["Groq", "Plain-language answers in Ask PharmaStock (only if a user asks a question)", "The question and the sales, stock and purchasing figures needed to answer it. No customer names, contacts or prescription details are sent"],
 ];
 
 export default function PrivacyPage() {

@@ -37,29 +37,28 @@ export default function PricingPage() {
       {/* Billing period toggle is CSS-only (radio + :has), so it works before/without JS. */}
       <div className="group/bill">
         <section className="relative overflow-hidden">
-          <div className="pointer-events-none absolute left-1/2 top-[-10rem] h-[28rem] w-[48rem] -translate-x-1/2 rounded-full bg-accent/25 blur-[120px]" aria-hidden />
-          <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-16 text-center sm:px-6 sm:pt-24">
-            <div className="animate-rise"><Eyebrow>Pricing</Eyebrow></div>
-            <h1 className="mx-auto mt-6 max-w-3xl animate-rise text-5xl font-semibold leading-[1.03] tracking-[-0.045em] text-fg [animation-delay:80ms] sm:text-7xl">
-              Pays for itself in <span className="text-aurora">saved stock.</span>
+          <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-14 sm:px-6">
+            <Eyebrow>Pricing</Eyebrow>
+            <h1 className="mt-5 max-w-3xl text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.025em] text-fg sm:text-6xl">
+              Pays for itself in <span className="underline decoration-accent decoration-[6px] underline-offset-[10px]">saved stock.</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl animate-rise text-lg text-muted [animation-delay:160ms]">
+            <p className="mt-5 max-w-2xl text-lg text-muted">
               One clear monthly price per pharmacy, in your currency. No per-sale fees, no add-on fees for alerts, backups or data export.
             </p>
 
-            <fieldset className="mt-9 inline-flex animate-rise rounded-2xl border border-line bg-surface p-1 backdrop-blur [animation-delay:240ms]">
+            <fieldset className="mt-8 inline-flex rounded border border-line-strong bg-surface p-0.5">
               <legend className="sr-only">Billing period</legend>
               {[["monthly", "Monthly"], ["annual", "Annual"]].map(([v, label]) => (
-                <label key={v} className="relative flex cursor-pointer items-center gap-2 rounded-xl px-5 py-2 text-sm font-medium text-muted transition has-[:checked]:bg-surface-3 has-[:checked]:text-fg has-[:checked]:shadow-[inset_0_0_0_1px_var(--line-strong)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent">
+                <label key={v} className="relative flex cursor-pointer items-center gap-2 rounded px-5 py-2 text-sm font-medium text-muted transition has-[:checked]:bg-surface-3 has-[:checked]:text-fg has-[:checked]:shadow-[inset_0_0_0_1px_var(--line-strong)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent">
                   <input type="radio" name="billing" id={`bill-${v}`} value={v} defaultChecked={v === "monthly"} className="sr-only" />
                   {label}
                   {v === "annual" && <span className="rounded-md bg-ok/12 px-1.5 py-0.5 text-[10px] font-semibold text-ok">2 months free</span>}
                 </label>
               ))}
             </fieldset>
-            <div className="mt-4 animate-rise [animation-delay:280ms]"><PriceCurrencySwitcher /></div>
+            <div className="mt-4"><PriceCurrencySwitcher /></div>
 
-            <ul className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted">
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[12px] text-muted">
               {[`${TRIAL_DAYS}-day free trial, no card`, "Free data export, always", "Read-only, never locked out"].map((x) => (
                 <li key={x} className="flex items-center gap-1.5"><Check className="h-4 w-4 text-ok" aria-hidden />{x}</li>
               ))}
@@ -68,29 +67,28 @@ export default function PricingPage() {
         </section>
 
         <section aria-label="Plans" className="mx-auto max-w-6xl px-4 pb-10 sm:px-6">
-          <div className="grid gap-5 lg:grid-cols-3">
-            {plans.map(([key, p], i) => {
+          <div className="sheet grid divide-y divide-line lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+            {plans.map(([key, p]) => {
               const featured = key === "pro";
               const per = key === "chain" ? " per branch" : "";
               return (
-                <article id={key} key={key} className={cx("glass relative flex scroll-mt-28 flex-col p-7 animate-rise", featured && "ring-aurora shadow-glow lg:-my-3 lg:py-10")} style={{ animationDelay: `${300 + i * 80}ms` }}>
-                  {featured && <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-aurora opacity-20 blur-3xl" aria-hidden />}
+                <article id={key} key={key} className={cx("relative flex scroll-mt-20 flex-col p-7", featured && "border-t-[3px] border-t-accent bg-surface-2")}>
                   <div className="relative flex items-center justify-between">
                     <h2 className="text-lg font-semibold text-fg">{p.name}</h2>
-                    {featured && <Badge tone="purple">Most popular</Badge>}
+                    {featured && <Badge tone="purple">Most chosen</Badge>}
                   </div>
                   <p className="relative mt-1 text-sm text-muted">{BLURB[key]}</p>
 
                   <div className="relative mt-6 group-has-[#bill-annual:checked]/bill:hidden">
-                    <p><span className="text-5xl font-semibold tracking-[-0.04em] text-fg tabular-nums"><Price of={{ plan: key }} /></span><span className="text-muted">/month{per}</span></p>
+                    <p><span className="font-mono text-4xl font-semibold tracking-tight text-fg"><Price of={{ plan: key }} /></span><span className="text-muted">/month{per}</span></p>
                     <p className="mt-1.5 text-sm text-subtle">or <Price of={{ plan: key, cycle: "annual" }} />/year{per} (2 months free)</p>
                   </div>
                   <div className="relative mt-6 hidden group-has-[#bill-annual:checked]/bill:block">
-                    <p><span className="text-5xl font-semibold tracking-[-0.04em] text-fg tabular-nums"><Price of={{ plan: key, cycle: "annual" }} /></span><span className="text-muted">/year{per}</span></p>
+                    <p><span className="font-mono text-4xl font-semibold tracking-tight text-fg"><Price of={{ plan: key, cycle: "annual" }} /></span><span className="text-muted">/year{per}</span></p>
                     <p className="mt-1.5 text-sm text-ok">2 months free · <Price of={{ plan: key, cycle: "annual-saving" }} /> saved{per}</p>
                   </div>
 
-                  <p className="relative mt-6 rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-medium text-fg">{planLimitsLine(key)}</p>
+                  <p className="relative mt-6 rounded-md border border-line bg-surface px-4 py-3 text-sm font-medium text-fg">{planLimitsLine(key)}</p>
 
                   <ul className="relative mt-6 flex-1 space-y-2.5 text-sm text-fg">
                     {p.features.map((f) => <li key={f} className="flex gap-2.5"><Check className="mt-0.5 h-4 w-4 shrink-0 text-accent-2" aria-hidden />{FEATURE_LABELS[f as Feature]}</li>)}
@@ -103,7 +101,7 @@ export default function PricingPage() {
             })}
           </div>
 
-          <div className="glass mt-6 p-6 sm:p-8">
+          <div className="sheet mt-6 p-6 sm:p-8">
             <div className="flex flex-wrap items-start gap-4">
               <IconTile><Rocket /></IconTile>
               <div className="min-w-0 flex-1">
@@ -113,7 +111,7 @@ export default function PricingPage() {
             </div>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {(Object.entries(SETUP_TIERS) as [keyof typeof SETUP_TIERS, (typeof SETUP_TIERS)[keyof typeof SETUP_TIERS]][]).map(([k, t]) => (
-                <div key={k} className="rounded-2xl border border-line bg-surface p-5">
+                <div key={k} className="rounded-md border border-line bg-surface p-5">
                   <div className="flex items-center justify-between gap-2">
                     <IconTile tone="teal" className="h-9 w-9">{SETUP_ICONS[k]}</IconTile>
                     <span className="text-lg font-semibold tabular-nums text-fg"><Price of={{ setup: k }} /></span>
@@ -130,7 +128,7 @@ export default function PricingPage() {
       {/* Compare matrix */}
       <section aria-labelledby="matrix" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <h2 id="matrix" className="text-3xl font-semibold tracking-[-0.03em] text-fg sm:text-4xl">Compare plans</h2>
-        <div className="glass mt-8 overflow-x-auto">
+        <div className="sheet mt-8 overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead>
               <tr className="border-b border-line">
@@ -174,7 +172,7 @@ export default function PricingPage() {
         </div>
         <div className="space-y-3">
           {FAQ.map(([q, a]) => (
-            <details key={q} className="glass group p-0 open:border-line-strong">
+            <details key={q} className="sheet group p-0 open:border-line-strong">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-medium text-fg [&::-webkit-details-marker]:hidden">
                 {q}<ChevronDown className="h-4 w-4 shrink-0 text-subtle transition group-open:rotate-180" aria-hidden />
               </summary>
@@ -184,7 +182,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <CtaBand title={<>Try every feature, <span className="text-aurora">free for {TRIAL_DAYS} days.</span></>} body="No card required. Pick a plan when you're ready — or don't, and export everything you entered." />
+      <CtaBand title={<>Try every feature, <span className="text-brand">free for {TRIAL_DAYS} days.</span></>} body="No card required. Pick a plan when you're ready — or don't, and export everything you entered." />
     </SitePage>
   );
 }

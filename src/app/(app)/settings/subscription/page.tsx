@@ -43,18 +43,17 @@ export default async function SubscriptionPage({ searchParams }: PageProps<"/set
     <>
       {paid && <Callout tone="green" icon={<CheckCircle2 />}>Thank you — your payment is being confirmed. This page updates once Paystack notifies us (usually within a minute).</Callout>}
 
-      <section className="glass relative overflow-hidden p-6 animate-rise">
-        <div className="pointer-events-none absolute -left-16 -top-24 h-56 w-56 rounded-full bg-aurora opacity-20 blur-3xl" aria-hidden />
+      <section className="sheet relative overflow-hidden p-6">
         <div className="relative flex flex-wrap items-start justify-between gap-4">
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-subtle">Current plan</div>
+            <div className="text-[11px] font-mono uppercase tracking-wider text-subtle">Current plan</div>
             <div className="mt-1 flex items-center gap-3">
-              <span className="text-aurora text-3xl font-semibold tracking-tight">{PLANS[t.plan].name}</span>
+              <span className="text-brand text-3xl font-semibold tracking-tight">{PLANS[t.plan].name}</span>
               <Badge tone={STATUS_TONE[t.planStatus]}>{t.planStatus.replace("_", " ")}</Badge>
             </div>
             <p className="mt-1 text-sm capitalize text-muted">{t.billingCycle} billing</p>
           </div>
-          <span className="grid h-12 w-12 place-items-center rounded-2xl border border-accent/25 bg-accent/15 text-accent" aria-hidden><Gem className="h-6 w-6" /></span>
+          <span className="grid h-12 w-12 place-items-center rounded-md border border-accent/25 bg-accent/15 text-accent" aria-hidden><Gem className="h-6 w-6" /></span>
         </div>
         <div className="relative mt-6 border-t border-line pt-5">
           <Dl cols={3} items={[
@@ -73,7 +72,7 @@ export default async function SubscriptionPage({ searchParams }: PageProps<"/set
         <p className="mb-4 text-sm text-muted">The slowest part of starting is entering your stock. Let our team do it.</p>
         <div className="grid gap-4 md:grid-cols-3">
           {Object.entries(SETUP_TIERS).map(([key, m]) => (
-            <ActionForm key={key} action={setupCheckoutAction} className="flex flex-col rounded-2xl border border-line bg-surface p-4 transition hover:border-line-strong">
+            <ActionForm key={key} action={setupCheckoutAction} className="flex flex-col rounded-md border border-line bg-surface p-4 transition hover:border-line-strong">
               <input type="hidden" name="tier" value={key} />
               <div className="flex items-baseline justify-between gap-2">
                 <p className="font-medium text-fg">{m.name}</p>

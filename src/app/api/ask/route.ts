@@ -20,7 +20,7 @@ const limited = (userId: string) => {
   return recent.length >= HOURLY;
 };
 
-/** Streams NDJSON progress events ({type:"tool"|"answer"|"error"}) while Claude answers using read-only tools. */
+/** Streams NDJSON progress events ({type:"tool"|"answer"|"error"}) while the model (on Groq) answers using read-only tools. */
 export async function POST(req: Request) {
   const ctx = await getCtx();
   if (!ctx) return Response.json({ error: "Please sign in again." }, { status: 401 });

@@ -4,5 +4,5 @@ import { Suspense } from "react";
 export const instant = false;
 
 export default function PublicReceiptLayout({ children }: { children: React.ReactNode }) {
-  return <Suspense fallback={<div className="backdrop-os min-h-screen" aria-busy="true" />}>{children}</Suspense>;
+  return <Suspense fallback={<div className="page-bg min-h-screen" aria-busy="true" />}>{children}</Suspense>;
 }

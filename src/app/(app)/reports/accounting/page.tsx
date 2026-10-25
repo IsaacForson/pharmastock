@@ -61,7 +61,7 @@ export default async function AccountingPage({ searchParams }: PageProps<"/repor
             <ul className="space-y-3">
               {Object.entries(DOCS).map(([key, d]) => (
                 <li key={key}>
-                  <a href={qs(key)} download className="group flex items-start gap-3 rounded-xl border border-line p-3 transition hover:border-line-strong hover:bg-surface-2">
+                  <a href={qs(key)} download className="group flex items-start gap-3 rounded border border-line p-3 transition hover:border-line-strong hover:bg-surface-2">
                     <Download className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
                     <span><span className="block text-sm font-medium text-fg">{d.label}</span><span className="block text-xs text-muted">{d.hint}</span></span>
                   </a>

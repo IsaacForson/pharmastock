@@ -100,7 +100,7 @@ export default async function CustomerPage({ params }: PageProps<"/customers/[id
           <ActionForm action={balanceReminderAction}><input type="hidden" name="customerId" value={c.id} /><Submit variant="ghost" size="sm"><MessageCircle className="h-4 w-4" aria-hidden /> Send reminder</Submit></ActionForm>
         )}>
           {c.balanceMinor > 0 && can(role, "pos.sell") && write && (
-            <ActionForm action={repaymentAction} resetOnSuccess className="mb-4 rounded-2xl border border-line p-4">
+            <ActionForm action={repaymentAction} resetOnSuccess className="mb-4 rounded-md border border-line p-4">
               <input type="hidden" name="customerId" value={c.id} />
               <input type="hidden" name="clientId" value={newClientId()} />
               <div className="grid gap-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">

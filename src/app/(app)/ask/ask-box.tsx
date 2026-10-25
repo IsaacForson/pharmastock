@@ -74,7 +74,7 @@ export function AskBox({ branches, defaultBranch }: { branches: { id: string; na
       {turns.length === 0 && (
         <div className="grid gap-3 sm:grid-cols-2">
           {EXAMPLES.map((e) => (
-            <button key={e} type="button" onClick={() => submit(e)} className="glass min-h-12 p-4 text-left text-sm text-muted transition hover:-translate-y-0.5 hover:border-line-strong hover:text-fg">
+            <button key={e} type="button" onClick={() => submit(e)} className="sheet min-h-12 p-4 text-left text-sm text-muted transitionhover:border-line-strong hover:text-fg">
               <Sparkles className="mb-2 h-4 w-4 text-accent" aria-hidden />{e}
             </button>
           ))}
@@ -86,7 +86,7 @@ export function AskBox({ branches, defaultBranch }: { branches: { id: string; na
         const tools = t.steps.filter((s): s is Extract<Step, { type: "tool" }> => s.type === "tool" && !!s.label);
         return (
           <div key={i} className="space-y-3">
-            <div className="ml-auto w-fit max-w-[85%] rounded-2xl bg-accent/15 px-4 py-2.5 text-sm text-fg">{t.question}</div>
+            <div className="ml-auto w-fit max-w-[85%] rounded-md bg-accent/15 px-4 py-2.5 text-sm text-fg">{t.question}</div>
             <Panel glow={!t.done}>
               {tools.length > 0 && (
                 <ul className="mb-3 space-y-1 text-xs text-subtle" aria-live="polite">
@@ -100,7 +100,7 @@ export function AskBox({ branches, defaultBranch }: { branches: { id: string; na
           </div>
         );
       })}
-      <form onSubmit={(e) => { e.preventDefault(); submit(q); }} className="glass sticky bottom-4 flex items-end gap-2 p-2">
+      <form onSubmit={(e) => { e.preventDefault(); submit(q); }} className="sheet sticky bottom-4 flex items-end gap-2 p-2">
         {branches.length > 0 && (
           <Select aria-label="Branch" value={branch} onChange={(e) => setBranch(e.target.value)} className="w-40 shrink-0">
             {branches.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
@@ -110,7 +110,7 @@ export function AskBox({ branches, defaultBranch }: { branches: { id: string; na
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(q); } }}
           className="min-h-10 flex-1 resize-none bg-transparent px-3 py-2.5 text-sm text-fg outline-none placeholder:text-subtle" />
         <button type="submit" disabled={busy || q.trim().length < 3} aria-label="Ask"
-          className={cx("grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-aurora text-on-accent shadow-glow transition", (busy || q.trim().length < 3) && "opacity-40")}>
+          className={cx("grid h-10 w-10 shrink-0 place-items-center rounded bg-brand text-on-accent transition", (busy || q.trim().length < 3) && "opacity-40")}>
           {busy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <ArrowUp className="h-4 w-4" aria-hidden />}
         </button>
       </form>

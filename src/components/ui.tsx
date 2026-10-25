@@ -30,10 +30,12 @@ export function IconButton({ label, className, ...p }: ComponentProps<"button"> 
 }
 
 // ---------- Form controls ----------
-const control = "block w-full rounded border border-line-strong bg-surface px-3 text-sm text-fg placeholder:text-subtle outline-none transition-colors hover:border-fg/35 focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:bg-surface-2 disabled:opacity-60";
-export const Input = ({ className, ...p }: ComponentProps<"input">) => <input className={cx(control, "h-9", className)} {...p} />;
-export const Textarea = ({ className, ...p }: ComponentProps<"textarea">) => <textarea rows={3} className={cx(control, "py-2 leading-relaxed", className)} {...p} />;
-export const Select = ({ className, ...p }: ComponentProps<"select">) => <select className={cx(control, "h-9 appearance-none bg-[length:14px] bg-[right_10px_center] bg-no-repeat pr-8", "bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%237b877f%22 stroke-width=%222.2%22><path d=%22m6 9 6 6 6-6%22/></svg>')]", className)} {...p} />;
+const control = "block rounded border border-line-strong bg-surface px-3 text-sm text-fg placeholder:text-subtle outline-none transition-colors hover:border-fg/35 focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:bg-surface-2 disabled:opacity-60";
+/** Controls fill their container unless the screen sets its own width (two width classes would fight). */
+const width = (className?: string) => (/(^|\s)(\w+:)?(w-|max-w-|min-w-|flex-1|basis-)/.test(className ?? "") ? null : "w-full");
+export const Input = ({ className, ...p }: ComponentProps<"input">) => <input className={cx(control, width(className), "h-9", className)} {...p} />;
+export const Textarea = ({ className, ...p }: ComponentProps<"textarea">) => <textarea rows={3} className={cx(control, width(className), "py-2 leading-relaxed", className)} {...p} />;
+export const Select = ({ className, ...p }: ComponentProps<"select">) => <select className={cx(control, width(className), "h-9 appearance-none bg-[length:14px] bg-[right_10px_center] bg-no-repeat pr-8", "bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%237b877f%22 stroke-width=%222.2%22><path d=%22m6 9 6 6 6-6%22/></svg>')]", className)} {...p} />;
 
 export function Field({ label, children, hint, className }: { label: string; children: ReactNode; hint?: string; className?: string }) {
   return (

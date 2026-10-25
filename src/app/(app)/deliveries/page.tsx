@@ -40,11 +40,11 @@ export default async function DeliveriesPage() {
         {LANES.map((lane) => {
           const items = rows.filter((r) => r.d.status === lane.key);
           return (
-            <section key={lane.key} className="glass min-h-64 p-3 animate-rise">
+            <section key={lane.key} className="sheet min-h-64 p-3">
               <header className="mb-3 flex items-center justify-between px-1"><span className="flex items-center gap-2 text-sm font-semibold text-fg"><StatusDot tone={lane.tone} pulse={lane.key === "out"} />{lane.label}</span><Badge tone={lane.tone}>{items.length}</Badge></header>
               <div className="space-y-2">
                 {items.map(({ d, saleNo, total, customer }) => (
-                  <article key={d.id} className="rounded-2xl border border-line bg-surface-2 p-3 text-sm transition hover:-translate-y-px hover:border-line-strong">
+                  <article key={d.id} className="rounded-md border border-line bg-surface-2 p-3 text-sm transitionhover:border-line-strong">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0"><div className="truncate font-medium text-fg">{customer ?? "Customer"}</div>{d.saleId && <Link href={`/sales/${d.saleId}`} className="font-mono text-xs text-accent hover:underline">{saleNo}</Link>}</div>
                       <span className="text-xs tabular-nums text-muted">{money(total ?? 0, cur)}</span>

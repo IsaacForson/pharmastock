@@ -131,8 +131,8 @@ export default async function OwnerConsolePage({ searchParams }: PageProps<"/own
 
 function Mini({ icon, label, value, sub, bad }: { icon: React.ReactNode; label: string; value: React.ReactNode; sub?: React.ReactNode; bad?: boolean }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface p-3.5">
-      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-subtle [&>svg]:h-3.5 [&>svg]:w-3.5">{icon}{label}</div>
+    <div className="rounded-md border border-line bg-surface p-3.5">
+      <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-subtle [&>svg]:h-3.5 [&>svg]:w-3.5">{icon}{label}</div>
       <div className={bad ? "mt-1.5 text-xl font-semibold tabular-nums text-bad" : "mt-1.5 text-xl font-semibold tabular-nums text-fg"}>{value}</div>
       {sub && <div className="mt-0.5 truncate text-xs text-muted">{sub}</div>}
     </div>

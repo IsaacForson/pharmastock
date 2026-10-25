@@ -61,7 +61,7 @@ export default async function ReturnsPage({ searchParams }: PageProps<"/returns"
             {d.groups.map((g) => (
               <form key={g.supplierId} action="/returns/new" method="get">
                 <Panel title={g.supplierName} eyebrow={`Next deadline ${dateOnly(g.nextDeadline, "UTC")} · ${money(g.valueMinor, cur)} at cost`}
-                  actions={<button className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-aurora px-3 text-xs font-medium text-on-accent shadow-glow">Return ticked</button>}>
+                  actions={<button className="inline-flex h-8 items-center gap-1.5 rounded bg-brand px-3 text-xs font-medium text-on-accent">Return ticked</button>}>
                   <Table head={["", "Product", "Batch", "Expiry", "Received", "Return by", "On hand", "Value"]}>
                     {g.entries.map((e) => (
                       <tr key={e.batchId}>

@@ -21,7 +21,7 @@ export function StaffFields({ u, branches, canMakeOwner }: { u?: User; branches:
         </Field>
       </div>
       {branches.length > 1 && (
-        <fieldset className="rounded-xl border border-line bg-surface px-4 py-3">
+        <fieldset className="rounded border border-line bg-surface px-4 py-3">
           <legend className="px-1 text-xs font-medium tracking-wide text-muted">Branch access</legend>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             <Check name="allBranches" defaultChecked={all} label="All branches" />

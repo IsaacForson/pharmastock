@@ -1,0 +1,1 @@
+ALTER TABLE "tenants" ADD COLUMN "owner_summary_enabled" boolean DEFAULT true NOT NULL;

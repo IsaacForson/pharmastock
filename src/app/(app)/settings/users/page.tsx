@@ -18,8 +18,8 @@ export const metadata = { title: "Staff" };
 function Seat({ icon, label, used, of, note }: { icon: React.ReactNode; label: string; used: number; of: number | null; note?: string }) {
   const full = of !== null && used >= of;
   return (
-    <div className="glass p-4 animate-rise">
-      <div className="flex items-center justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-subtle">
+    <div className="sheet p-4">
+      <div className="flex items-center justify-between gap-2 text-[11px] font-mono uppercase tracking-wider text-subtle">
         <span className="inline-flex items-center gap-2 [&>svg]:h-3.5 [&>svg]:w-3.5">{icon}{label}</span>
         {full && <Badge tone="yellow">Full</Badge>}
       </div>

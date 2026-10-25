@@ -15,7 +15,7 @@ export function PriceForm({ supplierId, catalog }: { supplierId: string; catalog
     <ActionForm action={savePriceAction} resetOnSuccess successMessage="Price saved." className="space-y-3">
       <input type="hidden" name="supplierId" value={supplierId} />
       {p ? (
-        <div className="flex items-center justify-between gap-2 rounded-xl border border-line bg-surface-2 px-3 py-2 text-sm">
+        <div className="flex items-center justify-between gap-2 rounded border border-line bg-surface-2 px-3 py-2 text-sm">
           <span className="truncate font-medium text-fg">{itemLabel(p)}</span>
           <IconButton type="button" label="Choose another product" onClick={() => setP(null)}><X className="h-4 w-4" /></IconButton>
           <input type="hidden" name="productId" value={p.id} />

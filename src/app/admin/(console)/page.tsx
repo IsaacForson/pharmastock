@@ -26,9 +26,9 @@ export default async function ControlOverview({ searchParams }: PageProps<"/admi
       {denied && <div className="mb-4"><Callout tone="yellow" icon={<AlertTriangle />}>Your role doesn&apos;t include that page.</Callout></div>}
       {(failed > 0 || deletions.length > 0 || o.trialsEndingSoon > 0) && (
         <div className="mb-6 flex flex-wrap gap-2">
-          {failed > 0 && <Link href="/admin/system" className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm hover:border-line-strong"><AlertTriangle className="h-4 w-4 text-bad" />{failed} failed background jobs</Link>}
-          {deletions.length > 0 && <Link href="/admin/pharmacies?status=deletion" className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm hover:border-line-strong"><Trash2 className="h-4 w-4 text-warn" />{deletions.length} deletion request{deletions.length === 1 ? "" : "s"}</Link>}
-          {o.trialsEndingSoon > 0 && <Link href="/admin/pharmacies?status=trialing" className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm hover:border-line-strong"><Hourglass className="h-4 w-4 text-accent" />{o.trialsEndingSoon} trials end within 3 days</Link>}
+          {failed > 0 && <Link href="/admin/system" className="sheet inline-flex items-center gap-2 rounded px-4 py-2 text-sm hover:border-line-strong"><AlertTriangle className="h-4 w-4 text-bad" />{failed} failed background jobs</Link>}
+          {deletions.length > 0 && <Link href="/admin/pharmacies?status=deletion" className="sheet inline-flex items-center gap-2 rounded px-4 py-2 text-sm hover:border-line-strong"><Trash2 className="h-4 w-4 text-warn" />{deletions.length} deletion request{deletions.length === 1 ? "" : "s"}</Link>}
+          {o.trialsEndingSoon > 0 && <Link href="/admin/pharmacies?status=trialing" className="sheet inline-flex items-center gap-2 rounded px-4 py-2 text-sm hover:border-line-strong"><Hourglass className="h-4 w-4 text-accent" />{o.trialsEndingSoon} trials end within 3 days</Link>}
         </div>
       )}
 

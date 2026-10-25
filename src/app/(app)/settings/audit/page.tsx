@@ -38,7 +38,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/settings/a
   const filtered = Object.values(f).some(Boolean);
   return (
     <>
-      <form className="glass grid items-end gap-3 p-4 animate-rise sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-[repeat(6,minmax(0,1fr))_auto]">
+      <form className="sheet grid items-end gap-3 p-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-[repeat(6,minmax(0,1fr))_auto]">
         <Field label="Staff">
           <Select name="user" defaultValue={f.user}><option value="">Anyone</option>{staff.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}</Select>
         </Field>

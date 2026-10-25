@@ -37,7 +37,7 @@ Pharmacy POS + inventory for independent pharmacies, drug shops and 2–10 branc
 - Call `revalidatePath(...)` for pages whose data changed.
 
 ## UI
-- Server components by default; `@/components/ui` and `@/components/form` (see DESIGN.md). Barcode input: `useWedgeScanner` (USB/Bluetooth scanners) and `CameraScanner` (phone camera) from `@/components/scanner`.
+- Server components by default; `@/components/ui` and `@/components/form` (see DESIGN.md: the "Dispensary" system — light-first, ruled sheets, IBM Plex, top-bar navigation). Barcode input: `useWedgeScanner` (USB/Bluetooth scanners) and `CameraScanner` (phone camera) from `@/components/scanner`.
 - Pages live under `src/app/(app)/<module>/`; the layout handles auth, nav and Suspense. Use `PageProps<"/route">` / `RouteContext<"/api/...">` global types (run `npx next typegen` after adding routes).
 - Printable documents (receipts, labels, purchase orders, registers, GRNs, credit notes) are print-styled pages with the pharmacy letterhead + `PrintButton`. Thermal receipts are 80mm wide. Use `print:hidden` for chrome.
 - Counter staff are busy: large click targets, keyboard first (scan → Enter), few fields, sensible defaults.

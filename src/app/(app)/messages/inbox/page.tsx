@@ -45,11 +45,11 @@ export default async function InboxPage({ searchParams }: PageProps<"/messages/i
       <PageHeader icon={<Inbox />} eyebrow="Customer messaging" title="Inbox" subtitle="Replies from customers. Commands like 1 (refill ready) and STOP are handled automatically." />
       <MessageTabs current="inbox" />
       {rows.length === 0 ? <EmptyState icon={<MessagesSquare />} title="No replies yet">Customers&apos; WhatsApp and SMS replies will show here.</EmptyState> : (
-        <div className="glass grid min-h-[560px] animate-rise overflow-hidden lg:grid-cols-[320px_minmax(0,1fr)]">
+        <div className="sheet grid min-h-[560px] overflow-hidden lg:grid-cols-[320px_minmax(0,1fr)]">
           <nav aria-label="Conversations" className="max-h-[70vh] overflow-y-auto border-b border-line p-2 lg:max-h-none lg:border-b-0 lg:border-r">
             {convos.map((c) => (
               <Link key={c.k} href={`/messages/inbox?c=${encodeURIComponent(c.k)}`} aria-current={c === active ? "true" : undefined}
-                className={cx("flex items-start gap-3 rounded-xl px-3 py-3 transition", c === active ? "bg-surface-3 shadow-[inset_0_0_0_1px_var(--line-strong)]" : "hover:bg-surface-2")}>
+                className={cx("flex items-start gap-3 rounded px-3 py-3 transition", c === active ? "bg-surface-3 shadow-[inset_0_0_0_1px_var(--line-strong)]" : "hover:bg-surface-2")}>
                 <Avatar name={who(c.latest)} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
@@ -82,7 +82,7 @@ export default async function InboxPage({ searchParams }: PageProps<"/messages/i
               <ol className="flex-1 space-y-4 overflow-y-auto px-5 py-6">
                 {[...thread].reverse().map((m) => (
                   <li key={m.id} className={cx("flex max-w-[85%] flex-col gap-1", m.direction === "out" ? "ml-auto items-end" : "items-start")}>
-                    <div className={cx("rounded-2xl px-4 py-2.5 text-sm shadow-panel", m.direction === "out" ? "rounded-br-md bg-aurora text-on-accent" : "rounded-bl-md border border-line bg-surface-2 text-fg")}>
+                    <div className={cx("rounded-md px-4 py-2.5 text-sm shadow-lift", m.direction === "out" ? "rounded-br-md bg-brand text-on-accent" : "rounded-bl-md border border-line bg-surface-2 text-fg")}>
                       <p className="whitespace-pre-wrap">{m.body}</p>
                     </div>
                     <div className="flex items-center gap-2 px-1 text-[11px] text-subtle">
@@ -101,7 +101,7 @@ export default async function InboxPage({ searchParams }: PageProps<"/messages/i
                     <Submit size="md" className="h-11"><Send className="h-4 w-4" />Reply</Submit>
                   </ActionForm>
                 ) : (
-                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-sm text-muted">
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded border border-line bg-surface px-4 py-3 text-sm text-muted">
                     <span className="flex items-center gap-2"><Lock className="h-4 w-4" />Reply window (24h) has closed.</span>
                     <LinkButton size="sm" variant="secondary" href={active.latest.p ? `/messages/send?customer=${active.latest.p.id}` : "/messages/send"}>Send message</LinkButton>
                   </div>

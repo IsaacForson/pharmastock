@@ -26,7 +26,7 @@ npx tsx scripts/create-admin.mts --email you@yourdomain.com --name "Your Name"  
 Then set `APP_DATABASE_URL` using the same `APP_DB_PASSWORD`.
 
 ## 4. Run
-- **Web app**: deploy the Next.js app (Vercel, Fly.io, Render…) with the variables above plus everything in `.env.example` (`ENCRYPTION_KEY`, `APP_URL`, `CRON_SECRET`, Paystack, WhatsApp, SMS, email, Anthropic).
+- **Web app**: deploy the Next.js app (Vercel, Fly.io, Render…) with the variables above plus everything in `.env.example` (`ENCRYPTION_KEY`, `APP_URL`, `CRON_SECRET`, Paystack, WhatsApp, SMS, email, Groq).
 - **Background worker**: run `pnpm worker` as a long-running process (Fly/Render worker), **or** call `GET /api/cron/tick` with `Authorization: Bearer $CRON_SECRET` every minute (Vercel Cron, or the Netlify scheduled function in `netlify/functions/cron-tick.mjs`). The worker runs the nightly expiry/reorder/recall alerts, the WhatsApp owner summary, refill reminders, message delivery, webhooks and data exports.
 - Point the Paystack webhook at `/api/webhooks/paystack` (subscription and setup-service payments; signed with `PAYSTACK_SECRET_KEY`) and the WhatsApp/SMS webhooks at `/api/webhooks/whatsapp` and `/api/webhooks/sms`.
 

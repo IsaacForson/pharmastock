@@ -8,11 +8,11 @@ export function LogoPicker({ current, initial }: { current: string | null; initi
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
   const src = preview ?? current;
   return (
-    <label className="group flex cursor-pointer items-center gap-4 rounded-2xl border border-dashed border-line-strong bg-surface p-4 transition hover:border-accent/50 hover:bg-surface-2">
-      <span className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-2xl border border-line bg-surface-2">
+    <label className="group flex cursor-pointer items-center gap-4 rounded-md border border-dashed border-line-strong bg-surface p-4 transition hover:border-accent/50 hover:bg-surface-2">
+      <span className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-md border border-line bg-surface-2">
         {src
           ? <img src={src} alt="Pharmacy logo preview" className="h-full w-full object-contain p-1.5" />
-          : <span className="text-aurora text-2xl font-semibold">{initial}</span>}
+          : <span className="text-brand text-2xl font-semibold">{initial}</span>}
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex items-center gap-2 text-sm font-medium text-fg"><ImageUp className="h-4 w-4 text-accent" aria-hidden /> {preview ? "New logo selected" : current ? "Replace logo" : "Upload a logo"}</span>

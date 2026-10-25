@@ -107,7 +107,7 @@ export default async function SalePage({ params }: PageProps<"/sales/[id]">) {
                 <div className="grid gap-3 sm:grid-cols-2">
                   {d.lines.filter(({ line }) => line.baseQty > line.returnedBaseQty).map(({ line, product }) => (
                     <Field key={line.id} label={`${line.description}`} hint={`Up to ${line.baseQty - line.returnedBaseQty} ${product.baseUnit}`}>
-                      <input name={`qty_${line.id}`} type="number" min={0} max={line.baseQty - line.returnedBaseQty} placeholder="0" className="h-10 w-full rounded-xl border border-line bg-surface-2 px-3 text-sm tabular-nums text-fg" />
+                      <input name={`qty_${line.id}`} type="number" min={0} max={line.baseQty - line.returnedBaseQty} placeholder="0" className="h-10 w-full rounded border border-line bg-surface-2 px-3 text-sm tabular-nums text-fg" />
                     </Field>
                   ))}
                 </div>

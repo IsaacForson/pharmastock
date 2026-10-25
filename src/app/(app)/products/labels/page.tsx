@@ -63,7 +63,7 @@ export default async function LabelsPage({ searchParams }: PageProps<"/products/
             {rows.length === 0 ? <p className="py-6 text-center text-sm text-muted">No products match. Try another search.</p> : (
               <ul className="grid max-h-[28rem] gap-1 overflow-y-auto sm:grid-cols-2">
                 {rows.map((r) => (
-                  <li key={r.id} className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-surface-2">
+                  <li key={r.id} className="flex items-center gap-3 rounded px-3 py-2 hover:bg-surface-2">
                     <input type="checkbox" name="p" value={r.id} defaultChecked={selected.includes(r.id)} aria-label={`Print labels for ${r.name}`} className="h-4 w-4 accent-[var(--accent)]" />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium text-fg">{r.name} <span className="text-muted">{r.strength}</span></span>
@@ -90,14 +90,14 @@ export default async function LabelsPage({ searchParams }: PageProps<"/products/
       </div>
 
       {labels.length > 0 && (
-        <section aria-label="Label sheet" className="glass p-4 print:border-0 print:p-0 print:shadow-none">
+        <section aria-label="Label sheet" className="sheet p-4 print:border-0 print:p-0 print:shadow-none">
           <div className="mb-3 flex items-center justify-between print:hidden">
             <span className="text-sm text-muted">{labels.length} label{labels.length > 1 ? "s" : ""}{labels.length === MAX_LABELS ? " (most per sheet)" : ""}</span>
             <Badge tone="teal">{layout === "shelf" ? "Shelf labels" : "Stickers"}</Badge>
           </div>
           <div className={cx("grid gap-2 print:gap-1", layout === "shelf" ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-3 sm:grid-cols-5")}>
             {labels.map((r, i) => (
-              <div key={i} className={cx("flex break-inside-avoid flex-col items-center justify-between rounded-lg border border-line bg-surface text-center text-fg print:rounded-none",
+              <div key={i} className={cx("flex break-inside-avoid flex-col items-center justify-between rounded border border-line bg-surface text-center text-fg print:rounded-none",
                 layout === "shelf" ? "min-h-36 p-3" : "min-h-24 p-1.5")}>
                 <div className={cx("w-full font-semibold leading-tight", layout === "shelf" ? "text-sm" : "truncate text-[10px]")}>{r.name}</div>
                 <div className={cx("text-muted", layout === "shelf" ? "text-xs" : "text-[9px]")}>{[r.strength, r.form].filter(Boolean).join(" · ")}</div>

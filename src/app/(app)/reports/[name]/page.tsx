@@ -45,7 +45,7 @@ export default async function ReportPage({ params, searchParams }: PageProps<"/r
         subtitle={<>{report.description} <span className="whitespace-nowrap font-medium text-fg">{report.snapshot ? "As of now" : `${dateOnly(range.start, tz)} – ${dateOnly(new Date(range.end.getTime() - 1), tz)}`}{ctx.branches.length > 1 ? ` · ${branchLabel}` : ""}</span></>}
         actions={<>
           <LinkButton href="/reports" variant="ghost"><ArrowLeft className="h-4 w-4" aria-hidden />All reports</LinkButton>
-          <a href={csvHref} download className="inline-flex h-10 items-center gap-2 rounded-xl bg-aurora px-4 text-sm font-medium text-on-accent shadow-glow transition hover:-translate-y-px hover:brightness-110">
+          <a href={csvHref} download className="inline-flex h-10 items-center gap-2 rounded bg-brand px-4 text-sm font-medium text-on-accent transitionhover:bg-accent-strong">
             <Download className="h-4 w-4" aria-hidden />Download CSV
           </a>
         </>} />
@@ -56,7 +56,7 @@ export default async function ReportPage({ params, searchParams }: PageProps<"/r
           <span className="text-xs text-subtle">{report.days.label}</span>
           {report.days.values.map((d) => (
             <Link key={d} href={`${path}?${new URLSearchParams({ ...keep, days: String(d) })}`} aria-current={d === days ? "true" : undefined}
-              className={cx("rounded-xl border px-3 py-1.5 text-sm font-medium transition", d === days ? "border-accent/40 bg-accent/15 text-fg" : "border-line text-muted hover:text-fg")}>{d} days</Link>
+              className={cx("rounded border px-3 py-1.5 text-sm font-medium transition", d === days ? "border-accent/40 bg-accent/15 text-fg" : "border-line text-muted hover:text-fg")}>{d} days</Link>
           ))}
         </nav>
       )}

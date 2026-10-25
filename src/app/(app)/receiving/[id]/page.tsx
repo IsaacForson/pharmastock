@@ -38,13 +38,13 @@ export default async function GrnPage({ params }: PageProps<"/receiving/[id]">) 
           {d.by && <div>By {d.by}</div>}
         </Letterhead>
         <section className="grid gap-4 text-sm sm:grid-cols-3">
-          <div><div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">Supplier</div><div className="mt-1 font-medium text-fg">{d.s ? <A href={`/suppliers/${d.s.id}`}>{d.s.name}</A> : "No supplier"}</div></div>
-          <div><div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">Invoice / order</div><div className="mt-1 text-fg">{g.supplierInvoiceNo ?? "—"}{d.poNo && <> · <A href={`/purchasing/${g.poId}`} className="font-mono text-xs">{d.poNo}</A></>}</div></div>
-          <div><div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">Payment</div>
+          <div><div className="text-[10px] font-mono uppercase tracking-wider text-subtle">Supplier</div><div className="mt-1 font-medium text-fg">{d.s ? <A href={`/suppliers/${d.s.id}`}>{d.s.name}</A> : "No supplier"}</div></div>
+          <div><div className="text-[10px] font-mono uppercase tracking-wider text-subtle">Invoice / order</div><div className="mt-1 text-fg">{g.supplierInvoiceNo ?? "—"}{d.poNo && <> · <A href={`/purchasing/${g.poId}`} className="font-mono text-xs">{d.poNo}</A></>}</div></div>
+          <div><div className="text-[10px] font-mono uppercase tracking-wider text-subtle">Payment</div>
             <div className="mt-1 flex items-center gap-2 text-fg">{g.dueAt ? `Due ${dateOnly(g.dueAt, "UTC")}` : "—"} {unpaid <= 0 ? <Badge tone="green">Paid</Badge> : g.paidMinor > 0 ? <Badge tone="blue">{money(unpaid, cur)} left</Badge> : null}</div></div>
         </section>
         <table className="w-full text-sm">
-          <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-[0.14em] text-subtle">
+          <thead><tr className="border-b border-line text-left text-[10px] uppercase tracking-wider text-subtle">
             <th className="py-2">Product</th><th className="py-2">Batch</th><th className="py-2">Expiry</th><th className="py-2 text-right">Qty</th><th className="py-2 text-right">Free</th><th className="py-2 text-right">Cost/pack</th><th className="py-2 text-right">Total</th>
           </tr></thead>
           <tbody className="divide-y divide-line">
@@ -65,7 +65,7 @@ export default async function GrnPage({ params }: PageProps<"/receiving/[id]">) 
         {g.notes && <p className="whitespace-pre-line text-sm text-muted"><span className="font-medium text-fg">Notes: </span>{g.notes}</p>}
         {d.docs.length > 0 && (
           <div className="flex flex-wrap gap-2 print:hidden">
-            {d.docs.map((doc) => <a key={doc.id} href={`/api/files/${doc.id}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface-2 px-2.5 py-1.5 text-xs text-fg hover:bg-surface-3"><Paperclip className="h-3.5 w-3.5" aria-hidden />{doc.name}</a>)}
+            {d.docs.map((doc) => <a key={doc.id} href={`/api/files/${doc.id}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded border border-line bg-surface-2 px-2.5 py-1.5 text-xs text-fg hover:bg-surface-3"><Paperclip className="h-3.5 w-3.5" aria-hidden />{doc.name}</a>)}
           </div>
         )}
         <div className="grid grid-cols-2 gap-10 pt-8 text-xs text-muted">

@@ -40,7 +40,7 @@ export default async function ExpensesPage({ searchParams }: PageProps<"/expense
           <form><Toolbar>
             <Input type="date" name="from" defaultValue={from} className="w-40" aria-label="From" /><Input type="date" name="to" defaultValue={to} className="w-40" aria-label="To" />
             <Select name="category" defaultValue={cat} className="w-48" aria-label="Category"><option value="">All categories</option>{CATEGORIES.map((c) => <option key={c}>{c}</option>)}</Select>
-            <button className="h-10 rounded-xl border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3">Filter</button>
+            <button className="h-10 rounded border border-line bg-surface-2 px-4 text-sm font-medium text-fg hover:bg-surface-3">Filter</button>
           </Toolbar></form>
           <Panel bodyClassName="p-0">
             <Table head={["Day", "Category", "Details", "Paid by", "Amount", ""]} empty={<EmptyState title="No expenses in this period" compact />}>

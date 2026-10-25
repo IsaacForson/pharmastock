@@ -1,10 +1,10 @@
 /**
- * "Ask PharmaStock": business questions in plain language, answered by Claude using READ-ONLY, tenant-scoped query tools
- * (RLS via withTenant; branch scope decided by the caller). No dosing or clinical advice: the system prompt restricts
- * Claude to stock and business questions. Manual tool loop so we can cap turns, report progress and audit tool use.
+ * "Ask PharmaStock": business questions in plain language, answered by an LLM on Groq (OpenAI-compatible chat API,
+ * free tier) using READ-ONLY, tenant-scoped query tools (RLS via withTenant; branch scope decided by the caller).
+ * No dosing or clinical advice: the system prompt restricts the model to stock and business questions. Manual tool loop
+ * so we can cap turns, report progress and audit tool use.
  */
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
 import { sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
 import type { Tx } from "@/db";
@@ -12,10 +12,12 @@ import { deadStock, priceImpact } from "./analytics";
 import { addDays, dayRange, money } from "./format";
 import { reorderSuggestions } from "./reorder";
 
-export const AI_MODEL = "claude-opus-5-5";
+export const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+/** Override with GROQ_MODEL; any Groq model with tool use works. */
+export const aiModel = () => process.env.GROQ_MODEL || "openai/gpt-oss-120b";
 export const MAX_TURNS = 6; // tool rounds before we stop and answer with what we have
 export const MAX_QUESTION = 500;
-export const aiConfigured = () => !!process.env.ANTHROPIC_API_KEY;
+export const aiConfigured = () => !!process.env.GROQ_API_KEY;
 
 export type AskScope = {
   tenant: { id: string; name: string; timezone: string; currency: string; reorderCoverDays: number; country: string };
@@ -47,14 +49,15 @@ type ToolName = keyof typeof SCHEMAS;
 const obj = (properties: Record<string, unknown>, required: string[]) => ({ type: "object" as const, properties, required, additionalProperties: false });
 const D = { type: "string", description: "YYYY-MM-DD, pharmacy local date" };
 const P = { type: "string", description: "Part of a brand or generic name, e.g. 'paracetamol'" };
-export const TOOLS: Anthropic.Beta.BetaTool[] = [
-  { name: "reorder_list", description: "Items to reorder now: stock on hand, days of cover, suggested order quantity and supplier. Use for 'what should I reorder'.", input_schema: obj({ limit: { type: "integer" } }, []), strict: true },
-  { name: "expiring_batches", description: "Batches expiring within N days (optionally also already expired ones still on the shelf) with quantity and value at cost.", input_schema: obj({ within_days: { type: "integer" }, include_expired: { type: "boolean" } }, ["within_days"]), strict: true },
-  { name: "sales_by_product", description: "Units sold, revenue (ex tax, after returns) and margin per product for a date range, best sellers first. Optional product name filter.", input_schema: obj({ product: P, from: D, to: D, limit: { type: "integer" } }, ["from", "to"]), strict: true },
-  { name: "sales_by_day", description: "Daily units and revenue for a date range, optionally for one product. Use for trends.", input_schema: obj({ product: P, from: D, to: D }, ["from", "to"]), strict: true },
-  { name: "stock_on_hand", description: "Current stock for products matching a name: per branch, sellable vs expired/quarantined, value, nearest expiry.", input_schema: obj({ product: P }, ["product"]), strict: true },
-  { name: "dead_stock", description: "Products holding stock with no sales in the last N days, with value tied up.", input_schema: obj({ days_without_sales: { type: "integer" } }, ["days_without_sales"]), strict: true },
-  { name: "price_changes", description: "Selling price changes and their impact: units/day and margin/day in the 30 days before vs after each change.", input_schema: obj({ product: P, since: D }, []), strict: true },
+const fn = (name: string, description: string, parameters: ReturnType<typeof obj>) => ({ type: "function" as const, function: { name, description, parameters } });
+export const TOOLS = [
+  fn("reorder_list", "Items to reorder now: stock on hand, days of cover, suggested order quantity and supplier. Use for 'what should I reorder'.", obj({ limit: { type: "integer" } }, [])),
+  fn("expiring_batches", "Batches expiring within N days (optionally also already expired ones still on the shelf) with quantity and value at cost.", obj({ within_days: { type: "integer" }, include_expired: { type: "boolean" } }, ["within_days"])),
+  fn("sales_by_product", "Units sold, revenue (ex tax, after returns) and margin per product for a date range, best sellers first. Optional product name filter.", obj({ product: P, from: D, to: D, limit: { type: "integer" } }, ["from", "to"])),
+  fn("sales_by_day", "Daily units and revenue for a date range, optionally for one product. Use for trends.", obj({ product: P, from: D, to: D }, ["from", "to"])),
+  fn("stock_on_hand", "Current stock for products matching a name: per branch, sellable vs expired/quarantined, value, nearest expiry.", obj({ product: P }, ["product"])),
+  fn("dead_stock", "Products holding stock with no sales in the last N days, with value tied up.", obj({ days_without_sales: { type: "integer" } }, ["days_without_sales"])),
+  fn("price_changes", "Selling price changes and their impact: units/day and margin/day in the 30 days before vs after each change.", obj({ product: P, since: D }, [])),
 ];
 
 type R = Record<string, unknown>;
@@ -163,44 +166,68 @@ const LABEL: Record<string, string> = {
   sales_by_day: "Looking at daily sales", stock_on_hand: "Checking stock on hand", dead_stock: "Finding slow-moving stock", price_changes: "Comparing sales before and after price changes",
 };
 
+// OpenAI-style chat messages, as Groq takes and returns them.
+type ToolCall = { id: string; type: "function"; function: { name: string; arguments: string } };
+export type ChatMessage =
+  | { role: "system" | "user"; content: string }
+  | { role: "assistant"; content: string | null; tool_calls?: ToolCall[] }
+  | { role: "tool"; tool_call_id: string; name: string; content: string };
+export type ChatRequest = { model: string; messages: ChatMessage[]; tools: typeof TOOLS; tool_choice: "auto" | "none"; max_tokens: number; temperature: number };
+export type ChatResponse = { choices: { finish_reason: string; message: { content: string | null; tool_calls?: ToolCall[] } }[] };
+export type Chat = (req: ChatRequest) => Promise<ChatResponse>;
+
+/** Calls Groq's chat completions endpoint. Errors carry Groq's message (rate limit, bad key) for the server log. */
+export const groqChat: Chat = async (req) => {
+  const res = await fetch(GROQ_URL, {
+    method: "POST", headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify(req), signal: AbortSignal.timeout(60_000),
+  });
+  const json = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(`Groq ${res.status}: ${json?.error?.message ?? res.statusText}`);
+  return json as ChatResponse;
+};
+
 /**
  * The tool loop. `read` runs a callback in a fresh RLS transaction (one per tool round, so no transaction is held open
  * while waiting on the model). Emits progress events; returns the tool names used (for the audit log).
  */
-export async function ask(question: string, s: AskScope, read: <T>(fn: (t: Tx) => Promise<T>) => Promise<T>, emit: (e: AskEvent) => void, client = new Anthropic()) {
+export async function ask(question: string, s: AskScope, read: <T>(fn: (t: Tx) => Promise<T>) => Promise<T>, emit: (e: AskEvent) => void, chat: Chat = groqChat) {
   const used: string[] = [];
-  const messages: Anthropic.Beta.BetaMessageParam[] = [{
-    role: "user",
-    content: `Pharmacy: ${s.tenant.name} (${s.tenant.country}). Currency: ${s.tenant.currency}. Today: ${s.today}. Branches covered: ${s.branches.map((b) => b.name).join(", ")}.\n\nQuestion: ${question}`,
-  }];
+  const messages: ChatMessage[] = [
+    { role: "system", content: SYSTEM },
+    { role: "user", content: `Pharmacy: ${s.tenant.name} (${s.tenant.country}). Currency: ${s.tenant.currency}. Today: ${s.today}. Branches covered: ${s.branches.map((b) => b.name).join(", ")}.\n\nQuestion: ${question}` },
+  ];
   for (let turn = 0; turn <= MAX_TURNS; turn++) {
-    const res = await client.beta.messages.create({
-      model: AI_MODEL, max_tokens: 4000, system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-      output_config: { effort: "low" }, tools: TOOLS, tool_choice: { type: turn < MAX_TURNS ? "auto" : "none" }, messages, // last round: answer with what we have
-      betas: ["server-side-fallback-2026-07-01"], fallbacks: "default",
+    const res = await chat({
+      model: aiModel(), messages, tools: TOOLS, tool_choice: turn < MAX_TURNS ? "auto" : "none", // last round: answer with what we have
+      max_tokens: 4000, temperature: 0.2,
     });
-    if (res.stop_reason === "refusal") { emit({ type: "error", message: "I can't help with that one. Try a question about sales, stock, expiry or reordering." }); return used; }
-    const calls = res.content.filter((b): b is Anthropic.Beta.BetaToolUseBlock => b.type === "tool_use");
-    if (res.stop_reason !== "tool_use" || !calls.length) {
-      const text = res.content.filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === "text").map((b) => b.text).join("\n").trim();
+    const msg = res.choices?.[0]?.message;
+    const calls = msg?.tool_calls ?? [];
+    if (!calls.length) {
+      const text = (msg?.content ?? "").trim();
       emit(text ? { type: "answer", text } : { type: "error", message: "No answer came back. Please try rephrasing." });
       return used;
     }
-    messages.push({ role: "assistant", content: res.content });
-    for (const c of calls) { used.push(c.name); emit({ type: "tool", label: LABEL[c.name] ?? c.name }); }
+    messages.push({ role: "assistant", content: msg?.content ?? null, tool_calls: calls });
+    for (const c of calls) { used.push(c.function.name); emit({ type: "tool", label: LABEL[c.function.name] ?? c.function.name }); }
     const results = await read(async (t) => {
-      const out: Anthropic.Beta.BetaToolResultBlockParam[] = [];
+      const out: ChatMessage[] = [];
       for (const c of calls) { // sequential: one transaction connection
+        let content: string;
         try {
-          out.push({ type: "tool_result", tool_use_id: c.id, content: JSON.stringify(await runTool(t, s, c.name, c.input)).slice(0, 60_000) });
+          const args = c.function.arguments ? JSON.parse(c.function.arguments) : {};
+          content = JSON.stringify(await runTool(t, s, c.function.name, args)).slice(0, 60_000);
         } catch (e) {
-          if (!(e instanceof z.ZodError)) console.error(`ask tool ${c.name}:`, e);
-          out.push({ type: "tool_result", tool_use_id: c.id, is_error: true, content: e instanceof z.ZodError ? `Invalid input: ${e.issues.map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}` : "The query failed." });
+          if (!(e instanceof z.ZodError) && !(e instanceof SyntaxError)) console.error(`ask tool ${c.function.name}:`, e);
+          content = e instanceof z.ZodError ? `Error: invalid input: ${e.issues.map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`
+            : e instanceof SyntaxError ? "Error: arguments were not valid JSON." : "Error: the query failed.";
         }
+        out.push({ role: "tool", tool_call_id: c.id, name: c.function.name, content });
       }
       return out;
     });
-    messages.push({ role: "user", content: results });
+    messages.push(...results);
   }
   emit({ type: "error", message: "That took too many steps. Try a narrower question." });
   return used;

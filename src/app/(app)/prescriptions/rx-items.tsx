@@ -11,9 +11,9 @@ export function RxItems({ products }: { products: string[] }) {
     <div className="space-y-3">
       <datalist id="rx-products">{products.map((p) => <option key={p} value={p} />)}</datalist>
       {rows.map((n, i) => (
-        <div key={n} className="rounded-2xl border border-line p-4">
-          <div className="mb-3 flex items-center justify-between"><span className="text-xs font-semibold uppercase tracking-[0.18em] text-subtle">Medicine {i + 1}</span>
-            {rows.length > 1 && <button type="button" aria-label="Remove medicine" onClick={() => setRows((r) => r.filter((x) => x !== n))} className="grid h-8 w-8 place-items-center rounded-lg text-muted hover:bg-bad/10 hover:text-bad"><Trash2 className="h-4 w-4" /></button>}
+        <div key={n} className="rounded-md border border-line p-4">
+          <div className="mb-3 flex items-center justify-between"><span className="text-xs font-mono uppercase tracking-wider text-subtle">Medicine {i + 1}</span>
+            {rows.length > 1 && <button type="button" aria-label="Remove medicine" onClick={() => setRows((r) => r.filter((x) => x !== n))} className="grid h-8 w-8 place-items-center rounded text-muted hover:bg-bad/10 hover:text-bad"><Trash2 className="h-4 w-4" /></button>}
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <Field label="As written"><Input name={`items.${n}.drugName`} required placeholder="e.g. Amoxicillin 500mg caps" /></Field>

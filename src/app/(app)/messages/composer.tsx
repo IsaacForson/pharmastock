@@ -7,9 +7,9 @@ const fill = (body: string, sample: Record<string, string>) => body.replace(/\{\
 
 function Bubble({ text, label }: { text: string; label: string }) {
   return (
-    <div className="rounded-2xl border border-line bg-canvas-2 p-4">
-      <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-subtle">{label}</div>
-      <div className="ml-auto max-w-[90%] rounded-2xl rounded-br-md bg-aurora px-4 py-2.5 text-sm leading-relaxed text-on-accent shadow-glow">
+    <div className="rounded-md border border-line bg-canvas-2 p-4">
+      <div className="mb-3 text-[10px] font-mono uppercase tracking-wider text-subtle">{label}</div>
+      <div className="ml-auto max-w-[90%] rounded-md rounded-br-md bg-brand px-4 py-2.5 text-sm leading-relaxed text-on-accent">
         <p className="whitespace-pre-wrap break-words">{text || "Your message preview appears here."}</p>
       </div>
       <div className="mt-1.5 text-right text-[10px] tabular-nums text-subtle">{text.length} characters</div>
@@ -40,7 +40,7 @@ export function TemplateEditor({ defaultValue, disabled, placeholders, sample, h
         {!disabled && (
           <div className="flex flex-wrap gap-1.5">
             {placeholders.map((p) => (
-              <button key={p} type="button" onClick={() => insert(p)} className="rounded-lg border border-accent/30 bg-accent/10 px-2 py-1 font-mono text-[11px] text-accent transition hover:bg-accent/20">{`{{${p}}}`}</button>
+              <button key={p} type="button" onClick={() => insert(p)} className="rounded border border-accent/30 bg-accent/10 px-2 py-1 font-mono text-[11px] text-accent transition hover:bg-accent/20">{`{{${p}}}`}</button>
             ))}
           </div>
         )}
